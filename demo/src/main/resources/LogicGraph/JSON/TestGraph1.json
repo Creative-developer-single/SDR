@@ -1,0 +1,65 @@
+{
+  "BlockLength": 1024,
+  "SampleRate": 1000000,
+  "Nodes": [
+    {
+      "ID": "SinSignal1",
+      "Pos": {
+        "X": 10,
+        "Y": 20
+      },
+      "ComponentType": "SignalGenerator",
+      "ComponentID": 1
+    },
+    {
+      "ID": "Adder",
+      "Pos": {
+        "X": 90,
+        "Y": 20
+      },
+      "ComponentType": "BasicALU",
+      "ComponentID": 2
+    },
+    {
+      "ID": "SinSignal2",
+      "Pos": {
+        "X": 10,
+        "Y": 90
+      },
+      "ComponentType": "SignalGenerator",
+      "ComponentID": 2
+    },
+    {
+      "ID": "Buffer1",
+      "Pos": {
+        "X": 150,
+        "Y": 20
+      },
+      "ComponentType": "SinglePortBuffer",
+      "ComponentID": 3
+    }
+  ],
+  "Edges": [
+    {
+      "EdgeID": 1,
+      "StartNodeID": "SinSignal1",
+      "EndNodeID": "Adder",
+      "StartEdgeIndex": 0,
+      "EndEdgeIndex": 0
+    },
+    {
+      "EdgeID": 2,
+      "StartNodeID": "SinSignal2",
+      "EndNodeID": "Adder",
+      "StartEdgeIndex": 0,
+      "EndEdgeIndex": 1
+    },
+    {
+      "EdgeID": 3,
+      "StartNodeID": "Adder",
+      "EndNodeID": "Buffer1",
+      "StartEdgeIndex": 0,
+      "EndEdgeIndex": 0
+    }
+  ]
+}

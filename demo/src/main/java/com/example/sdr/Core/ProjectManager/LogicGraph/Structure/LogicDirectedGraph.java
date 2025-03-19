@@ -8,11 +8,13 @@ public class LogicDirectedGraph {
     private LogicNode currentNode;
 
     private List<LogicNode> nodes;
+    private List<LogicEdge> edges;
 
     public LogicDirectedGraph(){
         rootNode = null;
         currentNode = null;
         nodes = new ArrayList<>();
+        edges = new ArrayList<>();
     }
 
     public LogicNode findNodeByID(String id){
@@ -63,6 +65,7 @@ public class LogicDirectedGraph {
             LogicEdge edge = new LogicEdge(node1,index1,node2,index2);
             node1.addNextEdge(edge);
             node2.addPrevEdge(edge);
+            edges.add(edge);
         }
     }
 
@@ -72,5 +75,16 @@ public class LogicDirectedGraph {
 
     public List<LogicNode> getNodes(){
         return nodes;
+    }
+
+    public void PrintNodes(){
+        for (LogicNode logicNode : nodes) {
+            System.out.println(logicNode.getId());
+        }
+    }
+    public void PrintEdges(){
+        for(LogicEdge edge : edges){
+            System.out.println(edge.getNode1().getId() + "->" + edge.getNode2().getId());
+        }
     }
 }

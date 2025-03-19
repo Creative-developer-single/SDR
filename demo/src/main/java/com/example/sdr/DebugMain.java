@@ -20,8 +20,8 @@ public class DebugMain {
         int freqS2 = 1000;
 
         //Based on a Simple Chain
-        SignalGenerator signalGenerator = new SignalGenerator(blockLength,SampleRate, 0);
-        SignalGenerator signalGenerator2 = new SignalGenerator(blockLength,SampleRate, 0);
+        SignalGenerator signalGenerator = new SignalGenerator(blockLength,SampleRate, "SignalGenerator1");
+        SignalGenerator signalGenerator2 = new SignalGenerator(blockLength,SampleRate, "SignalGenerator2");
 
         signalGenerator.setFrequency(freqS1);
         signalGenerator.setAmplitude(1);

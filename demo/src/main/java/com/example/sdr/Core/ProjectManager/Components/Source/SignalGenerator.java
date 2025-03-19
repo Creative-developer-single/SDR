@@ -22,8 +22,9 @@ public class SignalGenerator extends BaseComponent{
 
     private int signalType;
 
-    public SignalGenerator(int blockLength,int SampleRate,int inputCount){
+    public SignalGenerator(int blockLength,int SampleRate,String ID){
         super(blockLength,0);
+        this.ID = ID;
         this.blockLength = blockLength;
         this.blockPhase = 0;
         this.SampleRate = SampleRate;
