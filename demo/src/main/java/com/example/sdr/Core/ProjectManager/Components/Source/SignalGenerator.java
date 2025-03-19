@@ -42,6 +42,18 @@ public class SignalGenerator extends BaseComponent{
         ans = new double[blockLength];
     }
 
+    public SignalGenerator(int blockLength, int signalType,double frequency, double amplitude, double phase,double SampleRate,String ID){
+        super(blockLength,0,ID);
+        this.blockLength = blockLength;
+        this.signalType = signalType;
+        this.frequency = frequency;
+        this.amplitude = amplitude;
+        this.phase = phase;
+        this.SampleRate = (int)SampleRate;
+
+        ans = new double[blockLength];
+    }
+
     public double[] getAns(){
         return ans;
     }

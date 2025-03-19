@@ -25,6 +25,14 @@ public class NoLinear extends BaseComponent{
         ans = new double[blockLength];
     }
 
+    public NoLinear(int blockLength,int inputCount,String ID){
+        super(blockLength,inputCount,ID);
+        this.blockLength = blockLength;
+
+        op_in = new double[blockLength];
+        ans = new double[blockLength];
+    }
+
     public double[] getAns(){
         return ans;
     }

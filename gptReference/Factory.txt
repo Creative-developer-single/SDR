@@ -1,0 +1,52 @@
+import org.json.JSONObject;
+
+public class ComponentFactory {
+    private static final String PACKAGE_NAME = "com.example.sdr.modules"; // 你的模块包名
+
+    /**
+     * 通过 ComponentType 字符串自动实例化对应的类
+     * @param componentType 组件类型（必须与类名匹配）
+     * @param params JSON 参数
+     * @return BaseModule 对象（动态创建）
+     */
+    public static BaseModule createModule(String componentType, JSONObject params) {
+        try {
+            // 构造完整的类名，例如 com.example.sdr.modules.SignalGenerator
+            String className = PACKAGE_NAME + "." + componentType;
+
+            // 通过反射获取 Class 对象
+            Class<?> clazz = Class.forName(className);
+
+            // 确保该类继承自 BaseModule
+            if (!BaseModule.class.isAssignableFrom(clazz)) {
+                throw new IllegalArgumentException(componentType + " 不是 BaseModule 的子类");
+            }
+
+            // 解析参数
+            int blockSize = params.optInt("BlockSize", 4096);
+            BaseModule module;
+
+            // 处理不同构造函数
+            if (clazz.equals(SignalGenerator.class)) {
+                int sampleRate = params.optInt("SampleRate", 10000);
+                int phase = params.optInt("Phase", 0);
+                module = (BaseModule) clazz.getDeclaredConstructor(int.class, int.class, int.class)
+                        .newInstance(blockSize, sampleRate, phase);
+            } else if (clazz.equals(SinglePortBuffer.class)) {
+                int bufferLength = params.optInt("BufferLength", 10000);
+                module = (BaseModule) clazz.getDeclaredConstructor(int.class, int.class)
+                        .newInstance(blockSize, bufferLength);
+            } else {
+                module = (BaseModule) clazz.getDeclaredConstructor(int.class).newInstance(blockSize);
+            }
+
+            // 调用 configure() 进行初始化
+            module.configure(params);
+            return module;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+}

@@ -21,6 +21,16 @@ public class Calculus extends BaseComponent{
         ans = new double[blockLength];
     }
 
+    public Calculus(int blockLength,int mode,String ID){
+        super(blockLength, 1,ID);
+        this.inputCount = 1;
+        this.blockLength = blockLength;
+        this.mode = mode;
+
+        op_in = new double[1][blockLength];
+        ans = new double[blockLength];
+    }
+
     public double[] getAns(){
         return ans;
     }

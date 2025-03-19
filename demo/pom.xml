@@ -16,6 +16,12 @@
 
 
     <dependencies>
+        <dependency>
+        <groupId>org.json</groupId>
+        <artifactId>json</artifactId>
+        <version>20230227</version> <!-- 你可以使用最新版本 -->
+    </dependency>
+
 
         <dependency>
 	        <groupId>org.tallison</groupId>

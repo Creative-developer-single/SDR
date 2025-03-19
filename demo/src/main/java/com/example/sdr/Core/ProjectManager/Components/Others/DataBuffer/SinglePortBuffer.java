@@ -11,6 +11,12 @@ public class SinglePortBuffer extends BaseComponent{
         point = 0;
     }
 
+    public SinglePortBuffer(int blockLength, int size, String ID){
+        super(blockLength, size, ID);
+        ans = new double[size];
+        point = 0;
+    }
+
     public void Calculate(){
         // Do nothing
     }

@@ -6,6 +6,27 @@
     "configurations": [
         {
             "type": "java",
+            "name": "NodeArrowGUIDebug",
+            "request": "launch",
+            "mainClass": "com.example.sdr/com.example.sdr.GUI.Pages.MainPage.LogicGraphGUI.NodeArrow.NodeArrowGUIDebug",
+            "projectName": "demo"
+        },
+        {
+            "type": "java",
+            "name": "BaseALUNodeGUIDebug",
+            "request": "launch",
+            "mainClass": "com.example.sdr/com.example.sdr.GUI.Pages.MainPage.LogicGraphGUI.BaseALUNode.BaseALUNodeGUIDebug",
+            "projectName": "demo"
+        },
+        {
+            "type": "java",
+            "name": "LogicNodeGUIDebug",
+            "request": "launch",
+            "mainClass": "com.example.sdr/com.example.sdr.GUI.Pages.MainPage.LogicGraphGUI.LogicNodeGUIDebug",
+            "projectName": "demo"
+        },
+        {
+            "type": "java",
             "name": "Current File",
             "request": "launch",
             "mainClass": "${file}"

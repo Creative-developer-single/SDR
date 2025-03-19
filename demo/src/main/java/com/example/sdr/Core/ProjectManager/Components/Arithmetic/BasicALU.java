@@ -20,6 +20,14 @@ public class BasicALU extends BaseComponent{
         ans = new double[blockLength];
     }
 
+    public BasicALU(int block,String ID){
+        super(block, 2,ID);
+
+        op_in[0] = new double[blockLength];
+        op_in[1] = new double[blockLength];
+        ans = new double[blockLength];
+    }
+
     public void setOperationParams(double[] data,int index)
     {
         if(data.length != blockLength)

@@ -6,7 +6,11 @@ module com.example.sdr {
     requires javafx.swing;
     requires javafx.web;
     requires jmatio;
+    requires org.json;
 
     opens com.example.sdr to javafx.fxml;
     exports com.example.sdr;
+    exports com.example.sdr.GUI.Pages.MainPage.LogicGraphGUI;
+    exports com.example.sdr.GUI.Pages.MainPage.LogicGraphGUI.BaseALUNode;
+    exports com.example.sdr.GUI.Pages.MainPage.LogicGraphGUI.NodeArrow;
 }
