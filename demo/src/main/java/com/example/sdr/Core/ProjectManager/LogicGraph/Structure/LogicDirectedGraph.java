@@ -77,6 +77,10 @@ public class LogicDirectedGraph {
         return nodes;
     }
 
+    public List<LogicEdge> getEdges(){
+        return edges;
+    }
+
     public void PrintNodes(){
         for (LogicNode logicNode : nodes) {
             System.out.println(logicNode.getId());

@@ -27,9 +27,17 @@ public class GraphStructerLoader {
         this.jsonPath = jsonPath;
     }
 
+    public GraphStructerLoader(){
+        this.jsonPath = null;
+    }
+
     public GraphStructerLoader(String jsonPath,LogicDirectedGraph graph){
         this.jsonPath = jsonPath;
         this.graph = graph;
+    }
+
+    public void setJSONPath(String jsonPath){
+        this.jsonPath = jsonPath;
     }
 
     private LogicNode createNode(int BlockLength,int SampleRate,String ID,String ComponentType,String ComponentID){
