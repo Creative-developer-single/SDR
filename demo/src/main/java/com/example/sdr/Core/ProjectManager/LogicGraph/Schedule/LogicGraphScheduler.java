@@ -52,6 +52,7 @@ public class LogicGraphScheduler {
 
     //debug used
     public void printScheduleOrder(){
+        System.out.println("Info: Print Schedule Order");
         System.out.println(edgeStack.size());
         for(LogicEdge edge : edgeStack){
             System.out.println(edge.getNode1().getId() + " -> " + edge.getNode2().getId());
@@ -69,6 +70,7 @@ public class LogicGraphScheduler {
 
     //debug used
     public void printTerminalNodes(){
+        System.out.println("Info: Print Terminal Nodes");
         for(LogicNode node : terminalNodes){
             System.out.println(node.getId());
             MatFileWriter writer = new MatFileWriter();
@@ -83,21 +85,26 @@ public class LogicGraphScheduler {
         }
     }
 
-    public void generateScheduleOrder()
-    {
-        //Topological Sort
-        while(!nodeQueue.isEmpty()){
-            LogicNode node = nodeQueue.poll();
-            if(node.getUnVisitedInDegrees() == 0){
+    public void generateScheduleOrder() {
+        // Topological Sort
+        while (!nodeQueue.isEmpty()) {
+            LogicNode node = nodeQueue.peek();  // 仅获取队头节点，不出队
+    
+            if (node.getUnVisitedInDegrees() == 0) {
+                nodeQueue.poll();  // 现在才真正出队
                 for (LogicEdge edge : node.getNextEdges()) {
-                    if(edge != null)
-                    {
+                    if (edge != null) {
                         edgeStack.push(edge);
                         edge.getNode1().decrementUnVisitedOutDegrees();
                         edge.getNode2().decrementUnVisitedInDegrees();
                     }
                 }
+            } else {
+                // 如果入度不为 0，跳过当前节点，继续检查队列中下一个节点
+                nodeQueue.add(nodeQueue.poll());  // 将当前节点移到队尾，避免死循环
             }
         }
     }
+    
+    
 }

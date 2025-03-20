@@ -1,6 +1,8 @@
 {
   "BlockLength": 1024,
   "SampleRate": 1000000,
+  "SimulationMode":"Limited",
+  "SimulationCycles":1000,
   "Nodes": [
     {
       "ID": "SinSignal1",
