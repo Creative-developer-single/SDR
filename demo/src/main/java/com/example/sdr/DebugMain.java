@@ -3,6 +3,7 @@ package com.example.sdr;
 import com.example.sdr.Core.ProjectManager.Components.Arithmetic.BasicALU;
 import com.example.sdr.Core.ProjectManager.Components.Others.DataBuffer.SinglePortBuffer;
 import com.example.sdr.Core.ProjectManager.Components.Source.SignalGenerator;
+import com.example.sdr.Core.ProjectManager.LogicGraph.LogicGraphManager;
 import com.example.sdr.Core.ProjectManager.LogicGraph.Schedule.LogicGraphScheduler;
 import com.example.sdr.Core.ProjectManager.LogicGraph.Structure.LogicDirectedGraph;
 import com.example.sdr.Core.ProjectManager.LogicGraph.Structure.LogicNode;
@@ -58,18 +59,16 @@ public class DebugMain {
 
     public static void main(String[] args) {
         //Create the graph and the scheduler
-        LogicDirectedGraph graph = new LogicDirectedGraph();
-        LogicGraphScheduler scheduler = new LogicGraphScheduler();
+        LogicGraphManager manager = new LogicGraphManager();
         Simulator simulator = new Simulator();
 
         System.out.println("Debug Main");
 
         //Debug Nodes
-        DebugMain.generateDebugNodes(graph);
+        DebugMain.generateDebugNodes(manager.getGraphInstance());
 
         //Bind the graph and the scheduler
-        simulator.setLoicGraph(graph);
-        simulator.setScheduler(scheduler);
+        simulator.setLogicGraphManager(manager);
 
         //Run the Scheduler
         simulator.DebugSimulation();

@@ -28,6 +28,20 @@ public class LogicGraphReporter {
         return edges;
     }
 
+    public void printReportedNodes(){
+        System.out.println("Info: Print Reported Nodes");
+        for(LogicNode node : nodes){
+            System.out.println(node.getId());
+        }
+    }
+
+    public void printReportedEdges(){
+        System.out.println("Info: Print Reported Edges");
+        for(LogicEdge edge : edges){
+            System.out.println(edge.getNode1().getId() + " -> " + edge.getNode2().getId());
+        }
+    }
+
     public LogicGraphReporter(List<LogicNode> nodes, List<LogicEdge> edges){
         this.nodes = nodes;
         this.edges = edges;

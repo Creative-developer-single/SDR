@@ -4,14 +4,6 @@ import com.example.sdr.Core.ProjectManager.Components.Base.BaseComponent;
 
 public class SignalGenerator extends BaseComponent{
     private int blockLength;
-    private int SampleRate;
-
-    public final int SIGNAL_SIN = 0;
-    public final int SIGNAL_COS = 1;
-    public final int SIGNAL_SQUARE = 2;
-    public final int SIGNAL_TRIANGLE = 3;
-    public final int SIGNAL_SAWTOOTH = 4;
-    public final int SIGNAL_WHITE_NOISE = 5;
 
     private double[] ans;
     private double frequency;
@@ -20,19 +12,19 @@ public class SignalGenerator extends BaseComponent{
 
     private double blockPhase;
 
-    private int signalType;
+    private String signalType;
 
-    public SignalGenerator(int blockLength,int SampleRate,String ID){
+    public SignalGenerator(int blockLength,int sampleRate,String ID){
         super(blockLength,0);
         this.ID = ID;
         this.blockLength = blockLength;
         this.blockPhase = 0;
-        this.SampleRate = SampleRate;
+        this.sampleRate = sampleRate;
 
         ans = new double[blockLength];
     }
 
-    public SignalGenerator(int blockLength, int signalType,double frequency, double amplitude, double phase){
+    public SignalGenerator(int blockLength, String signalType,double frequency, double amplitude, double phase){
         super(blockLength,0);
         this.blockLength = blockLength;
         this.signalType = signalType;
@@ -43,14 +35,14 @@ public class SignalGenerator extends BaseComponent{
         ans = new double[blockLength];
     }
 
-    public SignalGenerator(int blockLength, int signalType,double frequency, double amplitude, double phase,double SampleRate,String ID){
+    public SignalGenerator(int blockLength, String signalType,double frequency, double amplitude, double phase,double sampleRate,String ID){
         super(blockLength,0,ID);
         this.blockLength = blockLength;
         this.signalType = signalType;
         this.frequency = frequency;
         this.amplitude = amplitude;
         this.phase = phase;
-        this.SampleRate = (int)SampleRate;
+        this.sampleRate = (int)sampleRate;
 
         ans = new double[blockLength];
     }
@@ -59,7 +51,7 @@ public class SignalGenerator extends BaseComponent{
         return ans;
     }
 
-    public void setSignalType(int signalType){
+    public void setSignalType(String signalType){
         this.signalType = signalType;
     }
 
@@ -84,27 +76,27 @@ public class SignalGenerator extends BaseComponent{
     }
 
     public void GenerateSignal(){
-        if(signalType == SIGNAL_SIN){
+        if(signalType == "Sine"){
             for(int i = 0; i < blockLength; i++){
-                this.blockPhase = (this.blockPhase + 2 * Math.PI * frequency / SampleRate) % (2 * Math.PI);
+                this.blockPhase = (this.blockPhase + 2 * Math.PI * frequency / sampleRate) % (2 * Math.PI);
                 ans[i] = amplitude * Math.sin(this.blockPhase);
             }
-        }else if(signalType == SIGNAL_COS){
+        }else if(signalType == "Cos"){
             for(int i = 0; i < blockLength; i++){
-                this.blockPhase = (this.blockPhase + 2 * Math.PI * frequency / SampleRate) % (2 * Math.PI);
+                this.blockPhase = (this.blockPhase + 2 * Math.PI * frequency / sampleRate) % (2 * Math.PI);
                 ans[i] = amplitude * Math.cos(this.blockPhase);
             }
-        }else if(signalType == SIGNAL_SQUARE){
+        }else if(signalType == "Square"){
             for(int i = 0; i < blockLength; i++){
-                this.blockPhase = (this.blockPhase + 2 * Math.PI * frequency / SampleRate) % (2 * Math.PI);
+                this.blockPhase = (this.blockPhase + 2 * Math.PI * frequency / sampleRate) % (2 * Math.PI);
                 ans[i] = amplitude * Math.signum(Math.sin(this.blockPhase));
             }
-        }else if(signalType == SIGNAL_TRIANGLE){
+        }else if(signalType == "Triangle"){
             for(int i = 0; i < blockLength; i++){
-                this.blockPhase = (this.blockPhase + 2 * Math.PI * frequency / SampleRate) % (2 * Math.PI);
+                this.blockPhase = (this.blockPhase + 2 * Math.PI * frequency / sampleRate) % (2 * Math.PI);
                 ans[i] = amplitude * Math.asin(Math.sin(this.blockPhase));
             }
-        }else if(signalType == SIGNAL_WHITE_NOISE){
+        }else if(signalType == "Noise"){
             for(int i = 0; i < blockLength; i++){
                 ans[i] = amplitude * Math.random();
             }

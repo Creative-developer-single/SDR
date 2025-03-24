@@ -1,12 +1,15 @@
 package com.example.sdr.Core.ProjectManager.Loader;
 
+import java.lang.reflect.Field;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.HashMap;
+import java.util.Iterator;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import com.example.sdr.Core.Components.Tools.PropertyModifier.AutoPropertyModifier;
 import com.example.sdr.Core.ProjectManager.Components.Arithmetic.*;
 import com.example.sdr.Core.ProjectManager.Components.Base.*;
 import com.example.sdr.Core.ProjectManager.Components.Others.DataBuffer.*;
@@ -95,6 +98,13 @@ public class GraphStructerLoader {
 
                 //Create the Node
                 LogicNode logicNode = createNode(blockLength, SampleRate, id, componentType, componentID);
+
+                //Get the Component Binded By the Node
+                BaseComponent component = (BaseComponent) logicNode.getComponent();
+
+                //Modify the Special Parameters
+                JSONObject componentSettings = node.getJSONObject("ComponentSettings");
+                AutoPropertyModifier.setPropertiesFromJson(component, componentSettings);
 
                 //Add the Node to the Graph
                 graph.addNode(logicNode);

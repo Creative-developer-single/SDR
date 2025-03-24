@@ -1,5 +1,6 @@
 package com.example.sdr.Core.ProjectManager.Simulation;
 
+import com.example.sdr.Core.ProjectManager.LogicGraph.LogicGraphManager;
 import com.example.sdr.Core.ProjectManager.LogicGraph.Schedule.LogicGraphScheduler;
 import com.example.sdr.Core.ProjectManager.LogicGraph.Structure.LogicDirectedGraph;
 
@@ -8,19 +9,20 @@ public class Simulator {
     public final int SIMLUATION_MODE_LIMITED_CYCLES = 0;
     public final int SIMLUATION_MODE_INTERACTIVE = 1;
 
-    //Components
-    private LogicGraphScheduler scheduler;
-    private LogicDirectedGraph graph;
+    private LogicGraphManager manager;
 
     //Simluation Mode
     private int simulationMode;
     private int simulationCycles;
 
     public Simulator(){
-        scheduler = null;
-        graph = null;
+        manager = null;
         simulationMode = SIMLUATION_MODE_LIMITED_CYCLES;
         simulationCycles = 1;
+    }
+
+    public void setLogicGraphManager(LogicGraphManager manager){
+        this.manager = manager;
     }
 
     public void setSimluatorMode(int mode){
@@ -35,41 +37,25 @@ public class Simulator {
         simulationCycles = cycles;
     }
 
-    public void setLoicGraph(LogicDirectedGraph graph){
-        this.graph = graph;
-    }
-
-    public void setScheduler(LogicGraphScheduler scheduler){
-        this.scheduler = scheduler;
-    }
-
     public void Simluation(){
-        scheduler.addNodesToNodeQueue(graph.getNodes());
-        scheduler.generateScheduleOrder();
+        manager.createScheduler();
         switch(simulationMode){
             case SIMLUATION_MODE_LIMITED_CYCLES:
                 for(int i = 1; i <= simulationCycles; i++)
                 {
-                    scheduler.runTheScheduler();
+                    manager.runScheduler();
                 }
                 break;
             default:
                 break;
         }
-        scheduler.printScheduleOrder();
-        scheduler.printTerminalNodes();
+        manager.updateReporter();
+        manager.getReportInstance().printReportedNodes();
+        manager.getReportInstance().printReportedEdges();
     }
 
     public void DebugSimulation(){
-        scheduler.addNodesToNodeQueue(graph.getNodes());
-        scheduler.generateScheduleOrder();
-        for(int i = 1; i <= 2; i++)
-        {
-            scheduler.runTheScheduler();
-        }
-        //scheduler.runTheScheduler();
-        scheduler.printScheduleOrder();
-        scheduler.printTerminalNodes();
+        Simluation();
     }
     
 }

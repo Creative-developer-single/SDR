@@ -33,23 +33,6 @@
 	        <artifactId>jmatio</artifactId>
 	        <version>1.5</version>
         </dependency>
-
-        <dependency>
-            <groupId>org.jfree.chart</groupId>
-            <artifactId>com.springsource.org.jfree.chart</artifactId>
-            <version>1.0.9</version>
-        </dependency>
-        <dependency>
-            <groupId>org.jfree</groupId>
-            <artifactId>com.springsource.org.jfree</artifactId>
-            <version>1.0.12</version>
-        </dependency>
-        <dependency>
-            <groupId>javax.servlet</groupId>
-            <artifactId>com.springsource.javax.servlet</artifactId>
-            <version>2.4.0</version>
-            <scope>provided</scope>
-        </dependency>
         
         <dependency>
             <groupId>org.openjfx</groupId>

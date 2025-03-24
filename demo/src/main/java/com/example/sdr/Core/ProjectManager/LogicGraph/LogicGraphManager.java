@@ -42,6 +42,19 @@ public class LogicGraphManager {
         reporter.setEdges(graph.getEdges());
     }
 
+
+    public LogicDirectedGraph getGraphInstance(){
+        return graph;
+    }
+
+    public LogicGraphScheduler getSchedulerInstance(){
+        return scheduler;
+    }
+
+    public LogicGraphReporter getReportInstance(){
+        return reporter;
+    }
+
     //Get the Reported Nodes and Edges
     public void getReportedNode(){
         reporter.getNodes();

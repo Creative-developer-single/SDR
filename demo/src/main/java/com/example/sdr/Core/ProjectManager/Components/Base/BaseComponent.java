@@ -3,6 +3,7 @@ package com.example.sdr.Core.ProjectManager.Components.Base;
 public class BaseComponent {
     protected int inputCount;
     protected int blockLength;
+    protected int sampleRate;
     
     protected String ID;
 
@@ -20,6 +21,12 @@ public class BaseComponent {
         this.blockLength = blockLength;
         this.inputCount = inputCount;
         this.ID = ID;
+        ans = new double[blockLength];
+        op_in = new double[inputCount][blockLength];
+    }
+
+    public void resetBlockLength(int blockLength){
+        this.blockLength = blockLength;
         ans = new double[blockLength];
         op_in = new double[inputCount][blockLength];
     }
