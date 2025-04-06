@@ -1,6 +1,9 @@
 package com.example.sdr.Core.ProjectManager;
 
+import com.example.sdr.Core.Components.Tools.GeneralResourceFinder;
 import com.example.sdr.Core.ProjectManager.Loader.GraphStructerLoader;
+import com.example.sdr.Core.ProjectManager.Loader.ProjectPropertiesLoader;
+import com.example.sdr.Core.ProjectManager.LogicGraph.LogicGraphManager;
 import com.example.sdr.Core.ProjectManager.LogicGraph.Schedule.LogicGraphScheduler;
 import com.example.sdr.Core.ProjectManager.LogicGraph.Structure.LogicDirectedGraph;
 import com.example.sdr.Core.ProjectManager.Simulation.Simulator;
@@ -10,22 +13,42 @@ public class ProjectManager {
     private String ProjectPropertiesJSONPath;
     private String GraphStructJSONPath;
     
-    //Loader
-    GraphStructerLoader loader;
+    //ProjectSettingsLoader
+    ProjectPropertiesLoader projectPropertiesLoader;
 
-    //LogicDirectedGraph
-    LogicDirectedGraph graph;
-
-    //LogicDirectedScheduler
-    LogicGraphScheduler scheduler;
+    //LogicGrphManager
+    LogicGraphManager manager;
 
     //Simulator
     Simulator simulator;
 
+    public void loadFromJSON(String ProjectPropertiesJSONPath){
+        GeneralResourceFinder finder = new GeneralResourceFinder();
+        this.ProjectPropertiesJSONPath = finder.getFilePath(ProjectPropertiesJSONPath);
+        projectPropertiesLoader.LoadProjectProperties();
+    }
+
+    public LogicGraphManager getLogicGraphManager(){
+        return manager;
+    }
+
     public ProjectManager(){
-        loader = new GraphStructerLoader();
-        graph = new LogicDirectedGraph();
-        scheduler = new LogicGraphScheduler();
+        projectPropertiesLoader = new ProjectPropertiesLoader();
+        manager = new LogicGraphManager();
         simulator = new Simulator();
+    }
+
+    public static void main(String[] args){
+        ProjectManager projectManager = new ProjectManager();
+        ProjectPropertiesLoader projectPropertiesLoader = new ProjectPropertiesLoader();
+
+        //General Resource Finder
+        GeneralResourceFinder finder = new GeneralResourceFinder();
+        projectPropertiesLoader.setProjectPropertiesJSONPath(finder.getFilePath("/ProjectSettings/JSON/ProjectSettings2.json"));
+        projectPropertiesLoader.setProjectManager(projectManager);
+        projectPropertiesLoader.LoadProjectProperties();
+
+        projectManager.getLogicGraphManager().getGraphInstance().PrintNodes();
+        projectManager.getLogicGraphManager().getGraphInstance().PrintEdges();
     }
 }

@@ -6,6 +6,48 @@
     "configurations": [
         {
             "type": "java",
+            "name": "GeneralBridgeComponent",
+            "request": "launch",
+            "mainClass": "com.example.sdr/com.example.sdr.Core.ProjectManager.Components.Virtual.GeneralBridgeComponent",
+            "projectName": "demo"
+        },
+        {
+            "type": "java",
+            "name": "PropertyJSONExporter",
+            "request": "launch",
+            "mainClass": "com.example.sdr/com.example.sdr.Core.Components.Tools.PropertyExporter.PropertyJSONExporter",
+            "projectName": "demo"
+        },
+        {
+            "type": "java",
+            "name": "ModelClient",
+            "request": "launch",
+            "mainClass": "com.example.sdr/com.example.sdr.Core.ProjectManager.ControlBridge.CrossModelController.ModelClient",
+            "projectName": "demo"
+        },
+        {
+            "type": "java",
+            "name": "JythonTest",
+            "request": "launch",
+            "mainClass": "com.example.sdr/com.example.sdr.Core.Components.JythonTest.JythonTest",
+            "projectName": "demo"
+        },
+        {
+            "type": "java",
+            "name": "ProjectManager",
+            "request": "launch",
+            "mainClass": "com.example.sdr/com.example.sdr.Core.ProjectManager.ProjectManager",
+            "projectName": "demo"
+        },
+        {
+            "type": "java",
+            "name": "TCPServer",
+            "request": "launch",
+            "mainClass": "com.example.sdr/com.example.sdr.Core.ProjectManager.ControlBridge.Server.TCPServer",
+            "projectName": "demo"
+        },
+        {
+            "type": "java",
             "name": "LogicGraphJsonLoaderMain",
             "request": "launch",
             "mainClass": "com.example.sdr/com.example.sdr.Debug.JsonLoader.LogicGraphJsonLoaderMain",

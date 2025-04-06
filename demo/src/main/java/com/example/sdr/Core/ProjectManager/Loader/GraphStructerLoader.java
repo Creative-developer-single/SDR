@@ -14,6 +14,7 @@ import com.example.sdr.Core.ProjectManager.Components.Arithmetic.*;
 import com.example.sdr.Core.ProjectManager.Components.Base.*;
 import com.example.sdr.Core.ProjectManager.Components.Others.DataBuffer.*;
 import com.example.sdr.Core.ProjectManager.Components.Source.SignalGenerator;
+import com.example.sdr.Core.ProjectManager.Components.Virtual.GeneralBridgeComponent;
 import com.example.sdr.Core.ProjectManager.LogicGraph.Structure.*;
 
 public class GraphStructerLoader {
@@ -22,6 +23,9 @@ public class GraphStructerLoader {
 
     //LogicDirectedGraph
     private LogicDirectedGraph graph;
+
+    //Load from the JSONObject
+    private JSONObject graphObject;
 
     //Map Store
     HashMap<String, LogicNode> nodeMap = new HashMap<>();
@@ -32,6 +36,7 @@ public class GraphStructerLoader {
 
     public GraphStructerLoader(){
         this.jsonPath = null;
+        this.graph = new LogicDirectedGraph();
     }
 
     public GraphStructerLoader(String jsonPath,LogicDirectedGraph graph){
@@ -41,6 +46,10 @@ public class GraphStructerLoader {
 
     public void setJSONPath(String jsonPath){
         this.jsonPath = jsonPath;
+    }
+
+    public void setJSONObject(JSONObject jsonObject){
+        this.graphObject = jsonObject;
     }
 
     private LogicNode createNode(int BlockLength,int SampleRate,String ID,String ComponentType,String ComponentID){
@@ -65,8 +74,82 @@ public class GraphStructerLoader {
                 //Create the SignalGenerator
                 SignalGenerator signalGenerator = new SignalGenerator(BlockLength,SampleRate,ID);
                 return new LogicNode(signalGenerator, ID);
+            case "GeneralBridgeComponent":
+                //Create the GeneralBridgeComponent
+                GeneralBridgeComponent generalBridgeComponent = new GeneralBridgeComponent(BlockLength, BlockLength,ComponentID);
+                return new LogicNode(generalBridgeComponent, ID);
             default:
                 return null;
+        }
+    }
+
+    public void LoadFromJSONObject(){
+        try{
+            int blockLength = graphObject.getInt("BlockLength");
+            int SampleRate = graphObject.getInt("SampleRate");
+
+            //Decode the Nodes
+            //Decode the NodesArray
+            JSONArray nodes = graphObject.getJSONArray("Nodes");
+            
+            //For Each Node
+            for(int i=0;i<nodes.length();i++)
+            {
+                //Get the node object
+                JSONObject node = nodes.getJSONObject(i);
+
+                //Get the Node ID
+                String id = node.getString("ID");
+                String componentType = node.getString("ComponentType");
+                String componentID = String.valueOf(node.getInt("ComponentID"));
+
+                //Create the Node
+                LogicNode logicNode = createNode(blockLength, SampleRate, id, componentType, componentID);
+
+                //Get the Component Binded By the Node
+                BaseComponent component = (BaseComponent) logicNode.getComponent();
+
+                //Modify the Special Parameters
+                JSONObject componentSettings = node.getJSONObject("ComponentSettings");
+
+                if(componentType.equals("GeneralBridgeComponent")){
+                    ((GeneralBridgeComponent)component).setComponentConfig(componentSettings);
+                }else
+                {
+                    AutoPropertyModifier.setPropertiesFromJson(component, componentSettings);
+                }
+                
+                //Add the Node to the Graph
+                graph.addNode(logicNode);
+            }
+
+            //Decode the Edges
+            //Decode the EdgesArray
+            JSONArray edges = graphObject.getJSONArray("Edges");
+
+            //For Each Edge
+            for(int i=0;i<edges.length();i++)
+            {
+                //Get the Edge Object
+                JSONObject edge = edges.getJSONObject(i);
+
+                //Get the Start and End Node ID
+                String sourceID = edge.getString("StartNodeID");
+                String destinationID = edge.getString("EndNodeID");
+
+                //Get the Start and End Edge Index
+                int startEdgeIndex = edge.getInt("StartEdgeIndex");
+                int endEdgeIndex = edge.getInt("EndEdgeIndex");
+
+                //Get the Start and End Node By ID
+                LogicNode startNode = graph.findNodeByID(sourceID);
+                LogicNode endNode = graph.findNodeByID(destinationID);
+
+                //Add the Edge
+                graph.addEdgeWithIndex(startNode, startEdgeIndex, endNode, endEdgeIndex);
+            }
+        }catch(Exception e){
+            e.printStackTrace();
         }
     }
 

@@ -1,0 +1,128 @@
+import java.io.IOException;
+import java.net.Socket;
+import java.util.concurrent.ConcurrentHashMap;
+
+public class ConnectionManager {
+
+    // 所有连接，按模块 ID 或类型管理
+    private final ConcurrentHashMap<String, Socket> connectionMap = new ConcurrentHashMap<>();
+
+    /**
+     * 创建连接（如模块初始化时调用）
+     */
+    public synchronized Socket createConnection(String moduleId, String host, int port) throws IOException {
+        if (connectionMap.containsKey(moduleId)) {
+            throw new IllegalStateException("Connection for " + moduleId + " already exists.");
+        }
+        Socket socket = new Socket(host, port);
+        connectionMap.put(moduleId, socket);
+        return socket;
+    }
+
+    /**
+     * 获取已存在连接（如模块运行时使用）
+     */
+    public Socket getConnection(String moduleId) {
+        return connectionMap.get(moduleId);
+    }
+
+    /**
+     * 销毁连接（如模块被删除时调用）
+     */
+    public synchronized void destroyConnection(String moduleId) {
+        Socket socket = connectionMap.remove(moduleId);
+        if (socket != null && !socket.isClosed()) {
+            try {
+                socket.close();
+            } catch (IOException e) {
+                System.err.println("Error closing connection for " + moduleId + ": " + e.getMessage());
+            }
+        }
+    }
+
+    /**
+     * 健康检查（心跳可调度调用）
+     */
+    public boolean isAlive(String moduleId) {
+        Socket socket = connectionMap.get(moduleId);
+        return socket != null && socket.isConnected() && !socket.isClosed();
+    }
+
+    /**
+     * 关闭全部连接（平台关闭时调用）
+     */
+    public synchronized void destroyAllConnections() {
+        for (String moduleId : connectionMap.keySet()) {
+            destroyConnection(moduleId);
+        }
+    }
+}
+
+
+//Module Cycle
+public interface ModuleLifecycle {
+    void onInit();
+    void onStart();
+    void onStop();
+    void onDestroy();
+}
+
+
+//Demo User module
+public class PythonUserModule implements ModuleLifecycle {
+
+    private final String moduleId;
+    private final String host;
+    private final int port;
+    private Socket socket;
+
+    public PythonUserModule(String moduleId, String host, int port) {
+        this.moduleId = moduleId;
+        this.host = host;
+        this.port = port;
+    }
+
+    @Override
+    public void onInit() {
+        try {
+            this.socket = ConnectionRegistry.INSTANCE.createConnection(moduleId, host, port);
+            // Optionally: send init handshake
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to initialize Python module connection", e);
+        }
+    }
+
+    @Override
+    public void onStart() {
+        // 发送启动指令、准备数据流等
+    }
+
+    @Override
+    public void onStop() {
+        // 发送停止指令、缓冲区清理等
+    }
+
+    @Override
+    public void onDestroy() {
+        ConnectionRegistry.INSTANCE.destroyConnection(moduleId);
+    }
+}
+
+
+//Flow ConnectionManager
+public class FlowGraphStateManager {
+
+    private boolean isRunning = false;
+
+    public synchronized boolean canModifyModules() {
+        return !isRunning;
+    }
+
+    public synchronized void startFlow() {
+        isRunning = true;
+    }
+
+    public synchronized void stopFlow() {
+        isRunning = false;
+    }
+}

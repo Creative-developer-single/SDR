@@ -7,6 +7,8 @@ module com.example.sdr {
     requires javafx.web;
     requires jmatio;
     requires org.json;
+    requires org.python.jython2.standalone;
+    requires java.sql;
 
     opens com.example.sdr to javafx.fxml;
     exports com.example.sdr;
