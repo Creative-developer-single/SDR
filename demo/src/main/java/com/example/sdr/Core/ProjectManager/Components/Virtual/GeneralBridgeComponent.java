@@ -7,6 +7,7 @@ import java.net.Socket;
 
 import org.json.JSONObject;
 
+import com.example.sdr.Core.Components.Tools.ArrayConverter.JSONToDouble;
 import com.example.sdr.Core.Components.Tools.PropertyExporter.PropertyJSONExporter;
 import com.example.sdr.Core.ProjectManager.Components.Base.BaseComponent;
 
@@ -99,30 +100,84 @@ public class GeneralBridgeComponent extends BaseComponent{
         return false;
     }
 
-    private void loadConfig(){
-        if(componentConfig != null){
-            try{
-                componentConfig.put("CmdType", "load_config");
-                componentConfig.put("ModuleName", componentName);
-                componentConfig.put("input_channels_num", inputCount);
-                componentConfig.put("block_size",blockLength);
+    private String buildCmdString(String cmdType){
+        String cmdStr = "CMDE";
 
-                String sendStr = "CMDE"+componentConfig.toString(2)+"\r\n\r\n"+"DATAPAYLOAD";
-            
-                if(checkTCPConnection()){
-                    writer.println(sendStr);
-                    writer.flush();
-                    System.out.println("Loaded config sent to Python server.");
-                }else{
-                    //If TCP connection is not open, create a new one
-                    openTCPConnection();
-                    writer.println(sendStr);
-                    writer.flush();
-                    System.out.println("Loaded config sent to Python server.");
-                }
-            }catch(Exception e){
-                System.out.println("Error loading config: " + e.getMessage());
+        componentConfig.put("CmdType",cmdType);
+        componentConfig.put("ModuleName", componentName);
+        componentConfig.put("input_channels_num", inputCount);
+        componentConfig.put("output_channels_num", 1);
+        componentConfig.put("current_input_channel_index", 0);
+        componentConfig.put("current_output_channel_index", 0);
+        componentConfig.put("block_size",blockLength);
+
+        cmdStr = cmdStr + componentConfig.toString(2);
+
+        if(cmdType != "load_data"){
+            cmdStr = cmdStr + "\r\n\r\n" + "DATAPAYLOAD";
+        }else{
+            cmdStr = cmdStr + "\r\n\r\n";
+        }
+        return cmdStr;
+    }
+
+    private void sendStrToServer(String sendStr){
+        try{
+            if(checkTCPConnection()){
+                writer.println(sendStr);
+                writer.flush();
+                System.out.println("Send: " + sendStr);
+                System.out.println("Loaded config sent to Python server.");
+            }else{
+                //If TCP connection is not open, create a new one
+                openTCPConnection();
+                writer.println(sendStr);
+                writer.flush();
+                System.out.println("Send: " + sendStr);
+                System.out.println("Loaded config sent to Python server.");
             }
+        }catch(Exception e){
+            System.out.println("Error sending command: " + e.getMessage());
+        }
+    }
+
+    private String sendAndReceiveFromServer(String sendStr){
+        try{
+            sendStrToServer(sendStr);
+            String receiveStr = reader.readLine();
+            return receiveStr;
+        }catch(Exception exception){
+            exception.printStackTrace();
+        }
+        return null;
+    }
+
+    private void loadConfig(){
+        try{
+            String cmdStr =  buildCmdString("load_config");
+            sendStrToServer(cmdStr);
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    private void load_data(double data[],int index){
+        try{
+            String cmdStr = buildCmdString("load_data");
+
+            //Build the Data Str
+            String dataStr = "[";
+            for(int i=0;i<blockLength-1;i++)
+            {
+                String tmp = String.valueOf(data[i]);
+                dataStr = dataStr + tmp +',';
+            }
+            dataStr = dataStr + String.valueOf(data[blockLength-1]) + "]";
+
+            cmdStr = cmdStr + dataStr;
+            sendStrToServer(cmdStr);
+        }catch(Exception exception){
+            exception.printStackTrace();
         }
     }
 
@@ -132,69 +187,17 @@ public class GeneralBridgeComponent extends BaseComponent{
         load_data(data,index);
     }
 
-    private void load_data(double data[],int index){
-        //Build the Data Str
-        String dataStr = "[";
-        for(int i=0;i<blockLength-1;i++)
-        {
-            String tmp = String.valueOf(data[i]);
-            dataStr = dataStr + tmp +',';
-        }
-        dataStr = dataStr + String.valueOf(data[blockLength-1]) + "]";
-
-        String sendStr = "CMDE";
-        componentConfig.put("CmdType","load_data");
-        sendStr = sendStr + componentConfig.toString(2);
-        sendStr = sendStr + "\r\n\r\n" + dataStr;
-
-        //Send to the Server
+    private void process(){
         try{
-            if(checkTCPConnection())
-            {
-                writer.println(sendStr);
-                writer.flush();
-                System.out.println("Send: " + sendStr);
-                System.out.println("Loaded config sent to Python server.");
-            }else{
-                //If TCP connection is not open, create a new one
-                openTCPConnection();
-                writer.println(sendStr);
-                writer.flush();
-                System.out.println("Send: " + sendStr);
-                System.out.println("Loaded config sent to Python server.");
-            }
+            String cmdStr = buildCmdString("process");
+            sendStrToServer(cmdStr);
         }catch(Exception e){
             e.printStackTrace();
         }
-        
     }
 
     public void Calculate(){
-        //Build the Cmd Str
-        String cmdStr = "CMDE";
-        componentConfig.put("CmdType","process");
-        cmdStr = cmdStr + componentConfig.toString(2);
-        cmdStr = cmdStr + "\r\n\r\n" + "DATAPAYLOAD";
-
-        //Send to the Server
-        try{
-            if(checkTCPConnection())
-            {
-                writer.println(cmdStr);
-                writer.flush();
-                System.out.println("Send: " + cmdStr);
-                System.out.println("Loaded config sent to Python server.");
-            }else{
-                //If TCP connection is not open, create a new one
-                openTCPConnection();
-                writer.println(cmdStr);
-                writer.flush();
-                System.out.println("Send: " + cmdStr);
-                System.out.println("Loaded config sent to Python server.");
-            }
-        }catch(Exception e){
-            System.out.println("Error sending command: " + e.getMessage());
-        }
+        process();
     }
 
     public double[] createTestData(){
@@ -210,33 +213,31 @@ public class GeneralBridgeComponent extends BaseComponent{
         return testData;
     }
 
-    private void sendLoadedConfig(){
+    public double[] getAns(){
+        result();
+        return ans;
+    }
+
+    private void result(){
         try{
-            //Get the Loaded Config from Class
-            JSONObject loadedConfig = PropertyJSONExporter.exportToJson(this);
+            String sendStr = buildCmdString("result");
+            String data = sendAndReceiveFromServer(sendStr);
 
-            //Add the Ctrl Frame
-            loadedConfig.put("CmdType", "load_config");
-
-            if(checkTCPConnection()){
-                writer.println(loadedConfig.toString(2));
-                writer.flush();
-                System.out.println("Loaded config sent to Python server.");
-            }else{
-                //If TCP connection is not open, create a new one
-                openTCPConnection();
-                writer.println(loadedConfig.toString(2));
-                writer.flush();
-                System.out.println("Loaded config sent to Python server.");
+            ans = JSONToDouble.getDoubleFromJSONString(data);
+            for(int i=0;i<blockLength;i++){
+                System.out.println("Result: " + ans[i]);
             }
+            System.out.println("Result received from Python server.");
         }catch(Exception e){
-            System.out.println("Error sending loaded config: " + e.getMessage());
+            e.printStackTrace();
         }
+        
     }
 
     public void setComponentConfig(JSONObject config){
         this.componentConfig = config;
     }
+
 
     public GeneralBridgeComponent(int blockLength, int inputCount, String ID) {
         super(blockLength, inputCount, ID);
@@ -283,6 +284,10 @@ public class GeneralBridgeComponent extends BaseComponent{
             bridgeComponent.setOperationParams(data, 0);
             Thread.sleep(1000);
             bridgeComponent.Calculate();
+            Thread.sleep(1000);
+            System.out.println("Preparing for Ans...");
+            bridgeComponent.result();
+            
         }catch(Exception e){
             System.out.println("Error: " + e.getMessage());
         }
