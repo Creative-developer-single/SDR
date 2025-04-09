@@ -41,6 +41,7 @@ public class ProjectManager {
     public static void main(String[] args){
         ProjectManager projectManager = new ProjectManager();
         ProjectPropertiesLoader projectPropertiesLoader = new ProjectPropertiesLoader();
+        projectManager.simulator.setLogicGraphManager(projectManager.getLogicGraphManager());
 
         //General Resource Finder
         GeneralResourceFinder finder = new GeneralResourceFinder();
@@ -50,5 +51,7 @@ public class ProjectManager {
 
         projectManager.getLogicGraphManager().getGraphInstance().PrintNodes();
         projectManager.getLogicGraphManager().getGraphInstance().PrintEdges();
+
+        projectManager.simulator.Simluation();
     }
 }

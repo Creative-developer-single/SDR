@@ -76,7 +76,7 @@ public class SignalGenerator extends BaseComponent{
     }
 
     public void GenerateSignal(){
-        if(signalType == "Sine"){
+        if(signalType.equals("Sine")){
             for(int i = 0; i < blockLength; i++){
                 this.blockPhase = (this.blockPhase + 2 * Math.PI * frequency / sampleRate) % (2 * Math.PI);
                 ans[i] = amplitude * Math.sin(this.blockPhase);

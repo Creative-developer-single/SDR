@@ -17,7 +17,7 @@
         }
       },
       "LogicGraph": {
-        "BlockLength": 1024,
+        "BlockLength": 4096,
         "SampleRate": 1000000,
         "Nodes": [
           {
@@ -43,7 +43,7 @@
               "Y": 30
             },
             "ComponentType": "GeneralBridgeComponent",
-            "ComponentID": 2,
+            "ComponentID": 10,
             "ComponentSettings":{
                 "output_channels_num": 1,
                 "level": 1,
@@ -51,7 +51,7 @@
                 "max_gain": 20,
                 "input_channels_num": 1,
                 "current_input_channel_index": 0,
-                "block_size": 1024,
+                "block_size": 4096,
                 "current_output_channel_index": 0,
                 "win_length": 100
             }
@@ -120,9 +120,9 @@
             "EndEdgeIndex": 0
           },
           {
-            "EdgeID": 3,
+            "EdgeID": 4,
             "StartNodeID": "Adder",
-            "EndNodeID": "Buffer1",
+            "EndNodeID": "PythonAGC",
             "StartEdgeIndex": 0,
             "EndEdgeIndex": 0
           }

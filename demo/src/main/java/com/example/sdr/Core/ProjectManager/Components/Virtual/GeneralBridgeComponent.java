@@ -1,9 +1,13 @@
 package com.example.sdr.Core.ProjectManager.Components.Virtual;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.net.SocketTimeoutException;
 
 import org.json.JSONObject;
 
@@ -15,6 +19,8 @@ public class GeneralBridgeComponent extends BaseComponent{
     public static final String PYTHON_SERVER_ADDRESS = "172.27.234.221";
     //public static final String PYTHON_SERVER_ADDRESS = "10.29.232.171";
     public static final String PYTHON_SERVER_PORT = "19000";
+    public static final int WAIT_TIME = 10;
+    public static final int SOCKET_BUFFER = 64*1024;
 
     //TCP Client
     private Socket clientSocket;
@@ -29,20 +35,36 @@ public class GeneralBridgeComponent extends BaseComponent{
     private String componentName;
     private JSONObject componentConfig;
 
-    private void createTCPClient(){
-        try{
-            clientSocket = new Socket(pythonServerAddress, Integer.parseInt(pythonServerPort));
-            System.out.println("Connected to Python server at " + pythonServerAddress + ":" + pythonServerPort);
+    private void createTCPClient() {
+    try {
+        // 1. 创建Socket并设置底层缓冲区
+        clientSocket = new Socket(pythonServerAddress, Integer.parseInt(pythonServerPort));
+        // 设置Socket底层接收/发送缓冲区（操作系统级）
+        clientSocket.setReceiveBufferSize(SOCKET_BUFFER); // 64KB接收缓冲区[1,2](@ref)
+        clientSocket.setSendBufferSize(SOCKET_BUFFER);    // 64KB发送缓冲区[1,2](@ref)
+        
+        // 2. 设置读取超时（防止无限阻塞）
+        clientSocket.setSoTimeout(5000); // 5秒超时[1,6](@ref)
 
-            // Get the OutputStream
-            writer = new PrintWriter(clientSocket.getOutputStream(), true);
+        // 3. 包装缓冲流并设置应用层缓冲区
+        // 输出流：BufferedOutputStream + PrintWriter
+        BufferedOutputStream bufferedOutput = new BufferedOutputStream(
+            clientSocket.getOutputStream(), SOCKET_BUFFER // 16KB应用层发送缓冲区
+        );
+        writer = new PrintWriter(bufferedOutput, true); // 自动刷新
 
-            //Get the InputStream
-            reader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-        }catch(Exception e){
-            System.out.println("Error creating TCP client: " + e.getMessage());
-        }
+        // 输入流：BufferedInputStream + BufferedReader
+        BufferedInputStream bufferedInput = new BufferedInputStream(
+            clientSocket.getInputStream(), SOCKET_BUFFER // 16KB应用层接收缓冲区
+        );
+        reader = new BufferedReader(new InputStreamReader(bufferedInput));
+
+        System.out.println("Connected to Python server at " + pythonServerAddress + ":" + pythonServerPort);
+    } catch (Exception e) {
+        System.out.println("Error creating TCP client: " + e.getMessage());
+        closeTCPConnection(); // 确保失败时关闭连接
     }
+}
 
     /*
      * Method: openTCPConnection
@@ -104,7 +126,7 @@ public class GeneralBridgeComponent extends BaseComponent{
         String cmdStr = "CMDE";
 
         componentConfig.put("CmdType",cmdType);
-        componentConfig.put("ModuleName", componentName);
+        //componentConfig.put("ModuleName", componentName);
         componentConfig.put("input_channels_num", inputCount);
         componentConfig.put("output_channels_num", 1);
         componentConfig.put("current_input_channel_index", 0);
@@ -141,6 +163,55 @@ public class GeneralBridgeComponent extends BaseComponent{
         }
     }
 
+    private boolean sendStrToServerWithReply(String sendStr, int timeoutMillis) {
+        try {
+            // 发送指令部分（复用原有逻辑）
+            if (!checkTCPConnection()) {
+                openTCPConnection();
+            }
+            writer.println(sendStr);
+            writer.flush();
+            System.out.println("Send: " + sendStr);
+    
+            // 设置固定读取超时
+            Socket socket = this.clientSocket;  // 假设 socket 是类成员变量
+            int originalTimeout = socket.getSoTimeout();
+            socket.setSoTimeout(timeoutMillis); // 设置总超时时间
+    
+            try {
+                // 单次读取等待（阻塞直到收到数据或超时）
+                String response = reader.readLine();
+                
+                // 处理连接关闭
+                if (response == null) {
+                    System.out.println("Connection closed by server");
+                    return false;
+                }
+                
+                // 检查目标响应
+                if ("OK".equals(response.trim())) {
+                    System.out.println("Received OK from server");
+                    return true;
+                } else {
+                    System.out.println("Unexpected response: " + response);
+                    return false;
+                }
+            } finally {
+                // 恢复原始超时设置
+                socket.setSoTimeout(originalTimeout);
+            }
+        } catch (SocketTimeoutException e) {
+            System.out.println("Timeout waiting for reply after " + timeoutMillis + "ms");
+            return false;
+        } catch (IOException e) {
+            System.out.println("Communication error: " + e.getMessage());
+            return false;
+        } catch (Exception e) {
+            System.out.println("Error: " + e.getMessage());
+            return false;
+        }
+    }
+
     private String sendAndReceiveFromServer(String sendStr){
         try{
             sendStrToServer(sendStr);
@@ -155,7 +226,7 @@ public class GeneralBridgeComponent extends BaseComponent{
     private void loadConfig(){
         try{
             String cmdStr =  buildCmdString("load_config");
-            sendStrToServer(cmdStr);
+            sendStrToServerWithReply(cmdStr,WAIT_TIME);
         }catch(Exception e){
             e.printStackTrace();
         }
@@ -169,13 +240,13 @@ public class GeneralBridgeComponent extends BaseComponent{
             String dataStr = "[";
             for(int i=0;i<blockLength-1;i++)
             {
-                String tmp = String.valueOf(data[i]);
+                String tmp = String.format("%.4f", data[i]);
                 dataStr = dataStr + tmp +',';
             }
             dataStr = dataStr + String.valueOf(data[blockLength-1]) + "]";
 
             cmdStr = cmdStr + dataStr;
-            sendStrToServer(cmdStr);
+            sendStrToServerWithReply(cmdStr,WAIT_TIME);
         }catch(Exception exception){
             exception.printStackTrace();
         }
@@ -190,7 +261,7 @@ public class GeneralBridgeComponent extends BaseComponent{
     private void process(){
         try{
             String cmdStr = buildCmdString("process");
-            sendStrToServer(cmdStr);
+            sendStrToServerWithReply(cmdStr,WAIT_TIME);
         }catch(Exception e){
             e.printStackTrace();
         }
@@ -236,6 +307,8 @@ public class GeneralBridgeComponent extends BaseComponent{
 
     public void setComponentConfig(JSONObject config){
         this.componentConfig = config;
+
+        loadConfig();
     }
 
 
@@ -245,7 +318,7 @@ public class GeneralBridgeComponent extends BaseComponent{
         this.pythonServerPort = PYTHON_SERVER_PORT;
         this.componentName = ID;
 
-        //createTCPClient();
+        createTCPClient();
     }
 
     public GeneralBridgeComponent(int blockLength,int inputCount,String ID,JSONObject config){
@@ -255,7 +328,7 @@ public class GeneralBridgeComponent extends BaseComponent{
         this.componentName = ID;
         this.componentConfig = config;
 
-        //createTCPClient();
+        createTCPClient();
     }
     public static void main(String[] args) {
         GeneralBridgeComponent bridgeComponent = new GeneralBridgeComponent(100, 1, "AGC");
