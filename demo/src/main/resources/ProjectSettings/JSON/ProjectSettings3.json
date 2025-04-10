@@ -1,0 +1,146 @@
+{
+    "ProjectName": "Untitle",
+    "ProjectOwner": "Admin",
+    "LastModifyTime": "2025-03-24",
+    "ProjectProperties": {
+      "GlobalProperties": {
+        "SampleRate": 1000000,
+        "BlockLength": 1024
+      },
+      "GraphProperties": {
+        "GraphType": "LogicGraph",
+        "GraphName": "LogicGraph1"
+      },
+      "SettingsProperties": {
+        "SettingsName": "Settings1",
+        "SettingsType": "Default",
+        "SettingsVersion": "0.1",
+        "SettingsPath": "Default"
+      },
+      "SimulationProperties": {
+        "SimulationMode": "Interactive",
+        "SimulationTime": "2.4",
+        "ReportSettings": {
+          "ReportedNodes": [
+            {
+              "NodeID": "Buffer",
+              "NodeVariable": "Buffer"
+            }
+          ],
+          "ReportType": "CSVPlot"
+        }
+      }
+    },
+    "LogicGraph": {
+      "BlockLength": 4096,
+      "SampleRate": 1000000,
+      "Nodes": [
+        {
+          "ID": "SinSignal1",
+          "Pos": {
+            "X": 10,
+            "Y": 20
+          },
+          "ComponentType": "SignalGenerator",
+          "ComponentID": 1,
+          "ComponentSettings": {
+            "sampleRate": 1000000,
+            "signalType": "Sine",
+            "frequency": 1000,
+            "amplitude": 1,
+            "blockPhase": 0
+          }
+        },
+        {
+          "ID": "PythonAGC",
+          "Pos": {
+            "X": 10,
+            "Y": 30
+          },
+          "ComponentType": "GeneralBridgeComponent",
+          "ComponentID": 10,
+          "ComponentSettings": {
+            "output_channels_num": 1,
+            "level": 1,
+            "ModuleName": "AGC",
+            "max_gain": 20,
+            "input_channels_num": 1,
+            "current_input_channel_index": 0,
+            "block_size": 4096,
+            "current_output_channel_index": 0,
+            "win_length": 100
+          }
+        },
+        {
+          "ID": "Adder",
+          "Pos": {
+            "X": 90,
+            "Y": 20
+          },
+          "ComponentType": "BasicALU",
+          "ComponentID": 2,
+          "ComponentSettings": {
+            "OperationMode": "Add"
+          }
+        },
+        {
+          "ID": "SinSignal2",
+          "Pos": {
+            "X": 10,
+            "Y": 90
+          },
+          "ComponentType": "SignalGenerator",
+          "ComponentID": 2,
+          "ComponentSettings": {
+            "sampleRate": 1000000,
+            "signalType": "Sine",
+            "frequency": 1500,
+            "amplitude": 1,
+            "blockPhase": 0
+          }
+        },
+        {
+          "ID": "Buffer1",
+          "Pos": {
+            "X": 150,
+            "Y": 20
+          },
+          "ComponentType": "SinglePortBuffer",
+          "ComponentID": 3,
+          "ComponentSettings": {
+            "bufferLength": 4096
+          }
+        }
+      ],
+      "Edges": [
+        {
+          "EdgeID": 1,
+          "StartNodeID": "SinSignal1",
+          "EndNodeID": "Adder",
+          "StartEdgeIndex": 0,
+          "EndEdgeIndex": 0
+        },
+        {
+          "EdgeID": 2,
+          "StartNodeID": "SinSignal2",
+          "EndNodeID": "Adder",
+          "StartEdgeIndex": 0,
+          "EndEdgeIndex": 1
+        },
+        {
+          "EdgeID": 3,
+          "StartNodeID": "PythonAGC",
+          "EndNodeID": "Buffer1",
+          "StartEdgeIndex": 0,
+          "EndEdgeIndex": 0
+        },
+        {
+          "EdgeID": 4,
+          "StartNodeID": "Adder",
+          "EndNodeID": "PythonAGC",
+          "StartEdgeIndex": 0,
+          "EndEdgeIndex": 0
+        }
+      ]
+    }
+  }

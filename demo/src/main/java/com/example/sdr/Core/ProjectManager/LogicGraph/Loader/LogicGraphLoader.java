@@ -1,4 +1,4 @@
-package com.example.sdr.Core.ProjectManager.Loader;
+package com.example.sdr.Core.ProjectManager.LogicGraph.Loader;
 
 import java.lang.reflect.Field;
 import java.nio.file.Files;
@@ -10,19 +10,21 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import com.example.sdr.Core.Components.Tools.PropertyModifier.AutoPropertyModifier;
+import com.example.sdr.Core.ProjectManager.ProjectManager;
 import com.example.sdr.Core.ProjectManager.Components.Arithmetic.*;
 import com.example.sdr.Core.ProjectManager.Components.Base.*;
 import com.example.sdr.Core.ProjectManager.Components.Others.DataBuffer.*;
 import com.example.sdr.Core.ProjectManager.Components.Source.SignalGenerator;
 import com.example.sdr.Core.ProjectManager.Components.Virtual.GeneralBridgeComponent;
+import com.example.sdr.Core.ProjectManager.LogicGraph.LogicGraphManager;
 import com.example.sdr.Core.ProjectManager.LogicGraph.Structure.*;
 
-public class GraphStructerLoader {
+public class LogicGraphLoader {
     //Json File Path
     private String jsonPath;
 
     //LogicDirectedGraph
-    private LogicDirectedGraph graph;
+    private LogicGraphManager manager;
 
     //Load from the JSONObject
     private JSONObject graphObject;
@@ -30,18 +32,19 @@ public class GraphStructerLoader {
     //Map Store
     HashMap<String, LogicNode> nodeMap = new HashMap<>();
 
-    public GraphStructerLoader(String jsonPath){
-        this.jsonPath = jsonPath;
-    }
-
-    public GraphStructerLoader(){
+    public LogicGraphLoader(){
         this.jsonPath = null;
-        this.graph = new LogicDirectedGraph();
+        this.manager = null;
     }
 
-    public GraphStructerLoader(String jsonPath,LogicDirectedGraph graph){
+    public LogicGraphLoader(LogicGraphManager manager){
+        this.jsonPath = null;
+        this.manager = manager;
+    }
+
+    public LogicGraphLoader(String jsonPath,LogicGraphManager manager){
         this.jsonPath = jsonPath;
-        this.graph = graph;
+        this.manager = manager;
     }
 
     public void setJSONPath(String jsonPath){
@@ -85,6 +88,8 @@ public class GraphStructerLoader {
 
     public void LoadFromJSONObject(){
         try{
+            LogicDirectedGraph graph = manager.getGraphInstance();
+
             int blockLength = graphObject.getInt("BlockLength");
             int SampleRate = graphObject.getInt("SampleRate");
 
@@ -156,6 +161,8 @@ public class GraphStructerLoader {
     public void LoadFromJSON(){
         //Load the JSON File
         try{
+            LogicDirectedGraph graph = manager.getGraphInstance();
+
             //Decode the JSON File
             String content = new String(Files.readAllBytes(Paths.get(jsonPath)));
             JSONObject jsonObject = new JSONObject(content);
@@ -224,7 +231,7 @@ public class GraphStructerLoader {
         }
     }
 
-    public void setLogicDirectedGraph(LogicDirectedGraph graph){
-        this.graph = graph;
+    public void setLogicGraphManager(LogicGraphManager manager){
+        this.manager = manager;
     }
 }

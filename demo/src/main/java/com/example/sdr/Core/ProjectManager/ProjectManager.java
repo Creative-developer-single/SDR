@@ -1,20 +1,21 @@
 package com.example.sdr.Core.ProjectManager;
 
 import com.example.sdr.Core.Components.Tools.GeneralResourceFinder;
-import com.example.sdr.Core.ProjectManager.Loader.GraphStructerLoader;
-import com.example.sdr.Core.ProjectManager.Loader.ProjectPropertiesLoader;
+import com.example.sdr.Core.ProjectManager.Loader.ProjectLoader;
 import com.example.sdr.Core.ProjectManager.LogicGraph.LogicGraphManager;
-import com.example.sdr.Core.ProjectManager.LogicGraph.Schedule.LogicGraphScheduler;
-import com.example.sdr.Core.ProjectManager.LogicGraph.Structure.LogicDirectedGraph;
+import com.example.sdr.Core.ProjectManager.Properties.ProjectPropertiesManager;
 import com.example.sdr.Core.ProjectManager.Simulation.Simulator;
 
 public class ProjectManager {
     //JSON path
     private String ProjectPropertiesJSONPath;
     private String GraphStructJSONPath;
+
+    //ProjectLoader
+    ProjectLoader projectLoader;
     
     //ProjectSettingsLoader
-    ProjectPropertiesLoader projectPropertiesLoader;
+    ProjectPropertiesManager projectPropertiesManager;
 
     //LogicGrphManager
     LogicGraphManager manager;
@@ -24,8 +25,12 @@ public class ProjectManager {
 
     public void loadFromJSON(String ProjectPropertiesJSONPath){
         GeneralResourceFinder finder = new GeneralResourceFinder();
-        this.ProjectPropertiesJSONPath = finder.getFilePath(ProjectPropertiesJSONPath);
-        projectPropertiesLoader.LoadProjectProperties();
+        projectLoader.setProjectPropertiesJSONPath(finder.getFilePath(ProjectPropertiesJSONPath));
+        projectLoader.readJSONFile();
+    }
+
+    public ProjectPropertiesManager getProjectPropertiesManager(){
+        return projectPropertiesManager;
     }
 
     public LogicGraphManager getLogicGraphManager(){
@@ -33,25 +38,19 @@ public class ProjectManager {
     }
 
     public ProjectManager(){
-        projectPropertiesLoader = new ProjectPropertiesLoader();
+        projectPropertiesManager = new ProjectPropertiesManager(this);
+        projectLoader = new ProjectLoader(this);
         manager = new LogicGraphManager();
-        simulator = new Simulator();
+        simulator = new Simulator(this);
     }
 
     public static void main(String[] args){
         ProjectManager projectManager = new ProjectManager();
-        ProjectPropertiesLoader projectPropertiesLoader = new ProjectPropertiesLoader();
-        projectManager.simulator.setLogicGraphManager(projectManager.getLogicGraphManager());
-
-        //General Resource Finder
-        GeneralResourceFinder finder = new GeneralResourceFinder();
-        projectPropertiesLoader.setProjectPropertiesJSONPath(finder.getFilePath("/ProjectSettings/JSON/ProjectSettings2.json"));
-        projectPropertiesLoader.setProjectManager(projectManager);
-        projectPropertiesLoader.LoadProjectProperties();
+        projectManager.loadFromJSON("/ProjectSettings/JSON/ProjectSettings3.json");
 
         projectManager.getLogicGraphManager().getGraphInstance().PrintNodes();
         projectManager.getLogicGraphManager().getGraphInstance().PrintEdges();
 
-        projectManager.simulator.Simluation();
+        //projectManager.simulator.Simluation();
     }
 }

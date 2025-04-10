@@ -58,6 +58,7 @@ public class DebugMain {
     }
 
     public static void main(String[] args) {
+        /* 
         //Create the graph and the scheduler
         LogicGraphManager manager = new LogicGraphManager();
         Simulator simulator = new Simulator();
@@ -72,5 +73,6 @@ public class DebugMain {
 
         //Run the Scheduler
         simulator.DebugSimulation();
+        */
     }
 }

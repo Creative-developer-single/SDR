@@ -1,6 +1,8 @@
 package com.example.sdr.Core.ProjectManager.LogicGraph;
 
-import com.example.sdr.Core.ProjectManager.Loader.GraphStructerLoader;
+import org.json.JSONObject;
+
+import com.example.sdr.Core.ProjectManager.LogicGraph.Loader.LogicGraphLoader;
 import com.example.sdr.Core.ProjectManager.LogicGraph.Reporter.LogicGraphReporter;
 import com.example.sdr.Core.ProjectManager.LogicGraph.Schedule.LogicGraphScheduler;
 import com.example.sdr.Core.ProjectManager.LogicGraph.Structure.LogicDirectedGraph;
@@ -13,7 +15,7 @@ public class LogicGraphManager {
     private LogicGraphScheduler scheduler;
 
     //Graph Structer Loader
-    private GraphStructerLoader loader;
+    private LogicGraphLoader loader;
 
     //Graph Reporter
     private LogicGraphReporter reporter;
@@ -21,8 +23,12 @@ public class LogicGraphManager {
     //Load the JSON Format Graph
     public void loadGraphFromJSON(String jsonPath){
         loader.setJSONPath(jsonPath);
-        loader.setLogicDirectedGraph(graph);
         loader.LoadFromJSON();
+    }
+
+    public void loadGraphFromJSON(JSONObject object){
+        loader.setJSONObject(object);
+        loader.LoadFromJSONObject();
     }
 
     //Create the Scheduler
@@ -67,7 +73,7 @@ public class LogicGraphManager {
     public LogicGraphManager(){
         graph = new LogicDirectedGraph();
         scheduler = new LogicGraphScheduler();
-        loader = new GraphStructerLoader();
+        loader = new LogicGraphLoader(this);
         reporter = new LogicGraphReporter();
     }
 }

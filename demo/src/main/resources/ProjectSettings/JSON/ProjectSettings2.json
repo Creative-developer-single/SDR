@@ -5,7 +5,7 @@
     "ProjectSettings": {
       "SimulationSettings": {
         "SimulationMode": "Interactive",
-        "SimulationTime": 5000,
+        "SimulationTime": 2.4,
         "ReportSettings": {
           "ReportedNodes": [
             {
