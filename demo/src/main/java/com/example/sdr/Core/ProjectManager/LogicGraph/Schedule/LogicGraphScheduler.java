@@ -38,7 +38,7 @@ public class LogicGraphScheduler {
         for(LogicEdge edge : edgeStack){
             //Calculate the Data From Node1
             edge.getNode1().getComponent().Calculate();
-            double[] ans = edge.getNode1().getComponent().getAns();
+            double[] ans = edge.getNode1().getComponent().getAns(0);
 
             //Set the Data to Node2
             edge.getNode2().getComponent().setOperationParams(ans,edge.getNode2DataIndex());
@@ -75,7 +75,7 @@ public class LogicGraphScheduler {
             System.out.println(node.getId());
             MatFileWriter writer = new MatFileWriter();
             try {
-                MLDouble mlDouble = new MLDouble(node.getId(), node.getComponent().getAns(), node.getComponent().getAns().length);
+                MLDouble mlDouble = new MLDouble(node.getId(), node.getComponent().getAns(0), node.getComponent().getAns(0).length);
                 ArrayList list = new ArrayList();
                 list.add(mlDouble);
                 writer.write("/home/chengzirui/workspace/Java/learning/SDR/demo/src/main/resources/dataOutput" + node.getId() + ".mat", list);

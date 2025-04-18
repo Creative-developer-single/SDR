@@ -1,4 +1,4 @@
-package com.example.sdr.Core.ProjectManager.ControlBridge.Server;
+package com.example.sdr.Core.ProjectManager.ControlBridge.RPC.Server;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -6,12 +6,15 @@ import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-public class TCPServer {
-    public final int CONTROL_PORT = 9000;
+public class RPCServer {
+    public final int MAIN_PORT = 9000;
     public final int DATA_PORT = 9001;
 
+
+    private int mainPort = MAIN_PORT;
+
     //Generate the Socket
-    private ServerSocket contSocket;
+    private ServerSocket mainSocket;
     private ServerSocket dataSocket;
 
     private void handleControlSocket(Socket socket){
@@ -30,13 +33,13 @@ public class TCPServer {
         }
     }
 
-    //Generate the ControlListener
-    private void ControlListener(){
+    //Generate the mainListener
+    private void mainListener(){
        try{
-            contSocket = new ServerSocket(CONTROL_PORT);
-            System.out.println("Control Socket Created Port at " + CONTROL_PORT); 
+            mainSocket = new ServerSocket(mainPort);
+            System.out.println("Control Socket Created Port at " + MAIN_PORT); 
             while(true){
-                Socket socket = contSocket.accept();
+                Socket socket = mainSocket.accept();
                 System.out.println("Control Socket Connection Established");
 
                 new Thread(()->handleControlSocket(socket)).start();
@@ -48,16 +51,22 @@ public class TCPServer {
     
     private void Start(){
         //Start the Server
-        new Thread(() -> ControlListener()).start();
+        new Thread(() -> mainListener()).start();
     }
 
-    public TCPServer(){
-        contSocket = null;
+    public RPCServer(){
+        mainSocket = null;
+        dataSocket = null;
+    }
+
+    public RPCServer(int mainPort){
+        this.mainPort = mainPort;
+        mainSocket = null;
         dataSocket = null;
     }
 
     public static void main(String[] args){
-        TCPServer server = new TCPServer();
+        RPCServer server = new RPCServer();
         server.Start();
     }
 }

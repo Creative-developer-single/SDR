@@ -14,8 +14,16 @@ public class SignalGenerator extends BaseComponent{
 
     private String signalType;
 
+    public SignalGenerator(int blockLength,int inputCount,int outputCount,String iD){
+        super(blockLength, inputCount, outputCount,iD);
+        this.blockLength = blockLength;
+        this.blockPhase = 0;
+
+        ans = new double[blockLength];
+    }
+
     public SignalGenerator(int blockLength,int sampleRate,String ID){
-        super(blockLength,0);
+        super(blockLength,1,1);
         this.ID = ID;
         this.blockLength = blockLength;
         this.blockPhase = 0;
@@ -25,7 +33,7 @@ public class SignalGenerator extends BaseComponent{
     }
 
     public SignalGenerator(int blockLength, String signalType,double frequency, double amplitude, double phase){
-        super(blockLength,0);
+        super(blockLength,1,1);
         this.blockLength = blockLength;
         this.signalType = signalType;
         this.frequency = frequency;
@@ -36,7 +44,7 @@ public class SignalGenerator extends BaseComponent{
     }
 
     public SignalGenerator(int blockLength, String signalType,double frequency, double amplitude, double phase,double sampleRate,String ID){
-        super(blockLength,0,ID);
+        super(blockLength,0,1,ID);
         this.blockLength = blockLength;
         this.signalType = signalType;
         this.frequency = frequency;

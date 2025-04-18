@@ -8,6 +8,14 @@ public class LogicEdge {
     private int node1DataIndex;
     private int node2DataIndex;
 
+    public void modifyEdgeFull(String id, LogicNode node1, LogicNode node2, int index1, int index2) {
+        this.id = id;
+        this.node1 = node1;
+        this.node2 = node2;
+        this.node1DataIndex = index1;
+        this.node2DataIndex = index2;
+    }
+
     public LogicEdge(LogicNode node1, LogicNode node2){
         this.node1 = node1;
         this.node2 = node2;

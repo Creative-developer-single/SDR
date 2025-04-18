@@ -4,7 +4,7 @@ import com.example.sdr.Core.Components.Tools.GeneralResourceFinder;
 import com.example.sdr.Core.ProjectManager.LogicGraph.LogicGraphManager;
 import com.example.sdr.Core.ProjectManager.LogicGraph.Loader.LogicGraphLoader;
 import com.example.sdr.Core.ProjectManager.LogicGraph.Schedule.LogicGraphScheduler;
-import com.example.sdr.Core.ProjectManager.LogicGraph.Structure.LogicDirectedGraph;
+import com.example.sdr.Core.ProjectManager.LogicGraph.Structure.LogicGraphStructureManager;
 import com.example.sdr.Core.ProjectManager.Simulation.Simulator;
 
 public class LogicGraphJsonLoaderMain {

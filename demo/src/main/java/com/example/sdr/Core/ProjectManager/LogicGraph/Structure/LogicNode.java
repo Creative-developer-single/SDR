@@ -33,6 +33,19 @@ public class LogicNode {
         return component;
     }
 
+    //Set the ID
+    public void setID(String id){
+        this.id = id;
+    }
+
+    public String getID(){
+        return id;
+    }
+
+    public void setComponent(BaseComponent component){
+        this.component = component;
+    }
+
     public void resetPrevEdges(){
         this.prevEdges.clear();
     }

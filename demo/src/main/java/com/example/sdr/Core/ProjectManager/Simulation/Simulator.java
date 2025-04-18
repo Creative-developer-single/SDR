@@ -3,7 +3,7 @@ package com.example.sdr.Core.ProjectManager.Simulation;
 import com.example.sdr.Core.ProjectManager.ProjectManager;
 import com.example.sdr.Core.ProjectManager.LogicGraph.LogicGraphManager;
 import com.example.sdr.Core.ProjectManager.LogicGraph.Schedule.LogicGraphScheduler;
-import com.example.sdr.Core.ProjectManager.LogicGraph.Structure.LogicDirectedGraph;
+import com.example.sdr.Core.ProjectManager.LogicGraph.Structure.LogicGraphStructureManager;
 import com.example.sdr.Core.ProjectManager.Properties.SimulationProperties.SimulationProperties;
 
 public class Simulator {

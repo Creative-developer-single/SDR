@@ -10,22 +10,21 @@ public class BasicALU extends BaseComponent{
     final int MODE_DIVIDE = 3;
 
     private int mode = MODE_ADD;
+    private int channelIndex;
 
-    public BasicALU(int block){
-        super(block,2);
-        blockLength = block;
+    public BasicALU(int blockLength,int inputCount,int outputCount){
+        super(blockLength, inputCount, outputCount);
+        this.blockLength = blockLength;
 
-        op_in[0] = new double[blockLength];
-        op_in[1] = new double[blockLength];
-        ans = new double[blockLength];
+        op_in = new double[inputCount][blockLength];
+        ans = new double[outputCount][blockLength];
     }
 
-    public BasicALU(int block,String ID){
-        super(block, 2,ID);
+    public BasicALU(int block,int inputCount,int outputCount,String ID){
+        super(block, inputCount,outputCount,ID);
 
-        op_in[0] = new double[blockLength];
-        op_in[1] = new double[blockLength];
-        ans = new double[blockLength];
+        op_in = new double[inputCount][blockLength];
+        ans = new double[outputCount][blockLength];
     }
 
     public void setOperationParams(double[] data,int index)
@@ -69,12 +68,12 @@ public class BasicALU extends BaseComponent{
         }
     }
 
-    public double[] getAns(){
-        return ans;
+    public double[] getAns(int index){
+        return ans[index];
     }
 
-    public double[] getValue(){
-        return ans;
+    public double[] getValue(int index){
+        return ans[index];
     }
 
     public void add()
@@ -86,7 +85,7 @@ public class BasicALU extends BaseComponent{
             {
                 tmp += op_in[j][i];
             }
-            ans[i] = tmp;
+            ans[0][i] = tmp;
         }
     }
 
@@ -94,7 +93,7 @@ public class BasicALU extends BaseComponent{
     {
         for(int i = 0; i < blockLength; i++)
         {
-            ans[i] = op_in[0][i] - op_in[1][i];
+            ans[0][i] = op_in[0][i] - op_in[1][i];
         }
     }
 
@@ -103,7 +102,7 @@ public class BasicALU extends BaseComponent{
         for(int i = 0; i < blockLength; i++)
            for(int j = 0; j < inputCount; j++)
             {
-                ans[i] *= op_in[j][i];
+                ans[0][i] *= op_in[j][i];
             }
     }
 
@@ -115,7 +114,7 @@ public class BasicALU extends BaseComponent{
             {
                 throw new ArithmeticException("Division by zero");
             }
-            ans[i] = op_in[0][i] / op_in[1][i];
+            ans[0][i] = op_in[0][i] / op_in[1][i];
         }
     }
 }

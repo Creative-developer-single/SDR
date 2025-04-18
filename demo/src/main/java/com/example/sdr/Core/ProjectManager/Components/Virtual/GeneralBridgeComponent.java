@@ -19,7 +19,7 @@ public class GeneralBridgeComponent extends BaseComponent{
     public static final String PYTHON_SERVER_ADDRESS = "172.27.234.221";
     //public static final String PYTHON_SERVER_ADDRESS = "10.29.232.171";
     public static final String PYTHON_SERVER_PORT = "19000";
-    public static final int WAIT_TIME = 10;
+    public static final int WAIT_TIME = 5;
     public static final int SOCKET_BUFFER = 64*1024;
 
     //TCP Client
@@ -284,9 +284,9 @@ public class GeneralBridgeComponent extends BaseComponent{
         return testData;
     }
 
-    public double[] getAns(){
+    public double[] getAns(int index){
         result();
-        return ans;
+        return ans[index];
     }
 
     private void result(){
@@ -294,7 +294,7 @@ public class GeneralBridgeComponent extends BaseComponent{
             String sendStr = buildCmdString("result");
             String data = sendAndReceiveFromServer(sendStr);
 
-            ans = JSONToDouble.getDoubleFromJSONString(data);
+            ans[0] = JSONToDouble.getDoubleFromJSONString(data);
             for(int i=0;i<blockLength;i++){
                 System.out.println("Result: " + ans[i]);
             }
@@ -312,8 +312,8 @@ public class GeneralBridgeComponent extends BaseComponent{
     }
 
 
-    public GeneralBridgeComponent(int blockLength, int inputCount, String ID) {
-        super(blockLength, inputCount, ID);
+    public GeneralBridgeComponent(int blockLength, int inputCount, int outputCount,String ID) {
+        super(blockLength, inputCount,outputCount, ID);
         this.pythonServerAddress = PYTHON_SERVER_ADDRESS;
         this.pythonServerPort = PYTHON_SERVER_PORT;
         this.componentName = ID;
@@ -322,7 +322,7 @@ public class GeneralBridgeComponent extends BaseComponent{
     }
 
     public GeneralBridgeComponent(int blockLength,int inputCount,String ID,JSONObject config){
-        super(blockLength, inputCount, ID);
+        super(blockLength, inputCount,1, ID);
         this.pythonServerAddress = PYTHON_SERVER_ADDRESS;
         this.pythonServerPort = PYTHON_SERVER_PORT;
         this.componentName = ID;
@@ -331,7 +331,7 @@ public class GeneralBridgeComponent extends BaseComponent{
         createTCPClient();
     }
     public static void main(String[] args) {
-        GeneralBridgeComponent bridgeComponent = new GeneralBridgeComponent(100, 1, "AGC");
+        GeneralBridgeComponent bridgeComponent = new GeneralBridgeComponent(100, 1, 1,"AGC");
         
         //Create a sample config
         JSONObject config = new JSONObject();
@@ -365,9 +365,5 @@ public class GeneralBridgeComponent extends BaseComponent{
             System.out.println("Error: " + e.getMessage());
         }
         
-        //JSONObject loadedConfig = PropertyJSONExporter.exportToJson(bridgeComponent);
-        //loadedConfig.put("CmdType", "load_config");
-
-        //System.out.println(loadedConfig.toString(2));
     }   
 }

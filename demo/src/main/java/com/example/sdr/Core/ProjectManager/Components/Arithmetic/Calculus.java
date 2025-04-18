@@ -9,30 +9,29 @@ public class Calculus extends BaseComponent{
     final int MODE_INTEGRATION = 1;
 
     private int mode;
-    private double[] ans;
 
-    public Calculus(int blockLength,int mode){
-        super(blockLength,1); //
+    public Calculus(int blockLength,int inputCount,int outputCount){
+        super(blockLength,inputCount,outputCount); //
         this.inputCount = 1;
         this.blockLength = blockLength;
-        this.mode = mode;
+        this.mode = MODE_DIFFERENTIAL;
 
-        op_in = new double[1][blockLength];
-        ans = new double[blockLength];
+        op_in = new double[inputCount][blockLength];
+        ans = new double[outputCount][blockLength];
     }
 
-    public Calculus(int blockLength,int mode,String ID){
-        super(blockLength, 1,ID);
+    public Calculus(int blockLength,int inputCount,int outputCount,String ID){
+        super(blockLength, 1,outputCount,ID);
         this.inputCount = 1;
         this.blockLength = blockLength;
-        this.mode = mode;
+        this.mode = MODE_DIFFERENTIAL;
 
-        op_in = new double[1][blockLength];
-        ans = new double[blockLength];
+        op_in = new double[inputCount][blockLength];
+        ans = new double[outputCount][blockLength];
     }
 
-    public double[] getAns(){
-        return ans;
+    public double[] getAns(int index){
+        return ans[index];
     }
 
     public void setOperationMode(int mode){
@@ -50,13 +49,13 @@ public class Calculus extends BaseComponent{
     public void Calculate(){
         if(mode == MODE_DIFFERENTIAL){
             for(int i = 1; i < blockLength; i++){
-                ans[i] = op_in[0][i] - op_in[0][i-1];
+                ans[currentOutputIndex][i] = op_in[0][i] - op_in[0][i-1];
             }
-            ans[0] = 0;
+            ans[currentOutputIndex][0] = 0;
         }else if(mode == MODE_INTEGRATION){
-            ans[0] = 0;
+            ans[currentOutputIndex][0] = 0;
             for(int i = 1; i < blockLength; i++){
-                ans[i] = ans[i - 1] + op_in[0][i];
+                ans[currentOutputIndex][i] = ans[currentOutputIndex][i - 1] + op_in[0][i];
             }
         }
     }

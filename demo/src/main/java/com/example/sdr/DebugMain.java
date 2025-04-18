@@ -5,13 +5,13 @@ import com.example.sdr.Core.ProjectManager.Components.Others.DataBuffer.SinglePo
 import com.example.sdr.Core.ProjectManager.Components.Source.SignalGenerator;
 import com.example.sdr.Core.ProjectManager.LogicGraph.LogicGraphManager;
 import com.example.sdr.Core.ProjectManager.LogicGraph.Schedule.LogicGraphScheduler;
-import com.example.sdr.Core.ProjectManager.LogicGraph.Structure.LogicDirectedGraph;
+import com.example.sdr.Core.ProjectManager.LogicGraph.Structure.LogicGraphStructureManager;
 import com.example.sdr.Core.ProjectManager.LogicGraph.Structure.LogicNode;
 import com.example.sdr.Core.ProjectManager.Simulation.Simulator;
 
 public class DebugMain {
     
-    public static void generateDebugNodes(LogicDirectedGraph graph){
+    public static void generateDebugNodes(LogicGraphStructureManager graph){
         //Global Definitions
         int blockLength = 4096;
         int bufferLength = 10000;
@@ -34,7 +34,7 @@ public class DebugMain {
         signalGenerator2.setPhase(0);
 
         //Adder
-        BasicALU adder = new BasicALU(blockLength);
+        BasicALU adder = new BasicALU(blockLength,1,1);
 
         //Buffer
         SinglePortBuffer buffer = new SinglePortBuffer(blockLength,bufferLength);
@@ -52,9 +52,10 @@ public class DebugMain {
         graph.addNode(bufferNode);
 
         //Add Edges
-        graph.addEdgeWithIndex(signalGeneratorNode,0,adderNode,0);
-        graph.addEdgeWithIndex(signalGeneratorNode2,0,adderNode,1);
-        graph.addEdgeWithIndex(adderNode,0,bufferNode,0);
+        //graph.addEdge("0", bufferNode, signalGeneratorNode2);
+        //graph.addEdgeWithIndex(signalGeneratorNode,0,adderNode,0);
+        //graph.addEdgeWithIndex(signalGeneratorNode2,0,adderNode,1);
+        //graph.addEdgeWithIndex(adderNode,0,bufferNode,0);
     }
 
     public static void main(String[] args) {

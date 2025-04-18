@@ -5,11 +5,11 @@ import org.json.JSONObject;
 import com.example.sdr.Core.ProjectManager.LogicGraph.Loader.LogicGraphLoader;
 import com.example.sdr.Core.ProjectManager.LogicGraph.Reporter.LogicGraphReporter;
 import com.example.sdr.Core.ProjectManager.LogicGraph.Schedule.LogicGraphScheduler;
-import com.example.sdr.Core.ProjectManager.LogicGraph.Structure.LogicDirectedGraph;
+import com.example.sdr.Core.ProjectManager.LogicGraph.Structure.LogicGraphStructureManager;
 
 public class LogicGraphManager {
     //Graph Structure
-    private LogicDirectedGraph graph;
+    private LogicGraphStructureManager graph;
 
     //Graph Scheduler
     private LogicGraphScheduler scheduler;
@@ -28,7 +28,7 @@ public class LogicGraphManager {
 
     public void loadGraphFromJSON(JSONObject object){
         loader.setJSONObject(object);
-        loader.LoadFromJSONObject();
+        loader.createFromJSONObject();
     }
 
     //Create the Scheduler
@@ -49,7 +49,7 @@ public class LogicGraphManager {
     }
 
 
-    public LogicDirectedGraph getGraphInstance(){
+    public LogicGraphStructureManager getGraphInstance(){
         return graph;
     }
 
@@ -71,7 +71,7 @@ public class LogicGraphManager {
     }
 
     public LogicGraphManager(){
-        graph = new LogicDirectedGraph();
+        graph = new LogicGraphStructureManager();
         scheduler = new LogicGraphScheduler();
         loader = new LogicGraphLoader(this);
         reporter = new LogicGraphReporter();

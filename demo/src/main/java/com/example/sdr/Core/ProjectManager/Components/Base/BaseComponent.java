@@ -3,40 +3,58 @@ package com.example.sdr.Core.ProjectManager.Components.Base;
 import java.lang.reflect.Field;
 
 import com.example.sdr.Core.Components.Tools.PropertyModifier.AutoPropertyModifier;
+import com.example.sdr.Core.ProjectManager.Components.ComponentManager;
 
 public class BaseComponent {
     protected int inputCount;
+    protected int outputCount;
     protected int blockLength;
     protected int sampleRate;
     
     protected String ID;
 
-    protected double[][] op_in;
-    protected double[] ans;
+    //ChannelIndex
+    protected int currentInputIndex;
+    protected int currentOutputIndex;
 
-    public BaseComponent(int blockLength,int inputCount){
+    protected double[][] op_in;
+    protected double[][] ans;
+
+    public static String getRootClassName(){
+        return ComponentManager.class.getPackageName();
+    }
+
+    public BaseComponent(int blockLength,int inputCount,int outputCount){
         this.blockLength = blockLength;
         this.inputCount = inputCount;
-        ans = new double[blockLength];
+        this.outputCount = outputCount;
+
+        currentInputIndex = 0;
+        currentOutputIndex = 0;
+        ans = new double[outputCount][blockLength];
         op_in = new double[inputCount][blockLength];
     }
 
-    public BaseComponent(int blockLength,int inputCount,String ID){
+    public BaseComponent(int blockLength,int inputCount,int outputCount,String ID){
         this.blockLength = blockLength;
         this.inputCount = inputCount;
+        this.outputCount = outputCount;
         this.ID = ID;
-        ans = new double[blockLength];
+
+        currentInputIndex = 0;
+        currentOutputIndex = 0;
+        ans = new double[outputCount][blockLength];
         op_in = new double[inputCount][blockLength];
     }
 
     public void resetBlockLength(int blockLength){
         this.blockLength = blockLength;
-        ans = new double[blockLength];
+        ans = new double[outputCount][blockLength];
         op_in = new double[inputCount][blockLength];
     }
 
-    public double[] getAns(){
-        return ans;
+    public double[] getAns(int index){
+        return ans[index];
     }
 
     public Boolean ModifyPropertiesByName(String name, Object value){
@@ -70,6 +88,11 @@ public class BaseComponent {
     public void setOperationParams(double[] data,int index)
     {
         // Override this method in child classes
+        if(data.length != blockLength)
+        {
+            throw new IllegalArgumentException("Invalid block length");
+        }
+        this.op_in[index] = data;
     }
 
     public void Calculate(){
