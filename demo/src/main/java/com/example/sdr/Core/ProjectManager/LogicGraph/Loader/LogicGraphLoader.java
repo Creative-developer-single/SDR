@@ -105,7 +105,7 @@ public class LogicGraphLoader {
 
                 LogicNode newNode = new LogicNode((BaseComponent)object, node.getString("ID"));
 
-                graph.addNode(newNode);
+                graph.getNodeManager().getNodes().add(newNode);
             }
         }catch(Exception e){
             e.printStackTrace();
@@ -151,7 +151,7 @@ public class LogicGraphLoader {
                 }
                 
                 //Add the Node to the Graph
-                graph.addNode(logicNode);
+                graph.getNodeManager().getNodes().add(logicNode);
             }
 
             //Decode the Edges
@@ -179,7 +179,7 @@ public class LogicGraphLoader {
                 LogicNode endNode = graph.getNodeManager().getFinder().findNodeById(destinationID);
 
                 //Add the Edge
-                graph.addEdge(edgeID, startNode, startEdgeIndex,endNode,endEdgeIndex);
+                graph.getEdgeManager().getModifier().addLogicEdge(edgeID, startNode, startEdgeIndex,endNode,endEdgeIndex);
             }
         }catch(Exception e){
             e.printStackTrace();
@@ -225,7 +225,7 @@ public class LogicGraphLoader {
                 AutoPropertyModifier.setPropertiesFromJson(component, componentSettings);
 
                 //Add the Node to the Graph
-                graph.addNode(logicNode);
+                graph.getNodeManager().getNodes().add(logicNode);
             }
 
             //Decode the Edges
@@ -252,7 +252,7 @@ public class LogicGraphLoader {
                 LogicNode endNode = graph.getNodeManager().getFinder().findNodeById(destinationID);
 
                 //Add the Edge
-                graph.addEdge(edgeID, startNode, startEdgeIndex,endNode,endEdgeIndex);
+                graph.getEdgeManager().getModifier().addLogicEdge(edgeID, startNode, startEdgeIndex,endNode,endEdgeIndex);
             }
 
         }catch(Exception e){

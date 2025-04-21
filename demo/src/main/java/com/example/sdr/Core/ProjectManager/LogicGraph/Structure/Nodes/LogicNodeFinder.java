@@ -1,6 +1,5 @@
 package com.example.sdr.Core.ProjectManager.LogicGraph.Structure.Nodes;
 
-import com.example.sdr.Core.ProjectManager.LogicGraph.Structure.LogicEdge;
 import com.example.sdr.Core.ProjectManager.LogicGraph.Structure.LogicNode;
 
 public class LogicNodeFinder {

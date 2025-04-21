@@ -31,7 +31,7 @@ public class LogicEdgeModifier {
     }
 
     // Modify an edge by its ID
-    public void modifyLogicEdgeByID(JSONObject object){
+    public void modifyLogicEdge(JSONObject object){
         String index = object.getString("EdgeID");
         LogicEdge edge = edgeManager.getFinder().findEdgeByID(index);
         if (edge != null) {
@@ -41,18 +41,24 @@ public class LogicEdgeModifier {
         }
     }
 
-    public void addLogicEdge(String ID,LogicNode node1,LogicNode node2){
-        if(edgeManager.getFinder().findEdge(node1, node2) != null){
-            System.out.println("Edge already exists");
-            return;
+    public void addLogicEdge(JSONObject object){
+        String id = object.getString("EdgeID");
+        String startNodeID = object.getString("StartNodeID");
+        String endNodeID = object.getString("EndNodeID");
+        int startEdgeIndex = object.getInt("StartEdgeIndex");
+        int endEdgeIndex = object.getInt("EndEdgeIndex");
+
+        LogicNode startNode = edgeManager.getManager().getNodeManager().getFinder().findNodeById(startNodeID);
+        LogicNode endNode = edgeManager.getManager().getNodeManager().getFinder().findNodeById(endNodeID);
+
+        if (startNode != null && endNode != null) {
+            addLogicEdge(id, startNode, startEdgeIndex, endNode, endEdgeIndex);
+        } else {
+            System.out.println("Start or End node not found");
         }
-        LogicEdge edge = new LogicEdge(node1, node2, ID);
-        edgeManager.getEdges().add(edge);
-        node1.addNextEdge(edge);
-        node2.addPrevEdge(edge);
     }
 
-    public void addLogicEdgeByIndex(String ID,LogicNode node1,int startEdgeIndex,LogicNode node2,int endEdgeIndex){
+    public void addLogicEdge(String ID,LogicNode node1,int startEdgeIndex,LogicNode node2,int endEdgeIndex){
         if(edgeManager.getFinder().findEdge(node1, node2) != null){
             System.out.println("Edge already exists");
             return;
@@ -61,6 +67,21 @@ public class LogicEdgeModifier {
         edgeManager.getEdges().add(edge);
         node1.addNextEdge(edge);
         node2.addPrevEdge(edge);
+    }
+
+    public void deleteLogicEdge(JSONObject object){
+        try{
+            String edgeID = object.getString("EdgeID");
+            LogicEdge edge = edgeManager.getFinder().findEdgeByID(edgeID);
+            if (edge != null) {
+                edgeManager.getEdges().remove(edge);
+                System.out.println("Edge deleted");
+            } else {
+                System.out.println("Edge not found");
+            }
+        }catch(Exception e){
+            System.out.println("Error in deleting edge: " + e.getMessage());
+        }
     }
 
     public LogicEdgeModifier(LogicEdgeManager edgeManager) {

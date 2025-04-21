@@ -32,21 +32,8 @@ public class LogicGraphStructureManager {
         return nodeManager;
     }
 
-    //Add a Node, But doesn't have edges
-    public void addNode(LogicNode node)
-    {
-        nodeManager.getModifier().addDefinedLogicNode(node);
-    }
-
-    public void addEdge(String ID,LogicNode node1,LogicNode node2)
-    {
-        edgeManager.getModifier().addLogicEdge(ID, node1, node2);
-    }
-
-    //With Index
-    public void addEdge(String ID,LogicNode node1,int startEdgeIndex,LogicNode node2,int endEdgeIndex)
-    {
-        edgeManager.getModifier().addLogicEdgeByIndex(ID, node1, startEdgeIndex, node2, endEdgeIndex);
+    public LogicEdgeManager getEdgeManager(){
+        return edgeManager;
     }
 
     public LogicNode getRootNode(){

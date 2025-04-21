@@ -6,10 +6,12 @@ import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 
+import com.example.sdr.Core.ProjectManager.ControlBridge.RPC.RPCManager;
+import com.example.sdr.Core.ProjectManager.ControlBridge.RPC.Processer.RPCProcesser;
+
 public class RPCServer {
     public final int MAIN_PORT = 9000;
     public final int DATA_PORT = 9001;
-
 
     private int mainPort = MAIN_PORT;
 
@@ -17,21 +19,45 @@ public class RPCServer {
     private ServerSocket mainSocket;
     private ServerSocket dataSocket;
 
-    private void handleControlSocket(Socket socket){
-        try{
-            BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-            PrintWriter writer = new PrintWriter(socket.getOutputStream(),true);
+    //RPCManager Instance
+    private RPCManager manager;
 
-            String inputLine = reader.readLine();
-            while(inputLine != null){
-                inputLine = reader.readLine();
-                System.out.println("Received Message: " + inputLine);
-                writer.println("ACK from the Server: "+inputLine);
+    //RPC Processer Instance
+    private RPCProcesser processer;
+
+    private void handleControlSocket(Socket socket) {
+        try {
+            InputStreamReader isr = new InputStreamReader(socket.getInputStream(), "UTF-8");
+            PrintWriter writer = new PrintWriter(socket.getOutputStream(), true);
+            StringBuilder sb = new StringBuilder();
+            int prev = -1, curr;
+    
+            while ((curr = isr.read()) != -1) {
+                sb.append((char) curr);
+    
+                if (prev == 'E' && curr == 'D') {
+                    // 去掉末尾的 \r\n
+                    String inputLine = sb.toString().substring(0, sb.length() - 2);
+                    System.out.println("Received Message: " + inputLine);
+    
+                    // 调用 processer
+                    processer.HandleRPCCall(inputLine);
+                    writer.println("ACK from the Server: " + inputLine);
+    
+                    // 清空 StringBuilder 准备下一行
+                    sb.setLength(0);
+                    prev = -1;
+                    continue;
+                }
+    
+                prev = curr;
             }
-        }catch(Exception e){
+        } catch (Exception e) {
             System.out.println("Control Socket Connection Failed");
+            e.printStackTrace();
         }
     }
+    
 
     //Generate the mainListener
     private void mainListener(){
@@ -49,7 +75,7 @@ public class RPCServer {
         }
     }
     
-    private void Start(){
+    public void Start(){
         //Start the Server
         new Thread(() -> mainListener()).start();
     }
@@ -59,10 +85,12 @@ public class RPCServer {
         dataSocket = null;
     }
 
-    public RPCServer(int mainPort){
+    public RPCServer(int mainPort,RPCManager manager){
         this.mainPort = mainPort;
         mainSocket = null;
         dataSocket = null;
+        this.manager = manager;
+        this.processer = manager.getProcesser();
     }
 
     public static void main(String[] args){

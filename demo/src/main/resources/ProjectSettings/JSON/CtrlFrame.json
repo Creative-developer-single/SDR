@@ -1,0 +1,42 @@
+{
+    "RPCFrameArray":[{
+      "RPCFrame": {
+        "TargetModule": "LogicGraph",
+        "Command": "RPCModifyLogicNode",
+        "args": {
+            "Nodes": [
+              {
+                "ID": "SinSignal1",
+                "Pos": {
+                  "X": 10,
+                  "Y": 20
+                },
+                "BlockLength": 4096,
+                "InputCount":1,
+                "OutputCount":1,
+                "ComponentType": "Source.SignalGenerator",
+                "ComponentID": "Sin1",
+                "ComponentSettings": {
+                  "sampleRate": 1000000,
+                  "signalType": "Sine",
+                  "frequency": 1000,
+                  "amplitude": 1,
+                  "blockPhase": 0
+                }
+              }
+            ],
+            "Edges": [
+              {
+                "EdgeID": "1",
+                "StartNodeID": "SinSignal1",
+                "EndNodeID": "Adder",
+                "StartEdgeIndex": 0,
+                "EndEdgeIndex": 0
+              }
+            ]
+        },
+        "return": "null"
+      }
+    }]
+}
+ED

@@ -46,10 +46,10 @@ public class DebugMain {
         LogicNode bufferNode = new LogicNode(buffer,"Buffer");
 
         //Add Nodes to the Graph
-        graph.addNode(signalGeneratorNode);
-        graph.addNode(signalGeneratorNode2);
-        graph.addNode(adderNode);
-        graph.addNode(bufferNode);
+        //graph.addNode(signalGeneratorNode);
+        //graph.addNode(signalGeneratorNode2);
+        //graph.addNode(adderNode);
+        //graph.addNode(bufferNode);
 
         //Add Edges
         //graph.addEdge("0", bufferNode, signalGeneratorNode2);
