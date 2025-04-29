@@ -59,16 +59,22 @@ public class ProjectManager {
         projectManager.StartRPC();
     }
 
-    public static void main(String[] args){
-        /*
+    public static void TestForFlow(){
         ProjectManager projectManager = new ProjectManager();
-        projectManager.loadFromJSON("/ProjectSettings/JSON/ProjectSettings3.json");
+        //projectManager.loadFromJSON("/ProjectSettings/JSON/AMProjects.json");
+        //projectManager.loadFromJSON("/ProjectSettings/JSON/FMProjects.json");
+        projectManager.loadFromJSON("/ProjectSettings/JSON/DSBProjects.json");
+        //projectManager.loadFromJSON("/ProjectSettings/JSON/ProjectSettings3.json");
 
         projectManager.getLogicGraphManager().getGraphInstance().PrintNodes();
         projectManager.getLogicGraphManager().getGraphInstance().PrintEdges();
 
-        //projectManager.simulator.Simluation();
-        */
-        TestForRPC();
+        projectManager.simulator.Simluation();
+    }
+
+    public static void main(String[] args){
+
+        TestForFlow();
+        //TestForRPC();
     }
 }

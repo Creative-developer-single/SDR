@@ -72,7 +72,7 @@ public class LogicGraphManager {
 
     public LogicGraphManager(){
         graph = new LogicGraphStructureManager();
-        scheduler = new LogicGraphScheduler();
+        scheduler = new LogicGraphScheduler(this);
         loader = new LogicGraphLoader(this);
         reporter = new LogicGraphReporter();
     }

@@ -68,6 +68,7 @@ public class Simulator {
         logicGraphManager.updateReporter();
         logicGraphManager.getReportInstance().printReportedNodes();
         logicGraphManager.getReportInstance().printReportedEdges();
+        logicGraphManager.getSchedulerInstance().printAllBufferNodes();
     }
 
     public void DebugSimulation(){

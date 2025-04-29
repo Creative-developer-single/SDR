@@ -100,10 +100,14 @@ public class BasicALU extends BaseComponent{
     public void multiply()
     {
         for(int i = 0; i < blockLength; i++)
-           for(int j = 0; j < inputCount; j++)
+        {
+            double tmp = 1;
+            for(int j = 0; j < inputCount; j++)
             {
-                ans[0][i] *= op_in[j][i];
+                tmp *= op_in[j][i];
             }
+            ans[0][i] = tmp;
+        }
     }
 
     public void divide()

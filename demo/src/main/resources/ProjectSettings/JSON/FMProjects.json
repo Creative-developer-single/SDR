@@ -47,36 +47,30 @@
           "ComponentSettings": {
             "sampleRate": 1000000,
             "signalType": "Sine",
-            "frequency": 1000,
+            "frequency": 500,
             "amplitude": 1,
             "blockPhase": 0
           }
         },
         {
-          "ID": "PythonAGC",
+          "ID": "VCO",
           "Pos": {
-            "X": 10,
-            "Y": 30
+            "X": 90,
+            "Y": 20
           },
           "BlockLength": 4096,
-          "InputCount":1,
+          "InputCount":2,
           "OutputCount":1,
-          "ComponentType": "Virtual.GeneralBridgeComponent",
-          "ComponentID": "AGC",
+          "ComponentType": "RF.VCOComponent",
+          "ComponentID": "VCO1",
           "ComponentSettings": {
-            "output_channels_num": 1,
-            "level": 1,
-            "ModuleName": "AGC",
-            "max_gain": 20,
-            "input_channels_num": 1,
-            "current_input_channel_index": 0,
-            "block_size": 4096,
-            "current_output_channel_index": 0,
-            "win_length": 100
+            "centerFrequency": 2000,
+            "sampleRate" : 1000000,
+            "sensitivity": 700
           }
         },
         {
-          "ID": "Adder",
+          "ID": "Multiplier",
           "Pos": {
             "X": 90,
             "Y": 20
@@ -87,27 +81,8 @@
           "ComponentType": "Arithmetic.BasicALU",
           "ComponentID": "Adder1",
           "ComponentSettings": {
-            "OperationMode": "Add"
-          }
-        },
-        {
-          "ID": "SinSignal2",
-          "Pos": {
-            "X": 10,
-            "Y": 90
-          },
-          "BlockLength": 4096,
-          "InputCount":1,
-          "OutputCount":1,
-          "ComponentType": "Source.SignalGenerator",
-          "ComponentID": "Sin2",
-          "ComponentSettings": {
-            "BlockLength": 4096,
-            "sampleRate": 1000000,
-            "signalType": "Sine",
-            "frequency": 1500,
-            "amplitude": 1,
-            "blockPhase": 0
+            "OperationMode": "Add",
+            "mode":2
           }
         },
         {
@@ -160,42 +135,21 @@
         {
           "EdgeID": 1,
           "StartNodeID": "SinSignal1",
-          "EndNodeID": "Adder",
-          "StartEdgeIndex": 0,
-          "EndEdgeIndex": 0
-        },
-        {
-          "EdgeID": 2,
-          "StartNodeID": "SinSignal2",
-          "EndNodeID": "Adder",
-          "StartEdgeIndex": 0,
-          "EndEdgeIndex": 1
-        },
-        {
-          "EdgeID": 8,
-          "StartNodeID": "PythonAGC",
-          "EndNodeID": "Buffer1",
-          "StartEdgeIndex": 0,
-          "EndEdgeIndex": 0
-        },
-        {
-          "EdgeID": 3,
-          "StartNodeID": "Adder",
-          "EndNodeID": "Buffer1",
-          "StartEdgeIndex": 0,
-          "EndEdgeIndex": 0
-        },
-        {
-          "EdgeID": 5,
-          "StartNodeID": "SinSignal1",
-          "EndNodeID": "Buffer2",
+          "EndNodeID": "VCO",
           "StartEdgeIndex": 0,
           "EndEdgeIndex": 0
         },
         {
           "EdgeID": 6,
-          "StartNodeID": "SinSignal2",
-          "EndNodeID": "Buffer3",
+          "StartNodeID": "SinSignal1",
+          "EndNodeID": "Buffer1",
+          "StartEdgeIndex": 0,
+          "EndEdgeIndex": 0
+        },
+        {
+          "EdgeID": 6,
+          "StartNodeID": "VCO",
+          "EndNodeID": "Buffer2",
           "StartEdgeIndex": 0,
           "EndEdgeIndex": 0
         }

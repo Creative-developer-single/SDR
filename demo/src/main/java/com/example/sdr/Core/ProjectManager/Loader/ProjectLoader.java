@@ -3,12 +3,9 @@ package com.example.sdr.Core.ProjectManager.Loader;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import com.example.sdr.Core.ProjectManager.ProjectManager;
-import com.example.sdr.Core.ProjectManager.LogicGraph.Loader.LogicGraphLoader;
-import com.example.sdr.Core.ProjectManager.Properties.ProjectPropertiesManager;
 
 public class ProjectLoader {
     String ProjectPropertiesJSONPath;

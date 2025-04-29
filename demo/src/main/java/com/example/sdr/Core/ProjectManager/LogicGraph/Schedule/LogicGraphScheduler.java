@@ -6,12 +6,15 @@ import java.util.List;
 import java.util.Queue;
 import java.util.Stack;
 
+import com.example.sdr.Core.ProjectManager.LogicGraph.LogicGraphManager;
 import com.example.sdr.Core.ProjectManager.LogicGraph.Structure.LogicEdge;
 import com.example.sdr.Core.ProjectManager.LogicGraph.Structure.LogicNode;
 import com.jmatio.io.MatFileWriter;
 import com.jmatio.types.*;
 
 public class LogicGraphScheduler {
+    private LogicGraphManager manager;
+
     //Node Queue
     private Queue<LogicNode> nodeQueue;
 
@@ -22,6 +25,13 @@ public class LogicGraphScheduler {
     private Stack<LogicNode> terminalNodes;
 
     public LogicGraphScheduler(){
+        nodeQueue = new LinkedList<LogicNode>();
+        edgeStack = new Stack<LogicEdge>();
+        terminalNodes = new Stack<LogicNode>();
+    }
+
+    public LogicGraphScheduler(LogicGraphManager manager){
+        this.manager = manager;
         nodeQueue = new LinkedList<LogicNode>();
         edgeStack = new Stack<LogicEdge>();
         terminalNodes = new Stack<LogicNode>();
@@ -42,6 +52,11 @@ public class LogicGraphScheduler {
 
             //Set the Data to Node2
             edge.getNode2().getComponent().setOperationParams(ans,edge.getNode2DataIndex());
+
+            //Print the ans
+            for(int i = 0; i < ans.length; i++){
+                //System.out.println("Node1: " + edge.getNode1().getId() + " -> Node2: " + edge.getNode2().getId() + " : " + ans[i]);
+            }
 
             //Check if Node2 is the last Node
             if(edge.getNode2().getNextEdgesCount() == 0){
@@ -83,6 +98,32 @@ public class LogicGraphScheduler {
                 e.printStackTrace();
             }
         }
+    }
+
+    public void printAllBufferNodes(){
+        List<LogicNode> nodes = manager.getGraphInstance().getNodes();
+        MatFileWriter writer = new MatFileWriter();
+        ArrayList list = new ArrayList();
+        System.out.println("Info: Print All Buffer Nodes");
+        for(LogicNode node: nodes){
+            System.out.println(node.getClass().getName());
+            if(node.getComponent().getClass().getName() =="com.example.sdr.Core.ProjectManager.Components.Others.DataBuffer.SinglePortBuffer"){ 
+                try{
+                    MLDouble mlDouble = new MLDouble(node.getId(), node.getComponent().getAns(0), node.getComponent().getAns(0).length);
+                    System.out.println("Write the Data");
+                    list.add(mlDouble);
+                }
+                catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+        }
+        try{
+            writer.write("/home/chengzirui/workspace/Java/learning/SDR/demo/src/main/resources/dataOutput.mat", list);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+       
     }
 
     public void generateScheduleOrder() {

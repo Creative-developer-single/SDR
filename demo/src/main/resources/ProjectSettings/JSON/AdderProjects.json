@@ -172,13 +172,6 @@
           "EndEdgeIndex": 1
         },
         {
-          "EdgeID": 8,
-          "StartNodeID": "PythonAGC",
-          "EndNodeID": "Buffer1",
-          "StartEdgeIndex": 0,
-          "EndEdgeIndex": 0
-        },
-        {
           "EdgeID": 3,
           "StartNodeID": "Adder",
           "EndNodeID": "Buffer1",

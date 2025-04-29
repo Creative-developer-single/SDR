@@ -6,6 +6,13 @@
     "configurations": [
         {
             "type": "java",
+            "name": "SinglePortBuffer",
+            "request": "launch",
+            "mainClass": "com.example.sdr/com.example.sdr.Core.ProjectManager.Components.Others.DataBuffer.SinglePortBuffer",
+            "projectName": "demo"
+        },
+        {
+            "type": "java",
             "name": "LogicNodeManager",
             "request": "launch",
             "mainClass": "com.example.sdr/com.example.sdr.Core.ProjectManager.LogicGraph.Structure.Nodes.LogicNodeManager",

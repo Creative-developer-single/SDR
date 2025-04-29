@@ -24,11 +24,12 @@ public class ComponentCreator {
             int InputCount = object.getInt("InputCount");
             int OutputCount = object.getInt("OutputCount");
             String ComponentID = object.getString("ComponentID");
+            JSONObject componnentSetting = object.getJSONObject("ComponentSettings");
             
             Object component = constructor.newInstance(BlockLength,InputCount,OutputCount,ComponentID);
 
             //Modify the Properties
-            AutoPropertyModifier.setPropertiesFromJson(component, object);
+            AutoPropertyModifier.setPropertiesFromJson(component, componnentSetting);
             return component;
             
         }catch(Exception e){

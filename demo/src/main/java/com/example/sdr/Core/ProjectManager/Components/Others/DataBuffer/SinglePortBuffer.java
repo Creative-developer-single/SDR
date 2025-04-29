@@ -42,7 +42,12 @@ public class SinglePortBuffer extends BaseComponent{
         for(int i=0;i<=data.length-1;i++){
             ans[0][point] = data[i];
             point++;
-            point = point % ans.length;
+            point = point % ans[0].length;
         }
+    }
+
+    public static void main(String[] args){
+        SinglePortBuffer buffer = new SinglePortBuffer(0, 0);
+        System.out.println(buffer.getClass().getName());
     }
 }

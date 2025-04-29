@@ -93,6 +93,7 @@ public class LogicGraphLoader {
             LogicGraphStructureManager graph = manager.getGraphInstance();
 
             JSONArray nodes = graphObject.getJSONArray("Nodes");
+            JSONArray edges = graphObject.getJSONArray("Edges");
 
             ComponentCreator creator = new ComponentCreator();
 
@@ -106,6 +107,29 @@ public class LogicGraphLoader {
                 LogicNode newNode = new LogicNode((BaseComponent)object, node.getString("ID"));
 
                 graph.getNodeManager().getNodes().add(newNode);
+            }
+
+            //for Each Edge
+            for(int i=0;i<edges.length();i++)
+            {
+                JSONObject edge = edges.getJSONObject(i);
+
+                //Get the Start and End Node ID
+                Integer ID = edge.getInt("EdgeID");
+                String edgeID = String.valueOf(ID);
+                
+                String sourceID = edge.getString("StartNodeID");
+                String destinationID = edge.getString("EndNodeID");
+
+                //Get the Start and End Edge Index
+                int startEdgeIndex = edge.getInt("StartEdgeIndex");
+                int endEdgeIndex = edge.getInt("EndEdgeIndex");
+
+                LogicNode startNode = graph.getNodeManager().getFinder().findNodeById(sourceID);
+                LogicNode endNode = graph.getNodeManager().getFinder().findNodeById(destinationID);
+
+                //Add the Edge
+                graph.getEdgeManager().getModifier().addLogicEdge(edgeID, startNode, startEdgeIndex,endNode,endEdgeIndex);
             }
         }catch(Exception e){
             e.printStackTrace();

@@ -124,6 +124,36 @@
           "ComponentSettings": {
             "bufferLength": 4096
           }
+        },
+        {
+          "ID": "Buffer2",
+          "Pos": {
+            "X": 150,
+            "Y": 20
+          },
+          "BlockLength": 4096,
+          "InputCount":1,
+          "OutputCount":1,
+          "ComponentType": "Others.DataBuffer.SinglePortBuffer",
+          "ComponentID": "Buffer1",
+          "ComponentSettings": {
+            "bufferLength": 4096
+          }
+        },
+        {
+          "ID": "Buffer3",
+          "Pos": {
+            "X": 150,
+            "Y": 20
+          },
+          "BlockLength": 4096,
+          "InputCount":1,
+          "OutputCount":1,
+          "ComponentType": "Others.DataBuffer.SinglePortBuffer",
+          "ComponentID": "Buffer1",
+          "ComponentSettings": {
+            "bufferLength": 4096
+          }
         }
       ],
       "Edges": [
@@ -142,16 +172,30 @@
           "EndEdgeIndex": 1
         },
         {
-          "EdgeID": 3,
+          "EdgeID": 8,
           "StartNodeID": "PythonAGC",
           "EndNodeID": "Buffer1",
           "StartEdgeIndex": 0,
           "EndEdgeIndex": 0
         },
         {
-          "EdgeID": 4,
+          "EdgeID": 3,
           "StartNodeID": "Adder",
-          "EndNodeID": "PythonAGC",
+          "EndNodeID": "Buffer1",
+          "StartEdgeIndex": 0,
+          "EndEdgeIndex": 0
+        },
+        {
+          "EdgeID": 5,
+          "StartNodeID": "SinSignal1",
+          "EndNodeID": "Buffer2",
+          "StartEdgeIndex": 0,
+          "EndEdgeIndex": 0
+        },
+        {
+          "EdgeID": 6,
+          "StartNodeID": "SinSignal2",
+          "EndNodeID": "Buffer3",
           "StartEdgeIndex": 0,
           "EndEdgeIndex": 0
         }
