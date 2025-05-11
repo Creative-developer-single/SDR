@@ -46,6 +46,12 @@ public class LogicNode {
         this.component = component;
     }
 
+    public void reset(){
+        resetNextEdges();
+        resetPrevEdges();
+        resetDegrees();
+    }
+
     public void resetPrevEdges(){
         this.prevEdges.clear();
     }

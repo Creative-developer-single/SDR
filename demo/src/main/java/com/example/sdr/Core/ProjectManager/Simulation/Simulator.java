@@ -5,59 +5,86 @@ import com.example.sdr.Core.ProjectManager.LogicGraph.LogicGraphManager;
 import com.example.sdr.Core.ProjectManager.LogicGraph.Schedule.LogicGraphScheduler;
 import com.example.sdr.Core.ProjectManager.LogicGraph.Structure.LogicGraphStructureManager;
 import com.example.sdr.Core.ProjectManager.Properties.SimulationProperties.SimulationProperties;
+import com.example.sdr.Core.ProjectManager.Simulation.Processer.SimulationProcesser;
 
 public class Simulator {
     public final int MAX_SIMULATION_CYCLES = 1000;
     public final int SIMLUATION_MODE_LIMITED_CYCLES = 0;
     public final int SIMLUATION_MODE_INTERACTIVE = 1;
 
+    //Instance
     private ProjectManager manager;
 
-    //Simluation Mode
-    private String simulationMode;
-    private int simulationCycles;
+    //Properties
+    private SimulationProperties simulationProperties;
 
-    //Simulation Time
-    private double simulationTime;
-    private double simulationSampleRate;
-    private double simulationBlockLength;
+    //Processer
+    private SimulationProcesser processer;
+
+    //LifeCycle
+    // Available status: Stopped, Starting,Running, Paused, Stopping
+    private String simulationStatus = "Stopped";
 
     public Simulator(){
         manager = null;
-        simulationMode = "LimitedCycles";
-        simulationCycles = 1;
     }
 
     public Simulator(ProjectManager manager){
         this.manager = manager;
-        simulationMode = "LimitedCycles";
-        simulationCycles = 1;
+        this.simulationProperties = manager.getProjectPropertiesManager().simulationProperties;
+        this.processer = new SimulationProcesser(this, simulationProperties);
     }
 
-    public void UpdateState(){
-        SimulationProperties simulationProperties = manager.getProjectPropertiesManager().simulationProperties;
-        simulationMode = simulationProperties.simulationMode;
-        simulationTime = simulationProperties.simulationTime;
+    public ProjectManager getProjectManager(){
+        return manager;
     }
 
-    public void setSimluatorMode(String mode){
-        simulationMode = mode;
+    public String getSimulationStatus(){
+        return simulationStatus;
     }
 
     /*
-     * @brief Set the number of simulation cycles
-     * @param cycles Number of simulation cycles
+     * @brief Reset the simulation
+     * @param None
      */
-    public void setSimulationCycles(int cycles){
-        simulationCycles = cycles;
+    public void resetSimulation(){
+        // Reset the variables
+        simulationProperties.currentCycle = 0;
+
+        LogicGraphManager logicGraphManager = manager.getLogicGraphManager();
+        logicGraphManager.clearScheduler();
     }
+
+    /*
+     * @brief Start the simulation
+     * @param None
+     */
+    public void startSimulation(){
+        LogicGraphManager logicGraphManager = manager.getLogicGraphManager();
+        logicGraphManager.createScheduler();
+        simulationStatus = "Running";
+     }
+
+    public void runSimulation(){
+        if(simulationProperties.currentCycle < simulationProperties.simulationCycle){
+            processer.handleSimulation();
+        }else{
+            simulationStatus = "Stopped";
+        }
+    }
+
+    public void stopSimulation(){
+        LogicGraphManager logicGraphManager = manager.getLogicGraphManager();
+        logicGraphManager.clearScheduler();
+        simulationStatus = "Stopped";
+    } 
 
     public void Simluation(){
         LogicGraphManager logicGraphManager = manager.getLogicGraphManager();
         logicGraphManager.createScheduler();
-        switch(simulationMode){
+        switch(simulationProperties.simulationMode){
             case "LimitedCycles":
-                for(int i = 1; i <= simulationCycles; i++)
+                for(int i = 1; i <= simulationProperties.simulationCycle; i++)
                 {
                     logicGraphManager.runScheduler();
                 }

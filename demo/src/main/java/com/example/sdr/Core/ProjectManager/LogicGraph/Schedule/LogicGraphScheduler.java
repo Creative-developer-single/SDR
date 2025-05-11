@@ -43,6 +43,12 @@ public class LogicGraphScheduler {
         }
     }
 
+    public void clearScheduler(){
+        nodeQueue.clear();
+        edgeStack.clear();
+        terminalNodes.clear();
+    }
+
     public void runTheScheduler(){
         //Order is Stored in the Stack
         for(LogicEdge edge : edgeStack){
@@ -136,7 +142,9 @@ public class LogicGraphScheduler {
                 for (LogicEdge edge : node.getNextEdges()) {
                     if (edge != null) {
                         edgeStack.push(edge);
+                        //if(edge.getNode1().getUnVisitedOutDegrees() > 0)
                         edge.getNode1().decrementUnVisitedOutDegrees();
+                        //if(edge.getNode2().getUnVisitedInDegrees() > 0)
                         edge.getNode2().decrementUnVisitedInDegrees();
                     }
                 }

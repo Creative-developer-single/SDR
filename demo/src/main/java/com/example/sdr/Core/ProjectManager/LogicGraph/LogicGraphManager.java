@@ -33,8 +33,14 @@ public class LogicGraphManager {
 
     //Create the Scheduler
     public void createScheduler(){
+        clearScheduler();
         scheduler.addNodesToNodeQueue(graph.getNodes());
         scheduler.generateScheduleOrder();
+    }
+
+    public void clearScheduler(){
+        scheduler.clearScheduler();
+        graph.resetNodes();
     }
 
     //Run a Schedule Cycle

@@ -41,7 +41,7 @@ public class RPCServer {
                     System.out.println("Received Message: " + inputLine);
     
                     // 调用 processer
-                    processer.HandleRPCCall(inputLine);
+                    processer.AddRPCFrameToQueue(inputLine);
                     writer.println("ACK from the Server: " + inputLine);
     
                     // 清空 StringBuilder 准备下一行

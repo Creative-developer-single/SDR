@@ -9,7 +9,16 @@ public class SimulationProperties {
 
     //Simulation Properties
     public String simulationMode;
+
+    //Static Simulation
+    public int simulationCycle;
+    public int currentCycle = 0;
+
+    //Dynamic Simulation
     public double simulationTime;
+    public double simulationTimeStep;
+    public double simulationSampleRate;
+    public double simulationBlockLength;
 
     //Load From JSONObject
     public void loadFromJSON(JSONObject object) {
@@ -19,7 +28,14 @@ public class SimulationProperties {
 
     public SimulationProperties(){
         simulationMode = "LimitedCycles";
+        
+        simulationCycle = 1000;
+        currentCycle = 0;
+
         simulationTime = 1.0;
+        simulationTimeStep = 0.01;
+        simulationSampleRate = 100000;
+        simulationBlockLength = 1024;
     }
     
 }

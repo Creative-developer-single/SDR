@@ -12,24 +12,32 @@ public class ProjectManager {
     private String ProjectPropertiesJSONPath;
     private String GraphStructJSONPath;
 
-    RPCManager rpcManager;
+    //ProjectTaskHandler
+    private ProjectManagerTaskHandler projectManagerTaskHandler;
+
+    //RPCManager
+    private RPCManager rpcManager;
 
     //ProjectLoader
-    ProjectLoader projectLoader;
+    private ProjectLoader projectLoader;
     
     //ProjectSettingsLoader
-    ProjectPropertiesManager projectPropertiesManager;
+    private ProjectPropertiesManager projectPropertiesManager;
 
     //LogicGrphManager
-    LogicGraphManager manager;
+    private LogicGraphManager manager;
 
     //Simulator
-    Simulator simulator;
+    private Simulator simulator;
 
     public void loadFromJSON(String ProjectPropertiesJSONPath){
         GeneralResourceFinder finder = new GeneralResourceFinder();
         projectLoader.setProjectPropertiesJSONPath(finder.getFilePath(ProjectPropertiesJSONPath));
         projectLoader.readJSONFile();
+    }
+
+    public ProjectManagerTaskHandler getProjectManagerTaskHandler(){
+        return projectManagerTaskHandler;
     }
 
     public ProjectPropertiesManager getProjectPropertiesManager(){
@@ -40,8 +48,24 @@ public class ProjectManager {
         return manager;
     }
 
+    public RPCManager getRPCManager(){
+        return rpcManager;
+    }
+
+    public Simulator getSimulator(){
+        return simulator;
+    }
+
     public void StartRPC(){
         rpcManager.StartRPC();
+    }
+
+    public void OpenProject(String ProjectPath){
+        loadFromJSON(ProjectPath);
+    }
+
+    public void UpdateState(){
+
     }
 
     public ProjectManager(){
@@ -50,6 +74,7 @@ public class ProjectManager {
         manager = new LogicGraphManager();
         simulator = new Simulator(this);
         rpcManager = new RPCManager(this);
+        projectManagerTaskHandler = new ProjectManagerTaskHandler(this);
     }
 
     public static void TestForRPC(){
@@ -57,6 +82,25 @@ public class ProjectManager {
         projectManager.loadFromJSON("/ProjectSettings/JSON/ProjectSettings3.json");
 
         projectManager.StartRPC();
+    }
+
+    public static void TestForRPCV2(){
+        ProjectManager projectManager = new ProjectManager();
+        projectManager.loadFromJSON("/ProjectSettings/JSON/AMProjects.json");
+        projectManager.getSimulator().startSimulation();
+        projectManager.getProjectPropertiesManager().simulationProperties.simulationCycle = 100;
+
+        projectManager.StartRPC();
+
+        while(true){
+            projectManager.getRPCManager().getProcesser().processRPCFrame();
+            projectManager.getProjectManagerTaskHandler().handleTask();
+            try {
+                Thread.sleep(50);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     public static void TestForFlow(){
@@ -74,7 +118,7 @@ public class ProjectManager {
 
     public static void main(String[] args){
 
-        TestForFlow();
+        TestForRPCV2();
         //TestForRPC();
     }
 }

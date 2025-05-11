@@ -48,6 +48,21 @@ public class LogicGraphStructureManager {
         return edges;
     }
 
+    public void resetNodes(){
+        //reset all nodes
+        for (LogicNode node : nodes) {
+            node.reset();
+        }
+
+        //reBinding the edges
+        for(LogicEdge edge : edges){
+            LogicNode node1 = edge.getNode1();
+            LogicNode node2 = edge.getNode2();
+            node1.addNextEdge(edge);
+            node2.addPrevEdge(edge);
+        }
+    }
+
     public void PrintNodes(){
         for (LogicNode logicNode : nodes) {
             System.out.println(logicNode.getId());
