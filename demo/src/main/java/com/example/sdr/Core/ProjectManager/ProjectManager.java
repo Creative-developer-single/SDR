@@ -93,6 +93,9 @@ public class ProjectManager {
         projectManager.StartRPC();
 
         while(true){
+            //同步系统状态到前端
+
+            //RPC 调用处理
             projectManager.getRPCManager().getProcesser().processRPCFrame();
             projectManager.getProjectManagerTaskHandler().handleTask();
             try {
