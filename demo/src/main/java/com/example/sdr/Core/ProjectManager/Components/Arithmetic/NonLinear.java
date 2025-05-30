@@ -2,7 +2,7 @@ package com.example.sdr.Core.ProjectManager.Components.Arithmetic;
 
 import com.example.sdr.Core.ProjectManager.Components.Base.BaseComponent;
 
-public class NoLinear extends BaseComponent{
+public class NonLinear extends BaseComponent{
     private int blockLength;
 
     final int MODE_RECTIFICATION = 0;
@@ -15,14 +15,14 @@ public class NoLinear extends BaseComponent{
 
     private double clippingLevel;
 
-    public NoLinear(int blockLength,int inputCount,int outputCount){
+    public NonLinear(int blockLength,int inputCount,int outputCount){
         super(blockLength,inputCount,outputCount);
 
         op_in = new double[inputCount][blockLength];
         ans = new double[outputCount][blockLength];
     }
 
-    public NoLinear(int blockLength,int inputCount,int outputCount,String ID){
+    public NonLinear(int blockLength,int inputCount,int outputCount,String ID){
         super(blockLength,inputCount,outputCount,ID);
 
         op_in = new double[inputCount][blockLength];

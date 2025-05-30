@@ -9,6 +9,10 @@ module com.example.sdr {
     requires org.json;
     requires org.python.jython2.standalone;
     requires java.sql;
+    requires org.eclipse.jetty.server;
+    requires org.eclipse.jetty.websocket.servlet;
+    requires org.eclipse.jetty.websocket.core.common;
+    requires org.eclipse.jetty.websocket.core.server;
 
     opens com.example.sdr to javafx.fxml;
     exports com.example.sdr;

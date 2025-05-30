@@ -16,10 +16,16 @@ public class RPCLogicGraphManager {
         this.rpcLogicGraph = new RPCLogicGraph(processer);
     }
 
-    public void RPCCall(JSONObject object){
+    public void RPCLoadLogicGraph(JSONObject object){
+        // 提取逻辑图数据
+        JSONObject logicGraph = object.getJSONObject("Args");
+        rpcLogicGraph.RPCLoadLogicGraph(logicGraph);
+    }
+
+    public void RPCManageLogicNode(JSONObject object){
         try{
             String Command = object.getString("Command");
-            JSONObject args = object.getJSONObject("args");
+            JSONObject args = object.getJSONObject("Args");
             
             JSONArray nodes = args.getJSONArray("Nodes");
             
@@ -42,34 +48,78 @@ public class RPCLogicGraphManager {
                         System.out.println("Not available in this process");
                         break;
                 }
+            }
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+    }
 
+    public void RPCManageLogicEdge(JSONObject object){
+        try{
+            String Command = object.getString("Command");
+            JSONObject args = object.getJSONObject("Args");
+            
+            JSONArray edges = args.getJSONArray("Edges");
+            
+            for(int i=0;i<edges.length();i++){
+                JSONObject edge = edges.getJSONObject(i);
+                String ID = edge.getString("ID");
+                
                 //Update the Edge
-                JSONArray edges = args.getJSONArray("Edges");
-                for(int j=0;j<edges.length();j++){
-                    JSONObject edge = edges.getJSONObject(j);
-                    String edgeID = edge.getString("EdgeID");
-                    
-                    //Update the Edge
-                    switch(Command){
-                        case "RPCModifyLogicEdge":
-                            rpcLogicGraph.RPCModifyLogicEdge(edge);
-                            break;
-                        case "RPCAddLogicEdge":
-                            rpcLogicGraph.RPCAddLogicEdge(edge);
-                            break;
-                        case "RPCDeleteLogicEdge":
-                            rpcLogicGraph.RPCDeleteLogicEdge(edge);
-                            break;
-                        default:
-                            System.out.println("Not available in this process");
-                            break;
-                    }
+                switch(Command){
+                    case "RPCModifyLogicEdge":
+                        rpcLogicGraph.RPCModifyLogicEdge(edge);
+                        break;
+                    case "RPCAddLogicEdge":
+                        rpcLogicGraph.RPCAddLogicEdge(edge);
+                        break;
+                    case "RPCDeleteLogicEdge":
+                        rpcLogicGraph.RPCDeleteLogicEdge(edge);
+                        break;
+                    default:
+                        System.out.println("Not available in this process");
+                        break;
                 }
             }
         }catch(Exception e){
             e.printStackTrace();
         }
-        
+    }
+
+    public void RPCCall(JSONObject object){
+        try{
+            // 获取命令类型
+            String Command = object.getString("Command");
+
+            switch(Command){
+                case "RPCModifyLogicNode":
+                    RPCManageLogicNode(object);
+                    break;
+                case "RPCCreateLogicNode":
+                    RPCManageLogicNode(object);
+                    break;
+                case "RPCDeleteLogicNode":
+                    RPCManageLogicNode(object);
+                    break;
+                case "RPCModifyLogicEdge":
+                    RPCManageLogicEdge(object);
+                    break;
+                case "RPCAddLogicEdge":
+                    RPCManageLogicEdge(object);
+                    break;
+                case "RPCDeleteLogicEdge":
+                    RPCManageLogicEdge(object);
+                    break;
+                case "RPCLoadLogicGraph":
+                    RPCLoadLogicGraph(object);
+                    break;
+                default:
+                    System.out.println("Not available in this process");
+                    break;
+            }
+        }catch(Exception e){
+            e.printStackTrace();
+        }
     }
 
     public RPCProcesser getProcesser() {

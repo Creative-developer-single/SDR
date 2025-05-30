@@ -8,7 +8,7 @@ import com.example.sdr.Core.ProjectManager.Components.Base.BaseComponent;
 public class LogicNode {
     final int MAX_EDGES = 100;
 
-    private String id;
+    private Integer id;
     private BaseComponent component;
     private int nextEdgesPoint;
     private int prevEdgesPoint;
@@ -18,7 +18,7 @@ public class LogicNode {
     private int unVisitedInDegrees;
     private int unVisitedOutDegrees;
 
-    public LogicNode(BaseComponent component,String id){
+    public LogicNode(BaseComponent component,Integer id){
         this.id = id;
         this.component = component;
         this.nextEdges = new ArrayList<LogicEdge>();
@@ -34,11 +34,11 @@ public class LogicNode {
     }
 
     //Set the ID
-    public void setID(String id){
+    public void setID(Integer id){
         this.id = id;
     }
 
-    public String getID(){
+    public Integer getID(){
         return id;
     }
 
@@ -149,7 +149,7 @@ public class LogicNode {
         return prevEdges;
     }
 
-    public String getId(){
+    public Integer getId(){
         return id;
     }
 

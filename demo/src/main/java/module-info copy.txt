@@ -1,0 +1,22 @@
+module com.example.sdr {
+    requires javafx.base;
+    requires javafx.controls;
+    requires javafx.fxml;
+    requires javafx.graphics;
+    requires javafx.swing;
+    requires javafx.web;
+    requires jmatio;
+    requires org.json;
+    requires org.python.jython2.standalone;
+    requires java.sql;
+    requires org.eclipse.jetty.server;
+    requires org.eclipse.jetty.websocket.servlet;
+    requires org.eclipse.jetty.websocket.core.common;
+    requires org.eclipse.jetty.websocket.core.server;
+
+    opens com.example.sdr to javafx.fxml;
+    exports com.example.sdr;
+    exports com.example.sdr.GUI.Pages.MainPage.LogicGraphGUI;
+    exports com.example.sdr.GUI.Pages.MainPage.LogicGraphGUI.BaseALUNode;
+    exports com.example.sdr.GUI.Pages.MainPage.LogicGraphGUI.NodeArrow;
+}

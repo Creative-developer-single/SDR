@@ -26,7 +26,7 @@ public class ProjectManagerTaskHandler {
                 break;
             case "Stopped":
                 projectManager.getSimulator().resetSimulation();
-                System.out.println("Simulation Stopped");
+                //System.out.println("Simulation Stopped");
                 break;
             default:
                 break;

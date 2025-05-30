@@ -11,9 +11,9 @@ public class LogicEdgeModifier {
     public void updateLogicEdgeByJSONObject(LogicEdge edge,JSONObject object){
         // Update the edge properties using the provided JSONObject
         try{
-            String id = object.getString("EdgeID");
-            String startNodeID = object.getString("StartNodeID");
-            String endNodeID = object.getString("EndNodeID");
+            Integer id = object.getInt("EdgeID");
+            Integer startNodeID = object.getInt("StartNodeID");
+            Integer endNodeID = object.getInt("EndNodeID");
             int startEdgeIndex = object.getInt("StartEdgeIndex");
             int endEdgeIndex = object.getInt("EndEdgeIndex");
 
@@ -32,7 +32,7 @@ public class LogicEdgeModifier {
 
     // Modify an edge by its ID
     public void modifyLogicEdge(JSONObject object){
-        String index = object.getString("EdgeID");
+        Integer index = object.getInt("EdgeID");
         LogicEdge edge = edgeManager.getFinder().findEdgeByID(index);
         if (edge != null) {
             updateLogicEdgeByJSONObject(edge, object);
@@ -42,9 +42,9 @@ public class LogicEdgeModifier {
     }
 
     public void addLogicEdge(JSONObject object){
-        String id = object.getString("EdgeID");
-        String startNodeID = object.getString("StartNodeID");
-        String endNodeID = object.getString("EndNodeID");
+        int id = object.getInt("EdgeID");
+        Integer startNodeID = object.getInt("StartNodeID");
+        Integer endNodeID = object.getInt("EndNodeID");
         int startEdgeIndex = object.getInt("StartEdgeIndex");
         int endEdgeIndex = object.getInt("EndEdgeIndex");
 
@@ -58,7 +58,7 @@ public class LogicEdgeModifier {
         }
     }
 
-    public void addLogicEdge(String ID,LogicNode node1,int startEdgeIndex,LogicNode node2,int endEdgeIndex){
+    public void addLogicEdge(int ID,LogicNode node1,int startEdgeIndex,LogicNode node2,int endEdgeIndex){
         if(edgeManager.getFinder().findEdge(node1, node2) != null){
             System.out.println("Edge already exists");
             return;
@@ -71,7 +71,7 @@ public class LogicEdgeModifier {
 
     public void deleteLogicEdge(JSONObject object){
         try{
-            String edgeID = object.getString("EdgeID");
+            Integer edgeID = object.getInt("EdgeID");
             LogicEdge edge = edgeManager.getFinder().findEdgeByID(edgeID);
             if (edge != null) {
                 edgeManager.getEdges().remove(edge);

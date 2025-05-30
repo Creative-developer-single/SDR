@@ -14,9 +14,15 @@ public class RPCLogicGraph {
         this.manager = processer.getProjectManager().getLogicGraphManager();
     }
 
+    // LoadLogicGraph RPC
+    public void RPCLoadLogicGraph(JSONObject object){
+        manager.loadGraphFromJSON(object);
+    }
+
+
     //ModifyLogicNode By ID
     public void RPCModifyLogicNode(JSONObject object) {
-        String ID = object.getString("ID");
+        Integer ID = object.getInt("ID");
         manager.getGraphInstance().getNodeManager().modifyLogicNode(ID, object);
         System.out.println("SuccessFul to Excute the RPC");
     }
@@ -29,7 +35,7 @@ public class RPCLogicGraph {
 
     //DeleteLogicNode RPC
     public void RPCDeleteLogicNode(JSONObject object){
-        String ID = object.getString("ID");
+        Integer ID = object.getInt("ID");
         manager.getGraphInstance().getNodeManager().getModifier().deleteLogicNode(ID);
         System.out.println("SuccessFul to Excute the RPC");
     }

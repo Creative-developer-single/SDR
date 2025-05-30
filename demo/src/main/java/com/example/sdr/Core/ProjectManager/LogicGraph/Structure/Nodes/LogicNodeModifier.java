@@ -15,7 +15,7 @@ public class LogicNodeModifier {
 
     //Modify the LogicNode by Object
     private void updateNodeByJSONObject(LogicNode node, JSONObject object){
-        String ID = object.getString("ID");
+        Integer ID = object.getInt("ID");
         
         //Update the ID
         node.setID(ID);
@@ -28,7 +28,7 @@ public class LogicNodeModifier {
 
     //Create the LogicNode by Object
     public void createLogicNodeByObject(JSONObject object) {
-        String ID = object.getString("ID");
+        Integer ID = object.getInt("ID");
         
         //Update the Component
         ComponentCreator creator = new ComponentCreator();
@@ -58,7 +58,7 @@ public class LogicNodeModifier {
     }
 
     //Delete a LogicNode
-    public void deleteLogicNode(String ID){
+    public void deleteLogicNode(Integer ID){
         LogicNode node = nodeManager.getFinder().findNodeById(ID);
         if (node != null) {
             nodeManager.getNodes().remove(node);

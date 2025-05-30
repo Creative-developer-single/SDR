@@ -1,0 +1,14 @@
+CTRL
+
+
+{
+    "RPCFrame": {
+      "FrameID": 1,// 与发送相同
+      "ReplyType": "string",//string,double,int,boolean
+      "Reply": "This is a reply from the Server"
+    }
+  }
+
+说明：
+1. 第一行指示RPC帧回复
+2. 检测到RPCFrame标识符后，相隔\r\n后的剩余部分是RPC帧回复内容，保证为JSON格式

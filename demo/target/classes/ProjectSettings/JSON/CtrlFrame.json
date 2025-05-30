@@ -3,7 +3,7 @@
       "RPCFrame": {
         "TargetModule": "LogicGraph",
         "Command": "RPCModifyLogicNode",
-        "args": {
+        "Args": {
             "Nodes": [
               {
                 "ID": "SinSignal1",

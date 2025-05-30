@@ -11,6 +11,7 @@
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
+        <jetty.version>11.0.15</jetty.version>
     </properties>
 
 
@@ -28,7 +29,11 @@
             <version>2.7.4</version>
         </dependency>
 
-
+        <dependency>
+            <groupId>org.java-websocket</groupId>
+            <artifactId>Java-WebSocket</artifactId>
+            <version>1.5.3</version>
+        </dependency>
 
         <dependency>
 	        <groupId>org.tallison</groupId>

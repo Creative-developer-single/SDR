@@ -1,14 +1,14 @@
 package com.example.sdr.Core.ProjectManager.LogicGraph.Structure;
 
 public class LogicEdge {
-    private String id;
+    private int id;
     private LogicNode node1;
     private LogicNode node2;
 
     private int node1DataIndex;
     private int node2DataIndex;
 
-    public void modifyEdgeFull(String id, LogicNode node1, LogicNode node2, int index1, int index2) {
+    public void modifyEdgeFull(int id, LogicNode node1, LogicNode node2, int index1, int index2) {
         this.id = id;
         this.node1 = node1;
         this.node2 = node2;
@@ -23,7 +23,7 @@ public class LogicEdge {
         this.node2DataIndex = 0;
     }
 
-    public LogicEdge(LogicNode node1,LogicNode node2,String id){
+    public LogicEdge(LogicNode node1,LogicNode node2,int id){
         this.node1 = node1;
         this.node2 = node2;
         this.id = id;
@@ -39,7 +39,7 @@ public class LogicEdge {
         this.node2DataIndex = index2;
     }
 
-    public LogicEdge(LogicNode node1,int index1,LogicNode node2,int index2,String id)
+    public LogicEdge(LogicNode node1,int index1,LogicNode node2,int index2,int id)
     {
         this.id = id;
         this.node1 = node1;
@@ -48,11 +48,11 @@ public class LogicEdge {
         this.node2DataIndex = index2;
     }
 
-    public String getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 

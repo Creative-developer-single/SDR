@@ -40,10 +40,10 @@ public class DebugMain {
         SinglePortBuffer buffer = new SinglePortBuffer(blockLength,bufferLength);
 
         //Create the Nodes, add the Component to the Node
-        LogicNode signalGeneratorNode = new LogicNode(signalGenerator,"SignalGenerator");
-        LogicNode signalGeneratorNode2 = new LogicNode(signalGenerator2,"SignalGenerator2");
-        LogicNode adderNode = new LogicNode(adder,"Adder");
-        LogicNode bufferNode = new LogicNode(buffer,"Buffer");
+        LogicNode signalGeneratorNode = new LogicNode(signalGenerator,1);
+        LogicNode signalGeneratorNode2 = new LogicNode(signalGenerator2,2);
+        LogicNode adderNode = new LogicNode(adder,3);
+        LogicNode bufferNode = new LogicNode(buffer,4);
 
         //Add Nodes to the Graph
         //graph.addNode(signalGeneratorNode);

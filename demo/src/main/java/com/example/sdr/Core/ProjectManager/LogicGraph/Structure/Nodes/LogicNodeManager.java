@@ -42,7 +42,7 @@ public class LogicNodeManager {
     }
 
     //Modify By ID
-    public void modifyLogicNode(String nodeID, JSONObject object){
+    public void modifyLogicNode(Integer nodeID, JSONObject object){
         LogicNode node = finder.findNodeById(nodeID);
         if (node != null) {
             modifier.modifyLogicNodeByObject(node, object);
@@ -61,7 +61,7 @@ public class LogicNodeManager {
     public static void main(String[] args) {
         // TODO Auto-generated method stub
         LogicGraphStructureManager manager = new LogicGraphStructureManager();
-        LogicNode node = new LogicNode(new BaseComponent(0, 0, 0),"Test");
+        LogicNode node = new LogicNode(new BaseComponent(0, 0, 0),1);
         manager.getNodeManager().getNodes().add(node);
         JSONObject object = new JSONObject();
         object.put("ID", "Test2");
@@ -70,7 +70,7 @@ public class LogicNodeManager {
         object.put("InputCount", 2);
         object.put("OutputCount", 1);
         object.put("ComponentID", "alu1");
-        manager.getNodeManager().modifyLogicNode("Test", object);
+        manager.getNodeManager().modifyLogicNode(2, object);
         System.out.println(node.getID());
     }
 }

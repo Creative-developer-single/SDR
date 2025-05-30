@@ -21,9 +21,9 @@ public class LogicEdgeFinder {
     }
 
     // Find an edge by its index
-    public LogicEdge findEdgeByID(String id) {
+    public LogicEdge findEdgeByID(Integer id) {
         for(LogicEdge edge : edgeManager.getEdges()) {
-            if (edge.getId().equals(id)) {
+            if (edge.getId()== id) {
                 return edge;
             }
         }

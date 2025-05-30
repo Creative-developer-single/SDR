@@ -11,9 +11,9 @@ public class LogicNodeFinder {
     }
 
     // Find a LogicNode by its ID
-    public LogicNode findNodeById(String id) {
+    public LogicNode findNodeById(Integer id) {
         for (LogicNode node : nodeManager.getNodes()) {
-            if (node.getId().equals(id)) {
+            if (node.getId() == id) {
                 return node;
             }
         }

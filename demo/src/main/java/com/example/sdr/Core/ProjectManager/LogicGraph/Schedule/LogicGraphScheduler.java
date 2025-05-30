@@ -96,7 +96,7 @@ public class LogicGraphScheduler {
             System.out.println(node.getId());
             MatFileWriter writer = new MatFileWriter();
             try {
-                MLDouble mlDouble = new MLDouble(node.getId(), node.getComponent().getAns(0), node.getComponent().getAns(0).length);
+                MLDouble mlDouble = new MLDouble(String.valueOf(node.getClass()) + String.valueOf(node.getId()), node.getComponent().getAns(0), node.getComponent().getAns(0).length);
                 ArrayList list = new ArrayList();
                 list.add(mlDouble);
                 writer.write("/home/chengzirui/workspace/Java/learning/SDR/demo/src/main/resources/dataOutput" + node.getId() + ".mat", list);
@@ -115,7 +115,7 @@ public class LogicGraphScheduler {
             System.out.println(node.getClass().getName());
             if(node.getComponent().getClass().getName() =="com.example.sdr.Core.ProjectManager.Components.Others.DataBuffer.SinglePortBuffer"){ 
                 try{
-                    MLDouble mlDouble = new MLDouble(node.getId(), node.getComponent().getAns(0), node.getComponent().getAns(0).length);
+                    MLDouble mlDouble = new MLDouble(String.valueOf(node.getClass()) + String.valueOf(node.getId()), node.getComponent().getAns(0), node.getComponent().getAns(0).length);
                     System.out.println("Write the Data");
                     list.add(mlDouble);
                 }

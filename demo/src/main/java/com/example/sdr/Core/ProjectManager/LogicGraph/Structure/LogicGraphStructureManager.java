@@ -48,6 +48,19 @@ public class LogicGraphStructureManager {
         return edges;
     }
 
+    /*
+     * Function Name: clearGraph
+     * Description: 清除整个图，包括节点和边，之后需要重新加载图信息
+     */
+    public void clearGraph(){
+        // 删除所有节点和边
+        nodes.clear();
+        edges.clear();
+        rootNode = null;
+    }
+
+
+    // 重置节点，但不清除节点，用于重新运行现有的仿真图
     public void resetNodes(){
         //reset all nodes
         for (LogicNode node : nodes) {
