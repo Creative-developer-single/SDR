@@ -110,6 +110,18 @@ public class RPCWebSocketServer {
         }
     }
 
+    // 主动发送二进制数据给前端
+    public void sendToFrontend(byte[] data) {
+        WebSocket conn = currentConnection.get();
+        if (conn != null && conn.isOpen()) {
+            conn.send(data);
+            System.out.println("Sent to frontend (byte[]): length = " + data.length);
+        } else {
+            System.out.println("No active WebSocket connection to frontend.");
+        }
+    }
+    
+
     // 测试 main
     public static void main(String[] args) {
         RPCManager manager = new RPCManager(new ProjectManager());

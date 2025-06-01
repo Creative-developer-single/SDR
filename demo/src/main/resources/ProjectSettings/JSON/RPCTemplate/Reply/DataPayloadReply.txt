@@ -1,10 +1,16 @@
 DATA
 
 
-{{ID}}
+{{RPCFrameID}}
+
+
+{{ModulesCount}}
 
 
 {{ModuleID}}
+
+
+{{Length}}
 
 
 1ACFFC1D{{Data}}1ACFFC1D

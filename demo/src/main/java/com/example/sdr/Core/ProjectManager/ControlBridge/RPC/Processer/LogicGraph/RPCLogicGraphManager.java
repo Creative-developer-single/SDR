@@ -3,7 +3,11 @@ package com.example.sdr.Core.ProjectManager.ControlBridge.RPC.Processer.LogicGra
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import com.example.sdr.Core.Components.Tools.BytesTools.BytesConcat;
+import com.example.sdr.Core.Components.Tools.Converter.IntToBytes.IntToBytes;
+import com.example.sdr.Core.Components.Tools.Converter.StringToBytes.StringToBytes;
 import com.example.sdr.Core.ProjectManager.ControlBridge.RPC.Processer.RPCProcesser;
+import com.example.sdr.Core.ProjectManager.ControlBridge.RPC.Processer.LogicGraph.RPCLogicGraphLoader.RPCLogicGraphLoader;
 
 public class RPCLogicGraphManager {
     // RPCProcesser Instance
@@ -11,9 +15,12 @@ public class RPCLogicGraphManager {
 
     private RPCLogicGraph rpcLogicGraph;
 
+    private RPCLogicGraphLoader rpcLogicGraphLoader;
+
     public RPCLogicGraphManager(RPCProcesser processer) {
         this.processer = processer;
         this.rpcLogicGraph = new RPCLogicGraph(processer);
+        this.rpcLogicGraphLoader = new RPCLogicGraphLoader(processer);
     }
 
     public void RPCLoadLogicGraph(JSONObject object){
@@ -86,7 +93,54 @@ public class RPCLogicGraphManager {
         }
     }
 
-    public void RPCCall(JSONObject object){
+    /*
+     * 处理节点数据相关RPC调用
+     */
+    public void RPCNodeData(JSONObject object,Integer rpcID){
+        try{
+            String Command = object.getString("Command");
+            JSONObject args = object.getJSONObject("Args");
+            JSONArray nodes = args.getJSONArray("Nodes");
+
+            // 检查命令类型
+            switch(Command){
+                case "RPCGetNodeAns":
+                    double [][] result = rpcLogicGraphLoader.RPCGetNodeByArray(nodes);
+
+                    // 创建RPC返回帧
+                    byte[] response = StringToBytes.stringToBytes("DATA");
+                    // 创建FrameID
+                    byte [] frameID = IntToBytes.intToBytes(rpcID);
+                    // 创建模块长度
+                    byte[] moduleLength = IntToBytes.intToBytes(nodes.length());
+                    
+                    // 拼接到response
+                    response = BytesConcat.concat(response,frameID,moduleLength);
+                    
+                    // 遍历结果数组
+                    for (int i = 0; i < result.length;i++){
+                        // 创建模块ID
+                        byte[] moduleID = IntToBytes.intToBytes(nodes.getJSONObject(i).getInt("ID"));
+
+                        // 创建模块数据长度
+                        byte[] moduleDataLength = IntToBytes.intToBytes(result[i].length);
+
+                        // 拼接到modulesData
+                        response = BytesConcat.concat(response, moduleID, moduleDataLength);
+                    }
+
+                    // 调用RPCProcesser的SendReply方法发送响应
+                    processer.getProjectManager().getRPCManager().SendReply(response);
+            }
+
+
+            
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    public void RPCCall(JSONObject object, Integer rpcID){
         try{
             // 获取命令类型
             String Command = object.getString("Command");
@@ -112,6 +166,9 @@ public class RPCLogicGraphManager {
                     break;
                 case "RPCLoadLogicGraph":
                     RPCLoadLogicGraph(object);
+                    break;
+                case "RPCNodeData":
+                    RPCNodeData(object, rpcID);
                     break;
                 default:
                     System.out.println("Not available in this process");

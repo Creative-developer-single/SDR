@@ -6,6 +6,27 @@
     "configurations": [
         {
             "type": "java",
+            "name": "PerformanceTestGFLOPSWithFloat",
+            "request": "launch",
+            "mainClass": "com.example.sdr.Core.Components.Tools.SpeedTest.PerformanceTestGFLOPSWithFloat",
+            "projectName": "demo"
+        },
+        {
+            "type": "java",
+            "name": "PerformanceTest",
+            "request": "launch",
+            "mainClass": "com.example.sdr.Core.Components.Tools.SpeedTest.PerformanceTest",
+            "projectName": "demo"
+        },
+        {
+            "type": "java",
+            "name": "FPUFloatSpeedTest",
+            "request": "launch",
+            "mainClass": "com.example.sdr.Core.Components.Tools.SpeedTest.FPUFloatSpeedTest",
+            "projectName": "demo"
+        },
+        {
+            "type": "java",
             "name": "ProjectManager",
             "request": "launch",
             "mainClass": "com.example.sdr.Core.ProjectManager.ProjectManager",

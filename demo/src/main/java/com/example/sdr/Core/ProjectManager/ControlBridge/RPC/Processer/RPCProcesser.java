@@ -82,7 +82,7 @@ public class RPCProcesser {
 
                 switch(targetModule){
                     case "LogicGraph":
-                        rpcLogicGraphManager.RPCCall(rpcFrame);
+                        rpcLogicGraphManager.RPCCall(rpcFrame,rpcID);
 
                         // 回复响应
                         JSONObject response = new JSONObject();

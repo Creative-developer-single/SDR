@@ -24,6 +24,11 @@ public class RPCManager {
         rpcServer.sendToFrontend(message);
     }
 
+    public void SendReply(byte[] message){
+        //Send the message to the RPC Server
+        rpcServer.sendToFrontend(message);
+    }
+
     public RPCProcesser getProcesser(){
         return processer;
     }

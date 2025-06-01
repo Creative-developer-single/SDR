@@ -86,8 +86,8 @@ public class ProjectManager {
 
     public static void TestForRPCV2(){
         ProjectManager projectManager = new ProjectManager();
-        projectManager.loadFromJSON("/ProjectSettings/JSON/AMProjects.json");
-        projectManager.getSimulator().startSimulation();
+        //projectManager.loadFromJSON("/ProjectSettings/JSON/AMProjects.json");
+        //projectManager.getSimulator().startSimulation();
         projectManager.getProjectPropertiesManager().simulationProperties.simulationCycle = 100;
 
         projectManager.StartRPC();
