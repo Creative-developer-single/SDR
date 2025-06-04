@@ -44,6 +44,15 @@ public class Simulator {
     }
 
     /*
+     * @brief Get the Simulation Properties
+     * @param None
+     * @return SimulationProperties
+     */
+    public SimulationProperties getSimulationProperties(){
+        return simulationProperties;
+    }
+
+    /*
      * @brief Reset the simulation
      * @param None
      */
@@ -83,7 +92,7 @@ public class Simulator {
         LogicGraphManager logicGraphManager = manager.getLogicGraphManager();
         logicGraphManager.createScheduler();
         switch(simulationProperties.simulationMode){
-            case "LimitedCycles":
+            case "Static":
                 for(int i = 1; i <= simulationProperties.simulationCycle; i++)
                 {
                     logicGraphManager.runScheduler();

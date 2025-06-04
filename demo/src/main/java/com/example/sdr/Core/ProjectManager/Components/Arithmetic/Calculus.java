@@ -1,5 +1,7 @@
 package com.example.sdr.Core.ProjectManager.Components.Arithmetic;
 
+import com.example.sdr.Core.Components.DataType.SDRData.SDRData;
+import com.example.sdr.Core.Components.DataType.SDRData.SDRDataUtils;
 import com.example.sdr.Core.ProjectManager.Components.Base.BaseComponent;
 
 public class Calculus extends BaseComponent{
@@ -16,8 +18,8 @@ public class Calculus extends BaseComponent{
         this.blockLength = blockLength;
         this.mode = MODE_DIFFERENTIAL;
 
-        op_in = new double[inputCount][blockLength];
-        ans = new double[outputCount][blockLength];
+        op_in = SDRDataUtils.createComplexMatrix(inputCount, blockLength, 0, 0);
+        ans = SDRDataUtils.createComplexMatrix(outputCount, blockLength, 0, 0);
     }
 
     public Calculus(int blockLength,int inputCount,int outputCount,String ID){
@@ -26,19 +28,15 @@ public class Calculus extends BaseComponent{
         this.blockLength = blockLength;
         this.mode = MODE_DIFFERENTIAL;
 
-        op_in = new double[inputCount][blockLength];
-        ans = new double[outputCount][blockLength];
-    }
-
-    public double[] getAns(int index){
-        return ans[index];
+        op_in = SDRDataUtils.createComplexMatrix(inputCount, blockLength, 0, 0);
+        ans = SDRDataUtils.createComplexMatrix(outputCount, blockLength, 0, 0);
     }
 
     public void setOperationMode(int mode){
         this.mode = mode;
     }
 
-    public void setInputData(double[] data){
+    public void setInputData(SDRData[] data){
         if(data.length != inputCount){
             throw new IllegalArgumentException("Invalid input count");
         }else{
@@ -47,15 +45,21 @@ public class Calculus extends BaseComponent{
     }
 
     public void Calculate(){
+        SDRData tmp = new SDRData(0, 0);
+        
         if(mode == MODE_DIFFERENTIAL){
             for(int i = 1; i < blockLength; i++){
-                ans[currentOutputIndex][i] = op_in[0][i] - op_in[0][i-1];
+                tmp.Copy(op_in[0][i]);
+                tmp.subtract(op_in[0][i - 1]);
+                ans[currentOutputIndex][i].Copy(tmp);
             }
-            ans[currentOutputIndex][0] = 0;
+            ans[currentOutputIndex][0] = new SDRData(0, 0); // First element is set to zero
         }else if(mode == MODE_INTEGRATION){
-            ans[currentOutputIndex][0] = 0;
+            ans[currentOutputIndex][0] = new SDRData(0, 0);
+            tmp.Copy(ans[currentInputIndex][0]);
             for(int i = 1; i < blockLength; i++){
-                ans[currentOutputIndex][i] = ans[currentOutputIndex][i - 1] + op_in[0][i];
+                tmp.add(op_in[0][i - 1]);
+                ans[currentOutputIndex][i].Copy(tmp);
             }
         }
     }

@@ -1,5 +1,6 @@
 package com.example.sdr.Core.ProjectManager.Components.Source;
 
+import com.example.sdr.Core.Components.DataType.SDRData.SDRDataUtils;
 import com.example.sdr.Core.ProjectManager.Components.Base.BaseComponent;
 
 public class SignalGenerator extends BaseComponent{
@@ -19,7 +20,7 @@ public class SignalGenerator extends BaseComponent{
         this.blockPhase = 0;
         this.signalType = "Sine";
 
-        ans = new double[outputCount][blockLength];
+        ans = SDRDataUtils.createComplexMatrix(outputCount, blockLength, 0, 0);
     }
 
     public SignalGenerator(int blockLength,int sampleRate,String ID){
@@ -30,7 +31,7 @@ public class SignalGenerator extends BaseComponent{
         this.sampleRate = sampleRate;
         this.signalType = "Sine";
 
-        ans = new double[outputCount][blockLength];
+        ans = SDRDataUtils.createComplexMatrix(outputCount, blockLength, 0, 0);
     }
 
     public SignalGenerator(int blockLength, String signalType,double frequency, double amplitude, double phase){
@@ -42,7 +43,7 @@ public class SignalGenerator extends BaseComponent{
         this.phase = phase;
         this.signalType = "Sine";
 
-        ans = new double[outputCount][blockLength];
+        ans = SDRDataUtils.createComplexMatrix(outputCount, blockLength, 0, 0);
     }
 
     public SignalGenerator(int blockLength, String signalType,double frequency, double amplitude, double phase,double sampleRate,String ID){
@@ -55,7 +56,7 @@ public class SignalGenerator extends BaseComponent{
         this.sampleRate = (int)sampleRate;
         this.signalType = "Sine";
 
-        ans = new double[outputCount][blockLength];
+        ans = SDRDataUtils.createComplexMatrix(outputCount, blockLength, 0, 0);
     }
 
 
@@ -87,26 +88,26 @@ public class SignalGenerator extends BaseComponent{
         if(signalType.equals("Sine")){
             for(int i = 0; i < blockLength; i++){
                 this.blockPhase = (this.blockPhase + 2 * Math.PI * frequency / sampleRate) % (2 * Math.PI);
-                ans[0][i] = amplitude * Math.sin(this.blockPhase);
+                ans[0][i].fromDouble(amplitude * Math.sin(this.blockPhase));
             }
         }else if(signalType == "Cos"){
             for(int i = 0; i < blockLength; i++){
                 this.blockPhase = (this.blockPhase + 2 * Math.PI * frequency / sampleRate) % (2 * Math.PI);
-                ans[0][i] = amplitude * Math.cos(this.blockPhase);
+                ans[0][i].fromDouble(amplitude * Math.cos(this.blockPhase));
             }
         }else if(signalType == "Square"){
             for(int i = 0; i < blockLength; i++){
                 this.blockPhase = (this.blockPhase + 2 * Math.PI * frequency / sampleRate) % (2 * Math.PI);
-                ans[0][i] = amplitude * Math.signum(Math.sin(this.blockPhase));
+                ans[0][i].fromDouble(amplitude * Math.signum(Math.sin(this.blockPhase)));
             }
         }else if(signalType == "Triangle"){
             for(int i = 0; i < blockLength; i++){
                 this.blockPhase = (this.blockPhase + 2 * Math.PI * frequency / sampleRate) % (2 * Math.PI);
-                ans[0][i] = amplitude * Math.asin(Math.sin(this.blockPhase));
+                ans[0][i].fromDouble(amplitude * Math.asin(Math.sin(this.blockPhase)));
             }
         }else if(signalType == "Noise"){
             for(int i = 0; i < blockLength; i++){
-                ans[0][i] = amplitude * Math.random();
+                ans[0][i].fromDouble(amplitude * Math.random());
             }
         }
     }

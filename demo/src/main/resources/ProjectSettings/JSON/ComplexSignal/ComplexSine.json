@@ -1,0 +1,106 @@
+{
+    "ProjectName": "Untitle",
+    "ProjectOwner": "Admin",
+    "LastModifyTime": "2025-03-24",
+    "ProjectProperties": {
+      "GlobalProperties": {
+        "SampleRate": 1000000,
+        "BlockLength": 1024
+      },
+      "GraphProperties": {
+        "GraphType": "LogicGraph",
+        "GraphName": "LogicGraph1"
+      },
+      "SettingsProperties": {
+        "SettingsName": "Settings1",
+        "SettingsType": "Default",
+        "SettingsVersion": "0.1",
+        "SettingsPath": "Default"
+      },
+      "SimulationProperties": {
+        "SimulationMode": "Static",
+        "SimulationTime": "2.4",
+        "SimulationTimeStep": "0.0001",
+        "ReportSettings": {
+          "ReportedNodes": [
+            {
+              "NodeID": "Buffer",
+              "NodeVariable": "Buffer"
+            }
+          ],
+          "ReportType": "CSVPlot"
+        }
+      }
+    },
+    "LogicGraph": {
+      "Nodes": [
+        {
+          "ID": 1,
+          "Pos": {
+            "X": 10,
+            "Y": 20
+          },
+          "BlockLength": 1024,
+          "InputCount":1,
+          "OutputCount":1,
+          "ComponentType": "Source.ComplexSignalGenerator",
+          "ComponentID": "Sin1",
+          "ComponentSettings": {
+            "sampleRate": 1000000,
+            "signalType": "Sine",
+            "frequency": 1000,
+            "amplitude": 1,
+            "blockPhase": 0
+          }
+        },
+        {
+          "ID": 2,
+          "Pos": {
+            "X": 90,
+            "Y": 20
+          },
+          "BlockLength": 1024,
+          "InputCount":1,
+          "OutputCount":1,
+          "ComponentType": "Others.DataBuffer.SinglePortBuffer",
+          "ComponentID": "Buffer1",
+          "ComponentSettings": {
+            "bufferLength": 4096,
+            "BufferMode":"Real"
+          }
+        },
+        {
+            "ID": 3,
+            "Pos": {
+              "X": 90,
+              "Y": 20
+            },
+            "BlockLength": 1024,
+            "InputCount":1,
+            "OutputCount":1,
+            "ComponentType": "Others.DataBuffer.SinglePortBuffer",
+            "ComponentID": "Buffer1",
+            "ComponentSettings": {
+              "bufferLength": 4096,
+              "BufferMode":"Complex"
+            }
+          }
+      ],
+      "Edges": [
+        {
+          "EdgeID": 1,
+          "StartNodeID": 1,
+          "EndNodeID": 2,
+          "StartEdgeIndex": 0,
+          "EndEdgeIndex": 0
+        },
+        {
+          "EdgeID": 2,
+          "StartNodeID": 1,
+          "EndNodeID": 3,
+          "StartEdgeIndex": 0,
+          "EndEdgeIndex": 0
+        }
+      ]
+    }
+  }

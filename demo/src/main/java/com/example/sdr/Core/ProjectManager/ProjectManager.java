@@ -86,9 +86,10 @@ public class ProjectManager {
 
     public static void TestForRPCV2(){
         ProjectManager projectManager = new ProjectManager();
-        //projectManager.loadFromJSON("/ProjectSettings/JSON/AMProjects.json");
-        //projectManager.getSimulator().startSimulation();
+        projectManager.loadFromJSON("/ProjectSettings/JSON/AMProjects.json");
         projectManager.getProjectPropertiesManager().simulationProperties.simulationCycle = 100;
+        projectManager.getSimulator().Simluation();
+        
 
         projectManager.StartRPC();
 
@@ -108,9 +109,9 @@ public class ProjectManager {
 
     public static void TestForFlow(){
         ProjectManager projectManager = new ProjectManager();
-        //projectManager.loadFromJSON("/ProjectSettings/JSON/AMProjects.json");
+        projectManager.loadFromJSON("/ProjectSettings/JSON/AMProjects.json");
         //projectManager.loadFromJSON("/ProjectSettings/JSON/FMProjects.json");
-        projectManager.loadFromJSON("/ProjectSettings/JSON/DSBProjects.json");
+        //projectManager.loadFromJSON("/ProjectSettings/JSON/ComplexSignal/ComplexSine.json");
         //projectManager.loadFromJSON("/ProjectSettings/JSON/ProjectSettings3.json");
 
         projectManager.getLogicGraphManager().getGraphInstance().PrintNodes();
@@ -121,8 +122,8 @@ public class ProjectManager {
 
     public static void main(String[] args){
 
-        //TestForFlow();
-        TestForRPCV2();
+        TestForFlow();
+        //TestForRPCV2();
         //TestForRPC();
     }
 }

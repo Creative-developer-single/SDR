@@ -1,26 +1,32 @@
 package com.example.sdr.Core.ProjectManager.Components.Others.DataBuffer;
 
+import com.example.sdr.Core.Components.DataType.SDRData.SDRData;
+import com.example.sdr.Core.Components.DataType.SDRData.SDRDataUtils;
 import com.example.sdr.Core.ProjectManager.Components.Base.BaseComponent;
 
 public class SinglePortBuffer extends BaseComponent{
     private int point;
     private int bufferLength;
+    private String BufferMode;
 
     public SinglePortBuffer(int blockLength, int inputCount, int outputCount,String ID){
         super(blockLength, inputCount, outputCount,ID);
-        ans = new double[outputCount][blockLength];
+        this.BufferMode = "Complex";
+        ans = SDRDataUtils.createComplexMatrix(outputCount, bufferLength, 0, 0);
         point = 0;
     }
 
     public SinglePortBuffer(int blockLength, int bufferLength){
         super(blockLength, 1,1);
-        ans = new double[inputCount][bufferLength];
+        this.BufferMode = "Complex";
+        ans = SDRDataUtils.createComplexMatrix(1, bufferLength, 0, 0);
         point = 0;
     }
 
     public SinglePortBuffer(int blockLength, int bufferLength, String ID){
         super(blockLength, 1,1 ,ID);
-        ans = new double[outputCount][bufferLength];
+        this.BufferMode = "Complex";
+        ans = SDRDataUtils.createComplexMatrix(1, bufferLength, 0, 0);
         point = 0;
     }
 
@@ -30,19 +36,37 @@ public class SinglePortBuffer extends BaseComponent{
 
     public void resetBlockLength(int blockLength){
         this.blockLength = blockLength;
-        ans = new double[outputCount][bufferLength];
+        ans = SDRDataUtils.createComplexMatrix(outputCount, bufferLength, 0, 0);
         point = 0;
     }
 
-    public void setOperationParams(double[] data,int index){
+    public void setOperationParams(SDRData[] data,int index){
+        if(ans[0].length != bufferLength){
+            resetBlockLength(bufferLength);
+        }
         storeData(data);
     }
 
-    public void storeData(double[] data){
+    public void storeData(SDRData[] data){
         for(int i=0;i<=data.length-1;i++){
-            ans[0][point] = data[i];
+            ans[0][point].Copy(data[i]);
             point++;
             point = point % ans[0].length;
+        }
+    }
+
+    public SDRData[] getAns(int index){
+        switch(BufferMode){
+            case "Complex":
+                return ans[0];
+            case "Real":
+                SDRDataUtils.toRealMode(ans[index]);
+                return ans[0];
+            case "Imag":
+                SDRDataUtils.toComplexMode(ans[index]);
+                return ans[0];
+            default:
+                throw new IllegalArgumentException("Invalid Buffer Mode");
         }
     }
 

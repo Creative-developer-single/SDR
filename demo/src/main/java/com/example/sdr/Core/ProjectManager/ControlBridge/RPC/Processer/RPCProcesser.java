@@ -13,6 +13,7 @@ import org.json.JSONObject;
 import com.example.sdr.Core.ProjectManager.ProjectManager;
 import com.example.sdr.Core.ProjectManager.ControlBridge.RPC.Processer.LogicGraph.RPCLogicGraph;
 import com.example.sdr.Core.ProjectManager.ControlBridge.RPC.Processer.LogicGraph.RPCLogicGraphManager;
+import com.example.sdr.Core.ProjectManager.ControlBridge.RPC.Processer.Simulator.RPCSimulatorManager;
 
 public class RPCProcesser {
     //Instance for the ProjectManager
@@ -20,6 +21,9 @@ public class RPCProcesser {
 
     //Instance for the RPCLogicGraph
     private RPCLogicGraphManager rpcLogicGraphManager;
+
+    // RPCSimulationManager 实例
+    private RPCSimulatorManager rpcSimulationManager;
 
     private BlockingQueue<ByteBuffer> rpcFrameQueue;
 
@@ -94,7 +98,10 @@ public class RPCProcesser {
                         
                         response.put("RPCFrame", ReplyFrame);
 
-                        manager.getRPCManager().SendReply("CTRL"+response.toString());
+                        //manager.getRPCManager().SendReply("CTRL"+response.toString());
+                        break;
+                    case "Simulation":
+                        rpcSimulationManager.RPCCall(rpcFrame,rpcID);
                         break;
                     default:
                         System.out.println("Not available in this process");
@@ -110,6 +117,7 @@ public class RPCProcesser {
     public RPCProcesser(ProjectManager manager) {
         this.manager = manager;
         this.rpcLogicGraphManager = new RPCLogicGraphManager(this);
+        this.rpcSimulationManager = new RPCSimulatorManager(this);
         this.rpcFrameQueue = new LinkedBlockingQueue<>();
     }
 }

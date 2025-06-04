@@ -34,7 +34,7 @@ public class DebugMain {
         signalGenerator2.setPhase(0);
 
         //Adder
-        BasicALU adder = new BasicALU(blockLength,1,1);
+        BasicALU adder = new BasicALU(blockLength,1,1,"ALU1");
 
         //Buffer
         SinglePortBuffer buffer = new SinglePortBuffer(blockLength,bufferLength);

@@ -29,7 +29,7 @@ public class RPCLogicGraphLoader {
         }
 
         double[] data = manager.getReportInstance().getNodeData(node,index);
-        if (index < 0 || index >= data.length) {
+        if (index < 0 || index > data.length) {
             throw new IndexOutOfBoundsException("Index " + index + " is out of bounds for node data length " + data.length);
         }
         if (length <= 0 || length > data.length) {

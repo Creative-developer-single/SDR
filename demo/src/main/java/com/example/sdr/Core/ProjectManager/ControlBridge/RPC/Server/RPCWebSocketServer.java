@@ -37,7 +37,7 @@ public class RPCWebSocketServer {
             currentConnection.set(conn);
 
             // 发送欢迎消息
-            conn.send("Welcome to WebSocket RPC Server!");
+            //conn.send("Welcome to WebSocket RPC Server!");
         }
 
         @Override

@@ -29,7 +29,7 @@ public class SimulationProperties {
     public SimulationProperties(){
         simulationMode = "LimitedCycles";
         
-        simulationCycle = 1000;
+        simulationCycle = 1;
         currentCycle = 0;
 
         simulationTime = 1.0;

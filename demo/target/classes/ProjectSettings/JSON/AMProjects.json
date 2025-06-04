@@ -20,6 +20,7 @@
       "SimulationProperties": {
         "SimulationMode": "Static",
         "SimulationTime": "2.4",
+        "SimulationTimeStep": "0.0001",
         "ReportSettings": {
           "ReportedNodes": [
             {
@@ -34,7 +35,7 @@
     "LogicGraph": {
       "Nodes": [
         {
-          "ID": "SinSignal1",
+          "ID": 1,
           "Pos": {
             "X": 10,
             "Y": 20
@@ -53,7 +54,7 @@
           }
         },
         {
-          "ID": "Adder",
+          "ID": 2,
           "Pos": {
             "X": 90,
             "Y": 20
@@ -68,7 +69,7 @@
           }
         },
         {
-          "ID": "Multiplier",
+          "ID": 3,
           "Pos": {
             "X": 90,
             "Y": 20
@@ -84,7 +85,7 @@
           }
         },
         {
-          "ID": "SinSignal2",
+          "ID": 4,
           "Pos": {
             "X": 10,
             "Y": 90
@@ -104,7 +105,7 @@
           }
         },
         {
-          "ID": "SinSignal3",
+          "ID": 5,
           "Pos": {
             "X": 10,
             "Y": 90
@@ -124,7 +125,7 @@
           }
         },
         {
-          "ID": "Buffer1",
+          "ID": 6,
           "Pos": {
             "X": 150,
             "Y": 20
@@ -135,11 +136,12 @@
           "ComponentType": "Others.DataBuffer.SinglePortBuffer",
           "ComponentID": "Buffer1",
           "ComponentSettings": {
-            "bufferLength": 4096
+            "bufferLength": 4096,
+            "BufferMode":"Real"
           }
         },
         {
-          "ID": "Buffer2",
+          "ID": 7,
           "Pos": {
             "X": 150,
             "Y": 20
@@ -150,11 +152,12 @@
           "ComponentType": "Others.DataBuffer.SinglePortBuffer",
           "ComponentID": "Buffer1",
           "ComponentSettings": {
-            "bufferLength": 4096
+            "bufferLength": 4096,
+            "BufferMode":"Real"
           }
         },
         {
-          "ID": "Buffer3",
+          "ID": 8,
           "Pos": {
             "X": 150,
             "Y": 20
@@ -165,57 +168,58 @@
           "ComponentType": "Others.DataBuffer.SinglePortBuffer",
           "ComponentID": "Buffer1",
           "ComponentSettings": {
-            "bufferLength": 4096
+            "bufferLength": 4096,
+            "BufferMode":"Real"
           }
         }
       ],
       "Edges": [
         {
           "EdgeID": 1,
-          "StartNodeID": "SinSignal1",
-          "EndNodeID": "Multiplier",
+          "StartNodeID": 1,
+          "EndNodeID": 3,
           "StartEdgeIndex": 0,
           "EndEdgeIndex": 0
         },
         {
           "EdgeID": 2,
-          "StartNodeID": "SinSignal2",
-          "EndNodeID": "Multiplier",
+          "StartNodeID": 4,
+          "EndNodeID": 3,
           "StartEdgeIndex": 0,
           "EndEdgeIndex": 1
         },
         {
           "EdgeID": 3,
-          "StartNodeID": "Multiplier",
-          "EndNodeID": "Adder",
+          "StartNodeID": 3,
+          "EndNodeID": 2,
           "StartEdgeIndex": 0,
           "EndEdgeIndex": 0
         },
         {
           "EdgeID": 5,
-          "StartNodeID": "SinSignal3",
-          "EndNodeID": "Adder",
+          "StartNodeID": 5,
+          "EndNodeID": 2,
           "StartEdgeIndex": 0,
           "EndEdgeIndex": 1
         },
         {
           "EdgeID": 6,
-          "StartNodeID": "Adder",
-          "EndNodeID": "Buffer1",
+          "StartNodeID": 2,
+          "EndNodeID": 6,
           "StartEdgeIndex": 0,
           "EndEdgeIndex": 0
         },
         {
           "EdgeID": 7,
-          "StartNodeID": "SinSignal1",
-          "EndNodeID": "Buffer2",
+          "StartNodeID": 1,
+          "EndNodeID": 7,
           "StartEdgeIndex": 0,
           "EndEdgeIndex": 0
         },
         {
           "EdgeID": 8,
-          "StartNodeID": "SinSignal2",
-          "EndNodeID": "Buffer3",
+          "StartNodeID": 4,
+          "EndNodeID": 8,
           "StartEdgeIndex": 0,
           "EndEdgeIndex": 0
         }

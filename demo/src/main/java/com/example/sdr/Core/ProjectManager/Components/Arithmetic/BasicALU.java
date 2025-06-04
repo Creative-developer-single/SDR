@@ -1,5 +1,7 @@
 package com.example.sdr.Core.ProjectManager.Components.Arithmetic;
 
+import com.example.sdr.Core.Components.DataType.SDRData.SDRData;
+import com.example.sdr.Core.Components.DataType.SDRData.SDRDataUtils;
 import com.example.sdr.Core.ProjectManager.Components.Base.BaseComponent;
 
 public class BasicALU extends BaseComponent{
@@ -12,22 +14,15 @@ public class BasicALU extends BaseComponent{
     private int mode = MODE_ADD;
     private int channelIndex;
 
-    public BasicALU(int blockLength,int inputCount,int outputCount){
-        super(blockLength, inputCount, outputCount);
-        this.blockLength = blockLength;
-
-        op_in = new double[inputCount][blockLength];
-        ans = new double[outputCount][blockLength];
-    }
 
     public BasicALU(int block,int inputCount,int outputCount,String ID){
         super(block, inputCount,outputCount,ID);
 
-        op_in = new double[inputCount][blockLength];
-        ans = new double[outputCount][blockLength];
+        ans = SDRDataUtils.createComplexMatrix(outputCount, blockLength, 0, 0);
+        op_in = SDRDataUtils.createComplexMatrix(inputCount, blockLength, 0, 0);
     }
 
-    public void setOperationParams(double[] data,int index)
+    public void setOperationParams(SDRData[] data,int index)
     {
         if(data.length != blockLength)
         {
@@ -36,7 +31,7 @@ public class BasicALU extends BaseComponent{
         this.op_in[index] = data;
     }
 
-    public void setOperationParams(double[] a,double[] b)
+    public void setOperationParams(SDRData[] a,SDRData[] b)
     {
         if(a.length != blockLength || b.length != blockLength)
         {
@@ -68,11 +63,11 @@ public class BasicALU extends BaseComponent{
         }
     }
 
-    public double[] getAns(int index){
+    public SDRData[] getAns(int index){
         return ans[index];
     }
 
-    public double[] getValue(int index){
+    public SDRData[] getValue(int index){
         return ans[index];
     }
 
@@ -80,20 +75,23 @@ public class BasicALU extends BaseComponent{
     {
         for(int i = 0; i < blockLength; i++)
         {
-            double tmp = 0;
+            SDRData tmp = new SDRData(0,0);
             for(int j = 0; j < inputCount; j++)
             {
-                tmp += op_in[j][i];
+                tmp.add(op_in[j][i]);
             }
-            ans[0][i] = tmp;
+            ans[0][i].Copy(tmp);
         }
     }
 
     public void subtract()
     {
+        SDRData tmp = new SDRData(0,0);
         for(int i = 0; i < blockLength; i++)
         {
-            ans[0][i] = op_in[0][i] - op_in[1][i];
+            tmp.Copy(op_in[0][i]); // Start with the first operand
+            tmp.subtract(op_in[1][i]); // Subtract the second operand
+            op_in[0][i].Copy(tmp); // Store the result in the first operand
         }
     }
 
@@ -101,24 +99,28 @@ public class BasicALU extends BaseComponent{
     {
         for(int i = 0; i < blockLength; i++)
         {
-            double tmp = 1;
+            SDRData tmp = new SDRData(1,0); // Start with 1 for multiplication
             for(int j = 0; j < inputCount; j++)
             {
-                tmp *= op_in[j][i];
+                tmp.multiply(op_in[j][i]);
             }
-            ans[0][i] = tmp;
+            ans[0][i].Copy(tmp); // Store the result in the first output
         }
     }
 
     public void divide()
     {
-       for(int i = 0; i < blockLength; i++)
+        SDRData tmp = new SDRData(1,0); // Start with 1 for division
+        for(int i = 0; i < blockLength; i++)
         {
-            if(op_in[1][i] == 0)
+            if(op_in[1][i].equals(0))
             {
                 throw new ArithmeticException("Division by zero");
             }
-            ans[0][i] = op_in[0][i] / op_in[1][i];
+            tmp.Copy(op_in[0][i]); // Copy the first operand
+            tmp.divide(op_in[1][i]);
+
+            ans[0][i].Copy(tmp);
         }
     }
 }

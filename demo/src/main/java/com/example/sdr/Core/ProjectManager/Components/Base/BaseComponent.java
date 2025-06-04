@@ -2,6 +2,10 @@ package com.example.sdr.Core.ProjectManager.Components.Base;
 
 import java.lang.reflect.Field;
 
+import org.apache.commons.math3.complex.Complex;
+
+import com.example.sdr.Core.Components.DataType.SDRData.SDRData;
+import com.example.sdr.Core.Components.DataType.SDRData.SDRDataUtils;
 import com.example.sdr.Core.Components.Tools.PropertyModifier.AutoPropertyModifier;
 import com.example.sdr.Core.ProjectManager.Components.ComponentManager;
 
@@ -17,8 +21,9 @@ public class BaseComponent {
     protected int currentInputIndex;
     protected int currentOutputIndex;
 
-    protected double[][] op_in;
-    protected double[][] ans;
+    protected SDRData[][] op_in;
+    //protected double[][] op_in;
+    protected SDRData[][] ans;
 
     public static String getRootClassName(){
         return ComponentManager.class.getPackageName();
@@ -31,8 +36,8 @@ public class BaseComponent {
 
         currentInputIndex = 0;
         currentOutputIndex = 0;
-        ans = new double[outputCount][blockLength];
-        op_in = new double[inputCount][blockLength];
+        ans = SDRDataUtils.createComplexMatrix(outputCount, blockLength, 0, 0);
+        op_in = SDRDataUtils.createComplexMatrix(inputCount, blockLength, 0, 0);
     }
 
     public BaseComponent(int blockLength,int inputCount,int outputCount,String ID){
@@ -43,17 +48,24 @@ public class BaseComponent {
 
         currentInputIndex = 0;
         currentOutputIndex = 0;
-        ans = new double[outputCount][blockLength];
-        op_in = new double[inputCount][blockLength];
+        ans = SDRDataUtils.createComplexMatrix(outputCount, blockLength, 0, 0);
+        op_in = SDRDataUtils.createComplexMatrix(inputCount, blockLength, 0, 0);
+    }
+
+    public int getInputCount() {
+        return inputCount;
+    }
+    public int getOutputCount() {
+        return outputCount;
     }
 
     public void resetBlockLength(int blockLength){
         this.blockLength = blockLength;
-        ans = new double[outputCount][blockLength];
-        op_in = new double[inputCount][blockLength];
+        ans = SDRDataUtils.createComplexMatrix(outputCount, blockLength, 0, 0);
+        op_in = SDRDataUtils.createComplexMatrix(inputCount, blockLength, 0, 0);
     }
 
-    public double[] getAns(int index){
+    public SDRData[] getAns(int index){
         return ans[index];
     }
 
@@ -85,7 +97,7 @@ public class BaseComponent {
         }
     }
 
-    public void setOperationParams(double[] data,int index)
+    public void setOperationParams(SDRData[] data,int index)
     {
         // Override this method in child classes
         if(data.length != blockLength)

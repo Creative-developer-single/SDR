@@ -11,6 +11,8 @@ import java.net.SocketTimeoutException;
 
 import org.json.JSONObject;
 
+import com.example.sdr.Core.Components.DataType.SDRData.SDRData;
+import com.example.sdr.Core.Components.DataType.SDRData.SDRDataUtils;
 import com.example.sdr.Core.Components.Tools.ArrayConverter.JSONToDouble;
 import com.example.sdr.Core.Components.Tools.PropertyExporter.PropertyJSONExporter;
 import com.example.sdr.Core.ProjectManager.Components.Base.BaseComponent;
@@ -232,7 +234,7 @@ public class GeneralBridgeComponent extends BaseComponent{
         }
     }
 
-    private void load_data(double data[],int index){
+    private void load_data(SDRData[] data,int index){
         try{
             String cmdStr = buildCmdString("load_data");
 
@@ -252,7 +254,7 @@ public class GeneralBridgeComponent extends BaseComponent{
         }
     }
 
-    public void setOperationParams(double[] data,int index)
+    public void setOperationParams(SDRData[] data,int index)
     {
         op_in[index] = data;
         load_data(data,index);
@@ -279,14 +281,9 @@ public class GeneralBridgeComponent extends BaseComponent{
         }
 
         //Set the test data
-        setOperationParams(testData, 0);
+        setOperationParams(SDRDataUtils.fromDoubleArray(testData), 0);
         System.out.println("Test data created and set.");
         return testData;
-    }
-
-    public double[] getAns(int index){
-        result();
-        return ans[index];
     }
 
     private void result(){
@@ -294,7 +291,7 @@ public class GeneralBridgeComponent extends BaseComponent{
             String sendStr = buildCmdString("result");
             String data = sendAndReceiveFromServer(sendStr);
 
-            ans[0] = JSONToDouble.getDoubleFromJSONString(data);
+            ans[0] = SDRDataUtils.fromDoubleArray(JSONToDouble.getDoubleFromJSONString(data));
             for(int i=0;i<blockLength;i++){
                 System.out.println("Result: " + ans[i]);
             }
@@ -354,7 +351,7 @@ public class GeneralBridgeComponent extends BaseComponent{
             bridgeComponent.loadConfig();
             Thread.sleep(1000);
             double[] data =  bridgeComponent.createTestData();
-            bridgeComponent.setOperationParams(data, 0);
+            bridgeComponent.setOperationParams(SDRDataUtils.fromDoubleArray(data), 0);
             Thread.sleep(1000);
             bridgeComponent.Calculate();
             Thread.sleep(1000);

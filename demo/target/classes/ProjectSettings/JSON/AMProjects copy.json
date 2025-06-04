@@ -1,0 +1,224 @@
+{
+    "ProjectName": "Untitle",
+    "ProjectOwner": "Admin",
+    "LastModifyTime": "2025-03-24",
+    "ProjectProperties": {
+      "GlobalProperties": {
+        "SampleRate": 1000000,
+        "BlockLength": 1024
+      },
+      "GraphProperties": {
+        "GraphType": "LogicGraph",
+        "GraphName": "LogicGraph1"
+      },
+      "SettingsProperties": {
+        "SettingsName": "Settings1",
+        "SettingsType": "Default",
+        "SettingsVersion": "0.1",
+        "SettingsPath": "Default"
+      },
+      "SimulationProperties": {
+        "SimulationMode": "Static",
+        "SimulationTime": "2.4",
+        "ReportSettings": {
+          "ReportedNodes": [
+            {
+              "NodeID": "Buffer",
+              "NodeVariable": "Buffer"
+            }
+          ],
+          "ReportType": "CSVPlot"
+        }
+      }
+    },
+    "LogicGraph": {
+      "Nodes": [
+        {
+          "ID": "SinSignal1",
+          "Pos": {
+            "X": 10,
+            "Y": 20
+          },
+          "BlockLength": 4096,
+          "InputCount":1,
+          "OutputCount":1,
+          "ComponentType": "Source.SignalGenerator",
+          "ComponentID": "Sin1",
+          "ComponentSettings": {
+            "sampleRate": 1000000,
+            "signalType": "Sine",
+            "frequency": 1000,
+            "amplitude": 1,
+            "blockPhase": 0
+          }
+        },
+        {
+          "ID": "Adder",
+          "Pos": {
+            "X": 90,
+            "Y": 20
+          },
+          "BlockLength": 4096,
+          "InputCount":2,
+          "OutputCount":1,
+          "ComponentType": "Arithmetic.BasicALU",
+          "ComponentID": "Adder1",
+          "ComponentSettings": {
+            "OperationMode": "Add"
+          }
+        },
+        {
+          "ID": "Multiplier",
+          "Pos": {
+            "X": 90,
+            "Y": 20
+          },
+          "BlockLength": 4096,
+          "InputCount":2,
+          "OutputCount":1,
+          "ComponentType": "Arithmetic.BasicALU",
+          "ComponentID": "Adder1",
+          "ComponentSettings": {
+            "OperationMode": "Add",
+            "mode":2
+          }
+        },
+        {
+          "ID": "SinSignal2",
+          "Pos": {
+            "X": 10,
+            "Y": 90
+          },
+          "BlockLength": 4096,
+          "InputCount":1,
+          "OutputCount":1,
+          "ComponentType": "Source.SignalGenerator",
+          "ComponentID": "Sin2",
+          "ComponentSettings": {
+            "BlockLength": 4096,
+            "sampleRate": 1000000,
+            "signalType": "Sine",
+            "frequency": 15000,
+            "amplitude": 1,
+            "blockPhase": 0
+          }
+        },
+        {
+          "ID": "SinSignal3",
+          "Pos": {
+            "X": 10,
+            "Y": 90
+          },
+          "BlockLength": 4096,
+          "InputCount":1,
+          "OutputCount":1,
+          "ComponentType": "Source.SignalGenerator",
+          "ComponentID": "Sin3",
+          "ComponentSettings": {
+            "BlockLength": 4096,
+            "sampleRate": 1000000,
+            "signalType": "Sine",
+            "frequency": 15000,
+            "amplitude": 2,
+            "blockPhase": 0
+          }
+        },
+        {
+          "ID": "Buffer1",
+          "Pos": {
+            "X": 150,
+            "Y": 20
+          },
+          "BlockLength": 4096,
+          "InputCount":1,
+          "OutputCount":1,
+          "ComponentType": "Others.DataBuffer.SinglePortBuffer",
+          "ComponentID": "Buffer1",
+          "ComponentSettings": {
+            "bufferLength": 4096
+          }
+        },
+        {
+          "ID": "Buffer2",
+          "Pos": {
+            "X": 150,
+            "Y": 20
+          },
+          "BlockLength": 4096,
+          "InputCount":1,
+          "OutputCount":1,
+          "ComponentType": "Others.DataBuffer.SinglePortBuffer",
+          "ComponentID": "Buffer1",
+          "ComponentSettings": {
+            "bufferLength": 4096
+          }
+        },
+        {
+          "ID": "Buffer3",
+          "Pos": {
+            "X": 150,
+            "Y": 20
+          },
+          "BlockLength": 4096,
+          "InputCount":1,
+          "OutputCount":1,
+          "ComponentType": "Others.DataBuffer.SinglePortBuffer",
+          "ComponentID": "Buffer1",
+          "ComponentSettings": {
+            "bufferLength": 4096
+          }
+        }
+      ],
+      "Edges": [
+        {
+          "EdgeID": 1,
+          "StartNodeID": "SinSignal1",
+          "EndNodeID": "Multiplier",
+          "StartEdgeIndex": 0,
+          "EndEdgeIndex": 0
+        },
+        {
+          "EdgeID": 2,
+          "StartNodeID": "SinSignal2",
+          "EndNodeID": "Multiplier",
+          "StartEdgeIndex": 0,
+          "EndEdgeIndex": 1
+        },
+        {
+          "EdgeID": 3,
+          "StartNodeID": "Multiplier",
+          "EndNodeID": "Adder",
+          "StartEdgeIndex": 0,
+          "EndEdgeIndex": 0
+        },
+        {
+          "EdgeID": 5,
+          "StartNodeID": "SinSignal3",
+          "EndNodeID": "Adder",
+          "StartEdgeIndex": 0,
+          "EndEdgeIndex": 1
+        },
+        {
+          "EdgeID": 6,
+          "StartNodeID": "Adder",
+          "EndNodeID": "Buffer1",
+          "StartEdgeIndex": 0,
+          "EndEdgeIndex": 0
+        },
+        {
+          "EdgeID": 7,
+          "StartNodeID": "SinSignal1",
+          "EndNodeID": "Buffer2",
+          "StartEdgeIndex": 0,
+          "EndEdgeIndex": 0
+        },
+        {
+          "EdgeID": 8,
+          "StartNodeID": "SinSignal2",
+          "EndNodeID": "Buffer3",
+          "StartEdgeIndex": 0,
+          "EndEdgeIndex": 0
+        }
+      ]
+    }
+  }

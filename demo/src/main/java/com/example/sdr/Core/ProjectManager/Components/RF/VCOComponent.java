@@ -1,5 +1,6 @@
 package com.example.sdr.Core.ProjectManager.Components.RF;
 
+import com.example.sdr.Core.Components.DataType.SDRData.SDRData;
 import com.example.sdr.Core.ProjectManager.Components.Base.BaseComponent;
 
 public class VCOComponent extends BaseComponent {
@@ -22,33 +23,30 @@ public class VCOComponent extends BaseComponent {
         super(blockLength, inputCount, outputCount,ID);
     }
 
-    public void setOperationParams(double[] input, int index) {
+    public void setOperationParams(SDRData[] input, int index) {
         if (input.length != blockLength) {
             throw new IllegalArgumentException("Invalid block length");
         }
         this.op_in[index] = input;
     }
 
-    public void setModulationInput(double[] freqModInput) {
+    public void setModulationInput(SDRData[] freqModInput) {
         setOperationParams(freqModInput, 0);
     }
 
     @Override
     public void Calculate() {
-        double[] input = op_in[0];
-        double[] output = ans[0];
+
 
         for (int i = 0; i < blockLength; i++) {
-            double freq = centerFrequency + sensitivity * input[i];
+            
+            double freq = centerFrequency + sensitivity * op_in[0][i].getReal(); // 获取调制输入的实部作为频率偏移量
             phase += 2 * Math.PI * freq / sampleRate;
             phase = phase % (2 * Math.PI);
-            output[i] = Math.cos(phase);
+            ans[0][i].fromDouble(Math.cos(phase));
         }
     }
 
-    public double[] getValue(int index) {
-        return ans[index];
-    }
 
     public void setCenterFrequency(double fc) {
         this.centerFrequency = fc;

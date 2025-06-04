@@ -4,6 +4,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import com.example.sdr.Core.Components.Tools.BytesTools.BytesConcat;
+import com.example.sdr.Core.Components.Tools.Converter.DoubleToBytes.DoubleToBytes;
 import com.example.sdr.Core.Components.Tools.Converter.IntToBytes.IntToBytes;
 import com.example.sdr.Core.Components.Tools.Converter.StringToBytes.StringToBytes;
 import com.example.sdr.Core.ProjectManager.ControlBridge.RPC.Processer.RPCProcesser;
@@ -125,8 +126,10 @@ public class RPCLogicGraphManager {
                         // 创建模块数据长度
                         byte[] moduleDataLength = IntToBytes.intToBytes(result[i].length);
 
+                        // 创建模块数据
+                        byte[] moduleData = DoubleToBytes.doubleArrayToBytes(result[i]);
                         // 拼接到modulesData
-                        response = BytesConcat.concat(response, moduleID, moduleDataLength);
+                        response = BytesConcat.concat(response, moduleID, moduleDataLength,moduleData);
                     }
 
                     // 调用RPCProcesser的SendReply方法发送响应
@@ -167,7 +170,7 @@ public class RPCLogicGraphManager {
                 case "RPCLoadLogicGraph":
                     RPCLoadLogicGraph(object);
                     break;
-                case "RPCNodeData":
+                case "RPCGetNodeAns":
                     RPCNodeData(object, rpcID);
                     break;
                 default:

@@ -7,7 +7,7 @@ import org.json.JSONObject;
 
 public class RPCSimulatorBridge {
     //RPCSimulator Instance
-    private RPCSimulator rpcSimulator;
+    private RPCSimulatorManager rpcSimulator;
 
     private volatile double rpcSimulatorState = 0.0;
     private volatile double rpcSimulatorTime = 0.0;
@@ -41,7 +41,7 @@ public class RPCSimulatorBridge {
         StoreParamsInMap();
     }
 
-    public RPCSimulatorBridge(RPCSimulator rpcSimulator) {
+    public RPCSimulatorBridge(RPCSimulatorManager rpcSimulator) {
         this.rpcSimulator = rpcSimulator;
         this.simulationProperties = new ConcurrentHashMap<>();
     }
