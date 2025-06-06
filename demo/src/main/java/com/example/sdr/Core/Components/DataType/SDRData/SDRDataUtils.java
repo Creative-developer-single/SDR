@@ -119,6 +119,39 @@ public class SDRDataUtils {
         return result;
     }
 
+    //转换到二进制，先实部后虚部，四个字节表示一个double
+    public static byte[] toByteArray(SDRData[] data) {
+        byte[] result = new byte[data.length * 16]; // 每个 double 占 8 字节，实部和虚部各占 8 字节
+        for (int i = 0; i < data.length; i++) {
+            long realBits = Double.doubleToLongBits(data[i].getReal());
+            long imagBits = Double.doubleToLongBits(data[i].getImag());
+            for (int j = 0; j < 8; j++) {
+                result[i * 16 + j] = (byte) (realBits >>> (56 - j * 8));
+                result[i * 16 + j + 8] = (byte) (imagBits >>> (56 - j * 8));
+            }
+        }
+        return result;
+    }
+
+    // 从二进制转换回 SDRData 数组
+    public static SDRData[] fromByteArray(byte[] bytes) {
+        if (bytes.length % 16 != 0) {
+            throw new IllegalArgumentException("Byte array length must be a multiple of 16");
+        }
+        int size = bytes.length / 16;
+        SDRData[] data = new SDRData[size];
+        for (int i = 0; i < size; i++) {
+            long realBits = 0;
+            long imagBits = 0;
+            for (int j = 0; j < 8; j++) {
+                realBits |= ((long) (bytes[i * 16 + j] & 0xFF)) << (56 - j * 8);
+                imagBits |= ((long) (bytes[i * 16 + j + 8] & 0xFF)) << (56 - j * 8);
+            }
+            data[i] = new SDRData(Double.longBitsToDouble(realBits), Double.longBitsToDouble(imagBits));
+        }
+        return data;
+    }
+
     /*
      * 非创建类，批量操作类
      */

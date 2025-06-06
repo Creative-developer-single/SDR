@@ -13,7 +13,7 @@ public class BaseComponent {
     protected int inputCount;
     protected int outputCount;
     protected int blockLength;
-    protected int sampleRate;
+    protected int SampleRate;
     
     protected String ID;
 

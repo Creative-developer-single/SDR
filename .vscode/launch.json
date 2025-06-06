@@ -6,6 +6,13 @@
     "configurations": [
         {
             "type": "java",
+            "name": "SDRDataUtilsTest",
+            "request": "launch",
+            "mainClass": "com.example.sdr.Core.Components.DataType.SDRData.SDRDataUtilsTest",
+            "projectName": "demo"
+        },
+        {
+            "type": "java",
             "name": "PerformanceTestGFLOPSWithFloat",
             "request": "launch",
             "mainClass": "com.example.sdr.Core.Components.Tools.SpeedTest.PerformanceTestGFLOPSWithFloat",

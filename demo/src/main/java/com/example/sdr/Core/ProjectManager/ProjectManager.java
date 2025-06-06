@@ -86,9 +86,13 @@ public class ProjectManager {
 
     public static void TestForRPCV2(){
         ProjectManager projectManager = new ProjectManager();
-        projectManager.loadFromJSON("/ProjectSettings/JSON/AMProjects.json");
-        projectManager.getProjectPropertiesManager().simulationProperties.simulationCycle = 100;
-        projectManager.getSimulator().Simluation();
+        //projectManager.loadFromJSON("/ProjectSettings/JSON/ComplexSignal/ComplexSine.json");
+        projectManager.loadFromJSON("/ProjectSettings/JSON/RealSignal/RealSine.json");
+        //projectManager.loadFromJSON("/ProjectSettings/JSON/ComplexSignal/ComplexSineWithOscilloscope.json");
+
+        projectManager.getProjectPropertiesManager().simulationProperties.simulationCycle = 1;
+        //projectManager.getSimulator().Simluation();
+        //projectManager.getSimulator().startSimulation();
         
 
         projectManager.StartRPC();
@@ -122,8 +126,8 @@ public class ProjectManager {
 
     public static void main(String[] args){
 
-        TestForFlow();
-        //TestForRPCV2();
+        //TestForFlow();
+        TestForRPCV2();
         //TestForRPC();
     }
 }

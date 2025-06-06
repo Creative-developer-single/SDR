@@ -72,6 +72,9 @@ public class Simulator {
         LogicGraphManager logicGraphManager = manager.getLogicGraphManager();
         logicGraphManager.createScheduler();
         simulationStatus = "Running";
+        processer.updateSimulationState();
+
+        simulationProperties.simulationCycle = (int)(simulationProperties.simulationTime / simulationProperties.simulationTimeStep);
      }
 
     public void runSimulation(){
@@ -86,6 +89,7 @@ public class Simulator {
         LogicGraphManager logicGraphManager = manager.getLogicGraphManager();
         logicGraphManager.clearScheduler();
         simulationStatus = "Stopped";
+        processer.updateSimulationState();
     } 
 
     public void Simluation(){

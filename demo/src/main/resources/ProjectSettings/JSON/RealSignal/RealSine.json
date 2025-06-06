@@ -43,7 +43,7 @@
           "BlockLength": 1024,
           "InputCount":1,
           "OutputCount":1,
-          "ComponentType": "Source.ComplexSignalGenerator",
+          "ComponentType": "Source.SignalGenerator",
           "ComponentID": "Sin1",
           "ComponentSettings": {
             "sampleRate": 1000000,

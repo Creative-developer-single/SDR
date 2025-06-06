@@ -2,6 +2,7 @@ package com.example.sdr.Core.ProjectManager.LogicGraph.Reporter;
 
 import java.util.List;
 
+import com.example.sdr.Core.Components.DataType.SDRData.SDRData;
 import com.example.sdr.Core.Components.DataType.SDRData.SDRDataUtils;
 import com.example.sdr.Core.ProjectManager.LogicGraph.Structure.LogicEdge;
 import com.example.sdr.Core.ProjectManager.LogicGraph.Structure.LogicNode;
@@ -55,11 +56,11 @@ public class LogicGraphReporter {
      * 函数名称：getNodeData
      * 参数：节点对象，数据索引
      */
-    public double[] getNodeData(LogicNode node,int index){
+    public SDRData[] getNodeData(LogicNode node,int index){
         if(node == null || index < 0 || index > node.getComponent().getOutputCount() - 1){
             throw new IllegalArgumentException("Invalid node or index");
         }
-        return SDRDataUtils.toDoubleArray(node.getComponent().getAns(index));
+        return node.getComponent().getAns(index);
     }
 
     /*

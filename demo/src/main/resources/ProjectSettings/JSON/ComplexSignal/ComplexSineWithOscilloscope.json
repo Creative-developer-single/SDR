@@ -21,6 +21,7 @@
         "SimulationMode": "Static",
         "SimulationTime": "2.4",
         "SimulationTimeStep": "0.0001",
+        "SimulationSampleRate":10000,
         "ReportSettings": {
           "ReportedNodes": [
             {
@@ -84,6 +85,22 @@
               "bufferLength": 4096,
               "BufferMode":"Complex"
             }
+          },
+          {
+            "ID": 4,
+            "Pos": {
+              "X": 90,
+              "Y": 20
+            },
+            "BlockLength": 1024,
+            "InputCount":1,
+            "OutputCount":1,
+            "ComponentType": "Visual.Oscilloscope",
+            "ComponentID": "Oscilloscope1",
+            "ComponentSettings": {
+              "bufferLength": 512,
+              "BufferMode":"Real"
+            }
           }
       ],
       "Edges": [
@@ -100,7 +117,14 @@
           "EndNodeID": 3,
           "StartEdgeIndex": 0,
           "EndEdgeIndex": 0
-        }
+        },
+        {
+            "EdgeID": 3,
+            "StartNodeID": 1,
+            "EndNodeID": 4,
+            "StartEdgeIndex": 0,
+            "EndEdgeIndex": 0
+          }
       ]
     }
   }

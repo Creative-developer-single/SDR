@@ -72,7 +72,7 @@ public class ComplexSignalGenerator extends BaseComponent {
     public void GeneralSignal(){
         if(signalType.equals("Sine")){
             for (int i=0; i < blockLength ;i++){
-                this.blockPhase += (2 * Math.PI * frequency / sampleRate);
+                this.blockPhase += (2 * Math.PI * frequency / SampleRate);
                 ans[0][i].setReal(amplitude * Math.cos(blockPhase));
                 ans[0][i].setImag(amplitude * Math.sin(blockPhase));
             }

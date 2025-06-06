@@ -3,6 +3,8 @@ package com.example.sdr.Core.ProjectManager.ControlBridge.RPC.Processer.LogicGra
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import com.example.sdr.Core.Components.DataType.SDRData.SDRData;
+import com.example.sdr.Core.Components.DataType.SDRData.SDRDataUtils;
 import com.example.sdr.Core.Components.Tools.BytesTools.BytesConcat;
 import com.example.sdr.Core.Components.Tools.Converter.DoubleToBytes.DoubleToBytes;
 import com.example.sdr.Core.Components.Tools.Converter.IntToBytes.IntToBytes;
@@ -106,7 +108,7 @@ public class RPCLogicGraphManager {
             // 检查命令类型
             switch(Command){
                 case "RPCGetNodeAns":
-                    double [][] result = rpcLogicGraphLoader.RPCGetNodeByArray(nodes);
+                    SDRData [][] result = rpcLogicGraphLoader.RPCGetNodeByArray(nodes);
 
                     // 创建RPC返回帧
                     byte[] response = StringToBytes.stringToBytes("DATA");
@@ -127,7 +129,7 @@ public class RPCLogicGraphManager {
                         byte[] moduleDataLength = IntToBytes.intToBytes(result[i].length);
 
                         // 创建模块数据
-                        byte[] moduleData = DoubleToBytes.doubleArrayToBytes(result[i]);
+                        byte[] moduleData = SDRDataUtils.toByteArray(result[i]);
                         // 拼接到modulesData
                         response = BytesConcat.concat(response, moduleID, moduleDataLength,moduleData);
                     }

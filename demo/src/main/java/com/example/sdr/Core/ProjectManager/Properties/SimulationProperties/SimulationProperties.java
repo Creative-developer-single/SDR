@@ -24,6 +24,8 @@ public class SimulationProperties {
     public void loadFromJSON(JSONObject object) {
         simulationMode = object.getString("SimulationMode");
         simulationTime = object.getDouble("SimulationTime");
+        simulationTimeStep = object.getDouble("SimulationTimeStep");
+        simulationSampleRate = object.getDouble("SimulationSampleRate");
     }
 
     public SimulationProperties(){

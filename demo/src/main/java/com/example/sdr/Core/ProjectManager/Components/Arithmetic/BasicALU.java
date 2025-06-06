@@ -12,6 +12,7 @@ public class BasicALU extends BaseComponent{
     final int MODE_DIVIDE = 3;
 
     private int mode = MODE_ADD;
+    private String OperationMode = "Add";
     private int channelIndex;
 
 
@@ -47,19 +48,21 @@ public class BasicALU extends BaseComponent{
     }
 
     public void Calculate(){
-        switch(mode){
-            case MODE_ADD:
+        switch(OperationMode){
+            case "Add":
                 add();
                 break;
-            case MODE_SUBTRACT:
+            case "Subtract":
                 subtract();
                 break;
-            case MODE_MULTIPLY:
+            case "Multiply":
                 multiply();
                 break;
-            case MODE_DIVIDE:
+            case "Divide":
                 divide();
                 break;
+            default:
+                throw new IllegalArgumentException("Invalid operation mode: " + OperationMode);
         }
     }
 
