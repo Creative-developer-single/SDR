@@ -1,0 +1,16 @@
+{
+    "ID": 0,
+    "Pos": {
+      "X": 90,
+      "Y": 20
+    },
+    "BlockLength": 1024,
+    "InputCount":1,
+    "OutputCount":1,
+    "ComponentType": "Visual.SpectrumAnalyzer",
+    "ComponentID": "SpectrumAnalyzer1",
+    "ComponentSettings": {
+      "FFTPoint": 512,
+      "SpectrumType":"Amp"
+    }
+  }

@@ -98,7 +98,7 @@ public class RPCProcesser {
                         
                         response.put("RPCFrame", ReplyFrame);
 
-                        //manager.getRPCManager().SendReply("CTRL"+response.toString());
+                        manager.getRPCManager().SendReply("CTRL"+response.toString());
                         break;
                     case "Simulation":
                         rpcSimulationManager.RPCCall(rpcFrame,rpcID);

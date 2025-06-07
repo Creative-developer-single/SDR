@@ -65,6 +65,11 @@ public class BaseComponent {
         op_in = SDRDataUtils.createComplexMatrix(inputCount, blockLength, 0, 0);
     }
 
+    public void refreshComponent(){
+        // Override this method in child classes if needed
+        // This method can be used to refresh the component's state or properties
+    }
+
     public SDRData[] getAns(int index){
         return ans[index];
     }

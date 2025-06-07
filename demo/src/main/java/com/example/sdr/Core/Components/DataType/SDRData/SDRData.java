@@ -157,6 +157,24 @@ public class SDRData {
         }
     }
 
+    // 求幅度的平方，赋予本身
+    public void power() {
+        if (this.computeMode == ComputeMode.REAL) {
+            // 实数的平方
+            this.real = this.real * this.real;
+            this.imag = 0.0; // 保持为实数
+            this.computeMode = ComputeMode.REAL;
+            this.type = DataType.REAL;
+        } else {
+            // 复数的幅度平方
+            double magnitudeSquared = this.real * this.real + this.imag * this.imag;
+            this.real = magnitudeSquared;
+            this.imag = 0.0; // 保持为实数
+            this.computeMode = ComputeMode.REAL;
+            this.type = DataType.REAL;
+        }
+    }
+
     public void abs(){
         if (this.computeMode == ComputeMode.REAL) {
             // 实数的绝对值
@@ -171,6 +189,41 @@ public class SDRData {
             this.imag = 0.0; // 保持为实数
             this.computeMode = ComputeMode.REAL;
             this.type = DataType.REAL;
+        }
+    }
+
+    // 计算相位，赋予本身
+    public void phase() {
+        if (this.computeMode == ComputeMode.REAL) {
+            // 实数的相位为0
+            this.real = 0.0;
+            this.imag = 0.0; // 保持为实数
+            this.computeMode = ComputeMode.REAL;
+            this.type = DataType.REAL;
+        } else {
+            // 复数的相位
+            double phase = Math.atan2(this.imag, this.real);
+            this.real = phase;
+            this.imag = 0.0; // 保持为实数
+            this.computeMode = ComputeMode.REAL;
+            this.type = DataType.REAL;
+        }
+    }
+
+    // 计算最小值，赋予本身
+    public void Min(SDRData other) {
+        if (this.computeMode == ComputeMode.REAL && other.computeMode == ComputeMode.REAL) {
+            this.real = Math.min(this.real, other.real);
+            this.imag = 0.0; // 保持为实数
+            this.computeMode = ComputeMode.REAL;
+            this.type = DataType.REAL;
+        } else {
+            double minReal = Math.min(this.real, other.real);
+            double minImag = Math.min(this.imag, other.imag);
+            this.real = minReal;
+            this.imag = minImag;
+            this.computeMode = ComputeMode.COMPLEX;
+            this.type = DataType.COMPLEX;
         }
     }
 

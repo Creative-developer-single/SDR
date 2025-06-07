@@ -59,6 +59,12 @@ public class LogicGraphStructureManager {
         rootNode = null;
     }
 
+    public void refreshComponents(){
+        for (LogicNode node : nodes) {
+            node.getComponent().refreshComponent();
+        }
+    }
+
 
     // 重置节点，但不清除节点，用于重新运行现有的仿真图
     public void resetNodes(){

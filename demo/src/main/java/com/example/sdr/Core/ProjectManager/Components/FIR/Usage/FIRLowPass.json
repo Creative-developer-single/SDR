@@ -1,0 +1,17 @@
+{
+    "ID": 0,
+    "Pos": {
+      "X": 90,
+      "Y": 20
+    },
+    "BlockLength": 1024,
+    "InputCount":1,
+    "OutputCount":1,
+    "ComponentType": "FIR.FIRLowPass",
+    "ComponentID": "FIRLowPass",
+    "ComponentSettings": {
+      "CutOffFrequency": 1000,
+      "WindowLength": 64,
+      "WindowType":"Hamming"
+    }
+  }

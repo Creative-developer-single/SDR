@@ -1,0 +1,18 @@
+{
+    "ID": 0,
+    "Pos": {
+      "X": 90,
+      "Y": 20
+    },
+    "BlockLength": 1024,
+    "InputCount":1,
+    "OutputCount":1,
+    "ComponentType": "RF.VCOComponent",
+    "ComponentID": "VCOComponent",
+    "ComponentSettings": {
+      "CenterFrequency": 1000,
+      "SampleRate": 48000,
+      "Sensitivity":100.0,
+      "Phase": 0.0
+    }
+  }

@@ -1,0 +1,16 @@
+{
+    "ID": 0,
+    "Pos": {
+      "X": 90,
+      "Y": 20
+    },
+    "BlockLength": 1024,
+    "InputCount":1,
+    "OutputCount":1,
+    "ComponentType": "RF.RPLL",
+    "ComponentID": "RPLL",
+    "ComponentSettings": {
+      "CenterFrequency": 1000,
+      "DesiredLockedFrequency": 1200
+    }
+  }

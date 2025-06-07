@@ -85,6 +85,10 @@ public class LogicGraphManager {
         reporter.setEdges(graph.getEdges());
     }
 
+    // refresh All the Components
+    public void refreshAllComponents(){
+        graph.refreshComponents();
+    }
 
     public LogicGraphStructureManager getGraphInstance(){
         return graph;

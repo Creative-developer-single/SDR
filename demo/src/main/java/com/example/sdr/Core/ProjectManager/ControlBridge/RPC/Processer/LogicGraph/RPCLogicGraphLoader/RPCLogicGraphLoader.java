@@ -49,9 +49,18 @@ public class RPCLogicGraphLoader {
                 throw new IllegalArgumentException("Node array cannot be null or empty");
             }
 
-            // 规定前端数组长度一致
-            // 提取第一个节点的长度作为数组初始化长度
-            int length = nodes.getJSONObject(0).getInt("Length");
+            // 提取最长的长度
+            int length = 0;
+            for (int i = 0; i < nodes.length(); i++) {
+                JSONObject node = nodes.getJSONObject(i);
+                if (!node.has("Length")) {
+                    throw new IllegalArgumentException("Node at index " + i + " does not have a Length property");
+                }
+                int nodeLength = node.getInt("Length");
+                if (nodeLength > length) {
+                    length = nodeLength;
+                }
+            }
 
             SDRData[][] result = SDRDataUtils.createComplexMatrix(nodes.length(), length, 0, 0);
 
@@ -60,9 +69,10 @@ public class RPCLogicGraphLoader {
                 JSONObject node = nodes.getJSONObject(i);
                 Integer nodeID = node.getInt("ID");
                 Integer index = node.getInt("Index");
+                int Modulelength = nodes.getJSONObject(i).getInt("Length");
 
                 // 获取节点数据
-                result[i] = RPCGetNodeData(nodeID, index, length);
+                result[i] = RPCGetNodeData(nodeID, index, Modulelength);
             }
 
             return result;

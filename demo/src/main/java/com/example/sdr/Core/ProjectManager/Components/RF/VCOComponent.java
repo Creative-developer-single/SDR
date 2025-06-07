@@ -6,10 +6,10 @@ import com.example.sdr.Core.ProjectManager.Components.Base.BaseComponent;
 public class VCOComponent extends BaseComponent {
 
     // 控制参数（默认值可调）
-    private double centerFrequency = 1000.0; // 中心频率 Hz
-    private double sampleRate = 48000.0;     // 采样率 Hz
-    private double sensitivity = 100.0;      // 调制灵敏度 Hz/V
-    private double phase = 0.0;              // 当前相位
+    private double CenterFrequency = 1000.0; // 中心频率 Hz
+    private double SampleRate = 48000.0;     // 采样率 Hz
+    private double Sensitivity = 100.0;      // 调制灵敏度 Hz/V
+    private double Phase = 0.0;              // 当前相位
 
     public VCOComponent(int blockLength) {
         super(blockLength, 1, 1);
@@ -40,36 +40,36 @@ public class VCOComponent extends BaseComponent {
 
         for (int i = 0; i < blockLength; i++) {
             
-            double freq = centerFrequency + sensitivity * op_in[0][i].getReal(); // 获取调制输入的实部作为频率偏移量
-            phase += 2 * Math.PI * freq / sampleRate;
-            phase = phase % (2 * Math.PI);
-            ans[0][i].fromDouble(Math.cos(phase));
+            double freq = CenterFrequency + Sensitivity * op_in[0][i].getReal(); // 获取调制输入的实部作为频率偏移量
+            Phase += 2 * Math.PI * freq / SampleRate;
+            Phase = Phase % (2 * Math.PI);
+            ans[0][i].fromDouble(Math.cos(Phase));
         }
     }
 
 
     public void setCenterFrequency(double fc) {
-        this.centerFrequency = fc;
+        this.CenterFrequency = fc;
     }
 
     public void setSampleRate(double fs) {
-        this.sampleRate = fs;
+        this.SampleRate = fs;
     }
 
-    public void setSensitivity(double sensitivity) {
-        this.sensitivity = sensitivity;
+    public void setSensitivity(double Sensitivity) {
+        this.Sensitivity = Sensitivity;
     }
 
     @Override
     public Boolean ModifyPropertiesByName(String name, Object value) {
-        if (name.equals("centerFrequency")) {
-            this.centerFrequency = Double.parseDouble(value.toString());
+        if (name.equals("CenterFrequency")) {
+            this.CenterFrequency = Double.parseDouble(value.toString());
             return true;
-        } else if (name.equals("sampleRate")) {
-            this.sampleRate = Double.parseDouble(value.toString());
+        } else if (name.equals("SampleRate")) {
+            this.SampleRate = Double.parseDouble(value.toString());
             return true;
-        } else if (name.equals("sensitivity")) {
-            this.sensitivity = Double.parseDouble(value.toString());
+        } else if (name.equals("Sensitivity")) {
+            this.Sensitivity = Double.parseDouble(value.toString());
             return true;
         }
         return super.ModifyPropertiesByName(name, value);

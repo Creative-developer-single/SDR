@@ -120,16 +120,17 @@ public class RPCLogicGraphManager {
                     // 拼接到response
                     response = BytesConcat.concat(response,frameID,moduleLength);
                     
+
                     // 遍历结果数组
                     for (int i = 0; i < result.length;i++){
                         // 创建模块ID
                         byte[] moduleID = IntToBytes.intToBytes(nodes.getJSONObject(i).getInt("ID"));
 
                         // 创建模块数据长度
-                        byte[] moduleDataLength = IntToBytes.intToBytes(result[i].length);
+                        byte[] moduleDataLength = IntToBytes.intToBytes(nodes.getJSONObject(i).getInt("Length"));
 
                         // 创建模块数据
-                        byte[] moduleData = SDRDataUtils.toByteArray(result[i]);
+                        byte[] moduleData = SDRDataUtils.toByteArray(result[i],nodes.getJSONObject(i).getInt("Length"));
                         // 拼接到modulesData
                         response = BytesConcat.concat(response, moduleID, moduleDataLength,moduleData);
                     }

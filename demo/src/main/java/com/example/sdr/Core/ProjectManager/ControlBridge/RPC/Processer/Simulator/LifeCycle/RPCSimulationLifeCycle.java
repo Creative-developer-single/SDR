@@ -14,10 +14,10 @@ public class RPCSimulationLifeCycle {
         try{
             String status = object.getString("Status");
             switch(status) {
-                case "Start":
+                case "running":
                     StartSimulation();
                     break;
-                case "Stop":
+                case "stopped":
                     StopSimulation();
                     break;
                 default:
