@@ -8,6 +8,7 @@ import com.example.sdr.Core.Components.Tools.FFTTools.FFTTools;
 import com.example.sdr.Core.ProjectManager.Components.Base.BaseComponent;
 
 public class SpectrumAnalyzer extends BaseComponent{
+    private int bufferLength;
     private int FFTPoint;
     private String SpectrumType;// Amp or Phase or Power
 
@@ -19,6 +20,15 @@ public class SpectrumAnalyzer extends BaseComponent{
 
     public void Calculate() {
         // Do nothing
+    }
+
+    @Override
+    public void refreshComponent() {
+        // 重置输出数组的长度为FFTPoint
+        FFTPoint = this.bufferLength;
+        if (ans[0] == null || ans[0].length != FFTPoint) {
+            resetBlockLength(FFTPoint);
+        }
     }
 
     public SDRData[] CalculateFFT(SDRData[] data) {

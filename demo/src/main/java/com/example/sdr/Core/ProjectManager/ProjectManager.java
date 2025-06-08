@@ -104,7 +104,7 @@ public class ProjectManager {
             projectManager.getRPCManager().getProcesser().processRPCFrame();
             projectManager.getProjectManagerTaskHandler().handleTask();
             try {
-                Thread.sleep(50);
+                Thread.sleep(20);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

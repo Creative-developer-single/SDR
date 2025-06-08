@@ -6,7 +6,6 @@ import org.apache.commons.math3.complex.Complex;
 
 import com.example.sdr.Core.Components.DataType.SDRData.SDRData;
 import com.example.sdr.Core.Components.DataType.SDRData.SDRDataUtils;
-import com.example.sdr.Core.Components.Tools.PropertyModifier.AutoPropertyModifier;
 import com.example.sdr.Core.ProjectManager.Components.ComponentManager;
 
 public class BaseComponent {

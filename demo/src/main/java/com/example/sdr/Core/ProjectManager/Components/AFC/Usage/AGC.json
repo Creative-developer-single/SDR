@@ -1,0 +1,17 @@
+{
+    "ID": 0,
+    "Pos": {
+      "X": 90,
+      "Y": 20
+    },
+    "BlockLength": 1024,
+    "InputCount":1,
+    "OutputCount":1,
+    "ComponentType": "AFC.AGC",
+    "ComponentID": "AGC",
+    "ComponentSettings": {
+        "TargetLevel": 0.5,
+        "Step": 0.01,
+        "WindowLength": 1024
+    }
+  }
