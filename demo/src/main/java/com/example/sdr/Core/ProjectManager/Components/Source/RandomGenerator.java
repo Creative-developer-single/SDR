@@ -43,8 +43,13 @@ public class RandomGenerator extends BaseComponent {
         this.random = new Random();
         this.setNoisePower(1.0); // 默认噪声能量为 1.0
         this.setNoiseType("Real"); // 默认噪声类型为 "Real"
+        this.Type = "Driver"; // 设置组件类型为 "Driver"
     }
 
+    @Override
+    public void refreshComponent(){
+        resetBlockLength(blockLength);
+    }
 
     // ================== 重载核心方法 ==================
 

@@ -74,6 +74,11 @@ public class LogicGraphManager {
         graph.resetNodes();
     }
 
+    public void runSimulationCheck(double perSimulationTime){
+        // 运行采样率传播算法
+        scheduler.runSimulationCheck(perSimulationTime);
+    }
+
     //Run a Schedule Cycle
     public void runScheduler(){
         scheduler.runTheScheduler();

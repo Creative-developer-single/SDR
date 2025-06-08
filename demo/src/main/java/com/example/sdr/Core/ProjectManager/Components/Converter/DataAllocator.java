@@ -10,6 +10,15 @@ public class DataAllocator extends BaseComponent{
     }
 
     @Override
+    public void setOperationParams(SDRData[] data, int index) {
+        // 自适应输入速率
+        if (data.length != blockLength) {
+            resetBlockLength(data.length);
+        }
+        op_in[index] = data;
+    }
+
+    @Override
     public void Calculate(){
         // 复数数据转双路输出
         for(int i=0;i<blockLength;i++){
@@ -22,5 +31,6 @@ public class DataAllocator extends BaseComponent{
     public void refreshComponent() {
         // 重置数据分配逻辑
         // 这里可以添加任何需要的初始化或重置逻辑
+        resetBlockLength(blockLength);
     }
 }

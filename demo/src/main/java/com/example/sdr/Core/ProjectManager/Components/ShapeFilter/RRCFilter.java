@@ -68,6 +68,16 @@ public class RRCFilter extends BaseComponent {
         }
     }
 
+    @Override
+    public void setOperationParams(SDRData[] data, int index) {
+        // 自适应输入速率
+        if (data.length != this.blockLength) {
+            resetBlockLength(data.length);
+        }
+        // 设置输入数据
+        this.op_in[index] = data;
+    }
+
     /**
      * 核心计算方法，采用 Overlap-Save 算法实现卷积
      */

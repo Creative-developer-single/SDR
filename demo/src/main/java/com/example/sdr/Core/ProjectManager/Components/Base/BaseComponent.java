@@ -12,7 +12,14 @@ public class BaseComponent {
     protected int inputCount;
     protected int outputCount;
     protected int blockLength;
+
+    // Type
+    protected String Type = "Normal";// Drive，Normal，SampleRateConvert
+
+    // Sample Rate
     protected int SampleRate;
+    protected int SourceSampleRate;
+    protected int TargetSampleRate;
     
     protected String ID;
 
@@ -21,17 +28,48 @@ public class BaseComponent {
     protected int currentOutputIndex;
 
     protected SDRData[][] op_in;
-    //protected double[][] op_in;
     protected SDRData[][] ans;
 
     public static String getRootClassName(){
         return ComponentManager.class.getPackageName();
     }
 
+    // 更新采样率
+    public int getSampleRate() {
+        return SampleRate;
+    }
+
+    // 设置采样率
+    public void setSampleRate(int SampleRate){
+        this.SampleRate = SampleRate;
+    }
+
+    // 获取新采样率
+    public double getNewSampleRate(){
+        if(SourceSampleRate == 0 || TargetSampleRate == 0){
+            throw new IllegalArgumentException("SourceSampleRate or TargetSampleRate is not set.");
+        }
+        return (double)TargetSampleRate * SampleRate / SourceSampleRate;
+    }
+
+    // 获取组件类别
+    public String getType() {
+        return Type;
+    }
+
+    // 设置blockLength
+    public void setBlockLength(int blockLength) {
+        if (blockLength <= 0) {
+            throw new IllegalArgumentException("Block length must be positive.");
+        }
+        this.blockLength = blockLength;
+    }
+
     public BaseComponent(int blockLength,int inputCount,int outputCount){
         this.blockLength = blockLength;
         this.inputCount = inputCount;
         this.outputCount = outputCount;
+        this.Type = "Normal";
 
         currentInputIndex = 0;
         currentOutputIndex = 0;
@@ -44,6 +82,7 @@ public class BaseComponent {
         this.inputCount = inputCount;
         this.outputCount = outputCount;
         this.ID = ID;
+        this.Type = "Normal";
 
         currentInputIndex = 0;
         currentOutputIndex = 0;

@@ -25,21 +25,19 @@ public class BasicALU extends BaseComponent{
 
     public void setOperationParams(SDRData[] data,int index)
     {
-        if(data.length != blockLength)
-        {
-            throw new IllegalArgumentException("Invalid block length");
+        // 自适应速率
+        if(data.length != blockLength) {
+            resetBlockLength(data.length);
         }
         this.op_in[index] = data;
     }
 
-    public void setOperationParams(SDRData[] a,SDRData[] b)
-    {
-        if(a.length != blockLength || b.length != blockLength)
-        {
-            throw new IllegalArgumentException("Invalid block length");
+    @Override
+    public void refreshComponent() {
+        // Reset output array length to blockLength
+        if (ans[0] == null || ans[0].length != blockLength) {
+            resetBlockLength(blockLength);
         }
-        this.op_in[0] = a;
-        this.op_in[1] = b;
     }
 
     public void setOperationMode(int mode)

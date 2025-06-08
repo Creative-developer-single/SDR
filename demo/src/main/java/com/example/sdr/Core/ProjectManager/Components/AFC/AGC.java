@@ -59,6 +59,16 @@ public class AGC extends BaseComponent {
         this.currentPowerSum = 0.0;
     }
 
+    @Override
+    public void setOperationParams(SDRData[] data, int index) {
+        // 自适应输入速率
+        if (data.length != blockLength) {
+            resetBlockLength(data.length);
+        }
+        // 设置输入数据
+        op_in[index] = data;
+    }
+
     /**
      * 核心计算方法，逐点执行AGC反馈逻辑
      */

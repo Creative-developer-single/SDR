@@ -57,6 +57,38 @@ public class LogicGraphScheduler {
         }
     }
 
+    public void runSimulationCheck(double perSimulationTime){
+        // 运行采样率传播算法
+        for (LogicNode node : nodeScheduleList){
+            int newSampleRate = node.getComponent().getSampleRate();
+            if(node.getComponent().getType() == "SampleRateConverter"){
+                // 计算新采样率
+                newSampleRate = (int)Math.floor(node.getComponent().getNewSampleRate());
+            }
+
+            // 传播到下游节点
+            for (LogicEdge edge : node.getNextEdges()){
+                if (edge != null){
+                    LogicNode targetNode = edge.getNode2();
+                    targetNode.getComponent().setSampleRate(newSampleRate);
+                }
+            }
+        }
+
+        // 运行blockLength传播算法
+        for (LogicNode node : nodeScheduleList){
+            // 直接更新blockLength，只有Driver会检查，其余模块自适应
+            if(node.getComponent().getType() == "SampleRateConverter"){
+                // 计算新的blockLength
+                int newBlockLength = (int)Math.floor(node.getComponent().getNewSampleRate() * perSimulationTime);
+                node.getComponent().setBlockLength(newBlockLength);
+            }else{
+                int newBlockLength = (int)Math.floor(node.getComponent().getSampleRate() * perSimulationTime);
+                node.getComponent().setBlockLength(newBlockLength);
+            }
+        }
+    }
+
     public void runTheScheduler() {
         for (LogicNode node : nodeScheduleList) {
             // 1️⃣ 执行当前节点的计算

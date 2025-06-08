@@ -12,6 +12,16 @@ public class DataConverter extends BaseComponent{
     }
 
     @Override
+    public void setOperationParams(SDRData[] data, int index) {
+        // 自适应输入速率
+        if (data.length != blockLength) {
+            resetBlockLength(data.length);
+        }
+        // 设置输入数据
+        op_in[index] = data;
+    }
+
+    @Override
     public void refreshComponent() {
         // 重置转换类型为默认值
         this.ConvertType = "Real";

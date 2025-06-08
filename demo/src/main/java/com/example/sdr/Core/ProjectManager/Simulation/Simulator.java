@@ -75,6 +75,7 @@ public class Simulator {
         processer.updateSimulationState();
 
         simulationProperties.simulationCycle = (int)(simulationProperties.simulationTime / simulationProperties.simulationTimeStep);
+        processer.getSimulator().getProjectManager().getLogicGraphManager().runSimulationCheck(simulationProperties.simulationTimeStep);
         processer.getSimulator().getProjectManager().getLogicGraphManager().refreshAllComponents();
      }
 

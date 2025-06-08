@@ -32,6 +32,23 @@ public class Calculus extends BaseComponent{
         ans = SDRDataUtils.createComplexMatrix(outputCount, blockLength, 0, 0);
     }
 
+    @Override
+    public void refreshComponent() {
+        // Reset output array length to blockLength
+        if (ans[0] == null || ans[0].length != blockLength) {
+            resetBlockLength(blockLength);
+        }
+    }
+
+    @Override
+    public void setOperationParams(SDRData[] data, int index) {
+        // 自适应速率
+        if(data.length != blockLength) {
+            resetBlockLength(data.length);
+        }
+        this.op_in[index] = data;
+    }
+
     public void setOperationMode(int mode){
         this.mode = mode;
     }

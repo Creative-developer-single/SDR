@@ -23,9 +23,10 @@ public class VCOComponent extends BaseComponent {
         super(blockLength, inputCount, outputCount,ID);
     }
 
+    @Override
     public void setOperationParams(SDRData[] input, int index) {
-        if (input.length != blockLength) {
-            throw new IllegalArgumentException("Invalid block length");
+        if(input.length != blockLength) {
+            resetBlockLength(input.length);
         }
         this.op_in[index] = input;
     }

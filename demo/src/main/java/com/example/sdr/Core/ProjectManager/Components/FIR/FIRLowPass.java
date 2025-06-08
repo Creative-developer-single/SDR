@@ -13,6 +13,21 @@ public class FIRLowPass extends BaseComponent {
     // 记忆缓冲区，跨块连续滤波用
     private SDRData[] historyBuffer;
 
+    public void setSampleRate(int sampleRate) {
+        this.SampleRate = sampleRate;
+    }
+
+    public int getSampleRate() {
+        return SampleRate;
+    }
+
+    public void setFilterParams(int cutOffFrequency, int windowLength, String windowType) {
+        this.CutOffFrequency = cutOffFrequency;
+        this.WindowLength = windowLength;
+        this.WindowType = windowType;
+        CalculateFilterCoefficients();
+    }
+
     public FIRLowPass(int blockLength, int inputCount, int outputCount, String ID) {
         super(blockLength, inputCount, outputCount, ID);
         this.CutOffFrequency = 1000; // Default cutoff frequency
@@ -58,6 +73,16 @@ public class FIRLowPass extends BaseComponent {
 
         // 清空历史缓冲区，保证仿真重启时状态正确
         this.historyBuffer = SDRDataUtils.createComplexArray(WindowLength - 1, 0, 0);
+    }
+
+    @Override
+    public void setOperationParams(SDRData[] data, int index) {
+        // 自适应输入速率
+        if (data.length != blockLength) {
+            resetBlockLength(data.length);
+        }
+        // 设置输入数据
+        op_in[index] = data;
     }
 
     public void Calculate() {

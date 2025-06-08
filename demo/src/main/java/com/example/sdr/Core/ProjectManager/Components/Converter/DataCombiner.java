@@ -1,5 +1,6 @@
 package com.example.sdr.Core.ProjectManager.Components.Converter;
 
+import com.example.sdr.Core.Components.DataType.SDRData.SDRData;
 import com.example.sdr.Core.ProjectManager.Components.Base.BaseComponent;
 
 public class DataCombiner extends BaseComponent {
@@ -8,6 +9,23 @@ public class DataCombiner extends BaseComponent {
         // 这里可以添加任何需要的初始化逻辑
         super(blockLength, inputCount, outputCount, ID);
 
+    }
+
+    @Override
+    public void refreshComponent() {
+        // 重置数据合并逻辑
+        // 这里可以添加任何需要的初始化或重置逻辑
+        resetBlockLength(blockLength);
+    }
+
+    @Override
+    public void setOperationParams(SDRData[] data, int index) {
+        // 自适应输入速率
+        if (data.length != blockLength) {
+            resetBlockLength(data.length);
+        }
+        // 设置输入数据
+        op_in[index] = data;
     }
 
     @Override

@@ -61,6 +61,15 @@ public class RPLL extends BaseComponent {
         this.VCOGain = 1;
         updateFilterParams();
     }
+
+    @Override
+    public void setOperationParams(SDRData[] data,int index){
+        // --- [代码与之前相同] ---
+        if (data.length != blockLength) {
+            resetBlockLength(data.length);
+        }
+        this.op_in[index] = data;
+    }
     
     @Override
     public void Calculate() {

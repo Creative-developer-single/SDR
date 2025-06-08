@@ -31,12 +31,28 @@ public class NonLinear extends BaseComponent{
         op_in = SDRDataUtils.createComplexMatrix(inputCount, blockLength, 0, 0);
     }
 
+    @Override
+    public void refreshComponent() {
+        // Reset output array length to blockLength
+        if (ans[0] == null || ans[0].length != blockLength) {
+            resetBlockLength(blockLength);
+        }
+    }
+
     public void setMode(int mode){
         this.mode = mode;
     }
 
     public void setClippingLevel(double clippingLevel){
         this.clippingLevel = clippingLevel;
+    }
+
+    @Override
+    public void setOperationParams(SDRData[] data, int index) {
+        if(data.length != blockLength){
+            resetBlockLength(data.length);
+        }
+        this.op_in[index] = data;
     }
 
     public void Calculate(){

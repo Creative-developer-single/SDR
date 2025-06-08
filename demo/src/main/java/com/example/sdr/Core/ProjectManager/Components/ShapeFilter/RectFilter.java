@@ -55,6 +55,16 @@ public class RectFilter extends BaseComponent {
         this.overlapBuffer = SDRDataUtils.createComplexArray(this.filterTaps.length - 1, 0, 0);
     }
 
+    @Override
+    public void setOperationParams(SDRData[] data, int index) {
+        // 自适应输入速率
+        if (data.length != this.blockLength) {
+            resetBlockLength(data.length);
+        }
+        // 设置输入数据
+        this.op_in[index] = data;
+    }
+
     /**
      * 核心计算方法，采用 Overlap-Save 算法实现卷积
      * 该方法与 RRCFilter 中的实现完全相同，体现了架构的复用性。

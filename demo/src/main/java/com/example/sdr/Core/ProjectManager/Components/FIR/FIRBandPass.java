@@ -64,6 +64,18 @@ public class FIRBandPass extends BaseComponent{
         this.historyBuffer = SDRDataUtils.createComplexArray(WindowLength - 1, 0, 0);
     }
 
+    // 注意，自适应速率仅适合仿真开始瞬间，仿真过程中不建议修改，否则
+    // 会导致记忆性滤波器的历史数据不一致
+    @Override
+    public void setOperationParams(SDRData[] data, int index) {
+        // 自适应输入速率
+        if (data.length != blockLength) {
+            resetBlockLength(data.length);
+        }
+        // 设置输入数据
+        op_in[index] = data;
+    }
+
     public void Calculate() {
         // 拼接历史 + 当前块
         SDRData[] extendedInput = new SDRData[WindowLength - 1 + blockLength];

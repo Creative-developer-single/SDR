@@ -19,6 +19,7 @@ public class SignalGenerator extends BaseComponent{
         this.blockLength = blockLength;
         this.blockPhase = 0;
         this.signalType = "Sine";
+        this.Type = "Driver";
 
         ans = SDRDataUtils.createComplexMatrix(outputCount, blockLength, 0, 0);
     }
@@ -30,6 +31,7 @@ public class SignalGenerator extends BaseComponent{
         this.blockPhase = 0;
         this.SampleRate = SampleRate;
         this.signalType = "Sine";
+        this.Type = "Driver";
 
         ans = SDRDataUtils.createComplexMatrix(outputCount, blockLength, 0, 0);
     }
@@ -74,6 +76,13 @@ public class SignalGenerator extends BaseComponent{
 
     public void setPhase(double phase){
         this.phase = phase;
+    }
+
+    @Override
+    public void refreshComponent() {
+        // Reset output array length to blockLength
+        resetBlockLength(blockLength);
+        this.blockPhase = 0;
     }
 
     public void Calculate(){

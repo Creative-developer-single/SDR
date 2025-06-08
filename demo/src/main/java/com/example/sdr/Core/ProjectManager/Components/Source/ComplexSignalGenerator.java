@@ -26,8 +26,15 @@ public class ComplexSignalGenerator extends BaseComponent {
         this.blockLength = blockLength;
         this.blockPhase = 0;
         this.signalType = "Sine";
+        this.Type = "Driver";
 
         ans = SDRDataUtils.createComplexMatrix(outputCount, blockLength, 0, 0);
+    }
+
+    @Override
+    public void refreshComponent(){
+        resetBlockLength(blockLength);
+        this.blockPhase = 0;
     }
    
     // 设置信号类型

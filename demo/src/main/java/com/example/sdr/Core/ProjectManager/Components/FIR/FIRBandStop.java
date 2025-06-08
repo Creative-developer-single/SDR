@@ -65,6 +65,15 @@ public class FIRBandStop extends BaseComponent{
         this.historyBuffer = SDRDataUtils.createComplexArray(WindowLength - 1, 0, 0);
     }
 
+    @Override
+    public void setOperationParams(SDRData[] data, int index) {
+        // 自适应输入速率
+        if(data.length != blockLength){
+            resetBlockLength(data.length);
+        }
+        op_in[index] = data;
+    }
+
     public void Calculate() {
         // 拼接历史 + 当前块
         SDRData[] extendedInput = new SDRData[WindowLength - 1 + blockLength];
