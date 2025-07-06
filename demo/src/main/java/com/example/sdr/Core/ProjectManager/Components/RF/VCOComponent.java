@@ -11,6 +11,14 @@ public class VCOComponent extends BaseComponent {
     private double Sensitivity = 100.0;      // 调制灵敏度 Hz/V
     private double Phase = 0.0;              // 当前相位
 
+    public VCOComponent(double CenterFrequency,double Sensitivity,double SampleRate,double Phase) {
+        super(1, 1, 1);
+        this.CenterFrequency = CenterFrequency;
+        this.Sensitivity = Sensitivity;
+        this.SampleRate = SampleRate; // 默认采样率
+        this.Phase = Phase; // 初始相位
+    }
+
     public VCOComponent(int blockLength) {
         super(blockLength, 1, 1);
     }

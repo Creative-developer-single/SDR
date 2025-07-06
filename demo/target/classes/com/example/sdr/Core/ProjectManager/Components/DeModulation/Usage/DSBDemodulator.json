@@ -1,0 +1,17 @@
+{
+    "ID": 0,
+    "Pos": {
+      "X": 90,
+      "Y": 20
+    },
+    "BlockLength": 1024,
+    "InputCount":1,
+    "OutputCount":1,
+    "ComponentType": "DeModulation.DSBDeModulator",
+    "ComponentID": "DSBDeModulator",
+    "ComponentSettings": {
+        "LpfCutOffFrequency": 500,
+        "LpfWindowLength": 64,
+        "LpfWindowType": "Hamming"
+    }
+  }

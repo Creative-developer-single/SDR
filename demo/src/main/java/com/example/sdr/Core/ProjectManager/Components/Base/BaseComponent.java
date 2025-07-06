@@ -12,6 +12,7 @@ public class BaseComponent {
     protected int inputCount;
     protected int outputCount;
     protected int blockLength;
+    protected double blockTime;
 
     // Type
     protected String Type = "Normal";// Drive，Normal，SampleRateConvert

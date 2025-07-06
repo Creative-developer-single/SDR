@@ -103,6 +103,10 @@ public class ProjectManager {
             //RPC 调用处理
             projectManager.getRPCManager().getProcesser().processRPCFrame();
             projectManager.getProjectManagerTaskHandler().handleTask();
+            if(projectManager.getSimulator().getSimulationStatus().equals("Stopped"))
+            {
+                System.gc();
+            }
             try {
                 Thread.sleep(20);
             } catch (InterruptedException e) {

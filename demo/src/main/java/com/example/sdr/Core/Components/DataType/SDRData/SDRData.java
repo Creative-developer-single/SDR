@@ -264,6 +264,16 @@ public class SDRData {
         this.type = DataType.REAL;
     }
 
+    // 从Complex数中转换
+    public void fromComplex(double real, double imag) {
+        this.real = real;
+        this.imag = imag;
+        
+        this.computeMode = ComputeMode.COMPLEX;
+        this.type = DataType.COMPLEX;
+        
+    }
+
     public boolean equals(double value) {
         if (this.computeMode == ComputeMode.REAL) {
             return Double.compare(this.real, value) == 0;

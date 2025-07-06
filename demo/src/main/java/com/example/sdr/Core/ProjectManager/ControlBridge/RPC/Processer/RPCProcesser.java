@@ -74,7 +74,8 @@ public class RPCProcesser {
                 byte[] dataBytes = new byte[sourceData.remaining()];
                 sourceData.get(dataBytes);
                 String dataString = new String(dataBytes, "UTF-8");
-                System.out.println("Received RPC Frame: " + dataString);
+                System.out.println("Receive a RPC Frame");
+                //System.out.println("Received RPC Frame: " + dataString);
 
                 // 将字符串转换为JSON对象
                 JSONObject ctrlFrame = new JSONObject(dataString);
@@ -101,6 +102,7 @@ public class RPCProcesser {
                         manager.getRPCManager().SendReply("CTRL"+response.toString());
                         break;
                     case "Simulation":
+                        System.gc();
                         rpcSimulationManager.RPCCall(rpcFrame,rpcID);
                         break;
                     default:

@@ -10,13 +10,13 @@ public class Calculus extends BaseComponent{
     final int MODE_DIFFERENTIAL = 0;
     final int MODE_INTEGRATION = 1;
 
-    private int mode;
+    private String mode;//Diff Inte
 
     public Calculus(int blockLength,int inputCount,int outputCount){
         super(blockLength,inputCount,outputCount); //
         this.inputCount = 1;
         this.blockLength = blockLength;
-        this.mode = MODE_DIFFERENTIAL;
+        this.mode = "Inte";
 
         op_in = SDRDataUtils.createComplexMatrix(inputCount, blockLength, 0, 0);
         ans = SDRDataUtils.createComplexMatrix(outputCount, blockLength, 0, 0);
@@ -26,7 +26,7 @@ public class Calculus extends BaseComponent{
         super(blockLength, 1,outputCount,ID);
         this.inputCount = 1;
         this.blockLength = blockLength;
-        this.mode = MODE_DIFFERENTIAL;
+        this.mode = "Diff";
 
         op_in = SDRDataUtils.createComplexMatrix(inputCount, blockLength, 0, 0);
         ans = SDRDataUtils.createComplexMatrix(outputCount, blockLength, 0, 0);
@@ -49,7 +49,7 @@ public class Calculus extends BaseComponent{
         this.op_in[index] = data;
     }
 
-    public void setOperationMode(int mode){
+    public void setOperationMode(String mode){
         this.mode = mode;
     }
 
@@ -64,14 +64,14 @@ public class Calculus extends BaseComponent{
     public void Calculate(){
         SDRData tmp = new SDRData(0, 0);
         
-        if(mode == MODE_DIFFERENTIAL){
+        if(mode == "Diff"){
             for(int i = 1; i < blockLength; i++){
                 tmp.Copy(op_in[0][i]);
                 tmp.subtract(op_in[0][i - 1]);
                 ans[currentOutputIndex][i].Copy(tmp);
             }
             ans[currentOutputIndex][0] = new SDRData(0, 0); // First element is set to zero
-        }else if(mode == MODE_INTEGRATION){
+        }else if(mode == "Inte"){
             ans[currentOutputIndex][0] = new SDRData(0, 0);
             tmp.Copy(ans[currentInputIndex][0]);
             for(int i = 1; i < blockLength; i++){

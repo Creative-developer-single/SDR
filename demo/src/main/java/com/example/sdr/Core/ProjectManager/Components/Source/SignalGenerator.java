@@ -95,7 +95,6 @@ public class SignalGenerator extends BaseComponent{
                 this.blockPhase = (this.blockPhase + 2 * Math.PI * frequency / SampleRate) % (2 * Math.PI);
                 ans[0][i].fromDouble(amplitude * Math.sin(this.blockPhase));
             }
-            System.out.println("Block Phase: " + this.blockPhase);
         }else if(signalType == "Cos"){
             for(int i = 0; i < blockLength; i++){
                 this.blockPhase = (this.blockPhase + 2 * Math.PI * frequency / SampleRate) % (2 * Math.PI);
